@@ -330,6 +330,8 @@
     <Content Include="Home\js\search.js" />
     <Content Include="Index.aspx" />
     <Content Include="Issued.aspx" />
+    <Content Include="ListBoxx.html" />
+    <Content Include="lists.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="SaveFIle.aspx" />
     <Content Include="Scripts\bootstrap.js" />
@@ -562,6 +564,13 @@
     </Compile>
     <Compile Include="Issued.aspx.designer.cs">
       <DependentUpon>Issued.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="lists.aspx.cs">
+      <DependentUpon>lists.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="lists.aspx.designer.cs">
+      <DependentUpon>lists.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

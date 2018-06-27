@@ -18,47 +18,43 @@ namespace DigiLocker3
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack)
+            if (!this.IsPostBack)
             {
-                //reset();
-                Response.Write("Refreshed");
+
+                con.Open();
+
+                SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                DataSet ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlCourseType.DataBind();
+
+                string name = ddlCourseType.Items[0].Value;
+                com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='" + name + "'", con); // table name 
+                da = new SqlDataAdapter(com);
+                ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlCourseNo.DataTextField = ds.Tables[0].Columns["Course_No"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseNo.DataValueField = ds.Tables[0].Columns["Course_No"].ToString();             // to retrive specific  textfield name 
+                ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlCourseNo.DataBind();
+
+                name = ddlCourseType.Items[0].Value + "_COURSE_TYPE";
+                com = new SqlCommand("select * from " + name, con); // table name 
+                da = new SqlDataAdapter(com);
+                ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlEntryType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                ddlEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlEntryType.DataBind();
+
+
+                con.Close();
             }
-            //reset();
-            Response.Write("Refreshed");
-
-            con.Open();
-
-            SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
-            SqlDataAdapter da = new SqlDataAdapter(com);
-            DataSet ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-            ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
-            ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlCourseType.DataBind();
-
-            string name = ddlCourseType.Items[0].Value;
-            com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='"+name+"'", con); // table name 
-            da = new SqlDataAdapter(com);
-            ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlCourseNo.DataTextField = ds.Tables[0].Columns["Course_No"].ToString(); // text field name of table dispalyed in dropdown
-            ddlCourseNo.DataValueField = ds.Tables[0].Columns["Course_No"].ToString();             // to retrive specific  textfield name 
-            ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlCourseNo.DataBind();
-
-            name = ddlCourseType.Items[0].Value + "_COURSE_TYPE";
-            com = new SqlCommand("select * from " + name, con); // table name 
-            da = new SqlDataAdapter(com);
-            ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlEntryType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-            ddlEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
-            ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlEntryType.DataBind();
-
-
-            con.Close();
         }
 
         protected void SubmitButton_Click(object sender, EventArgs e)
@@ -126,17 +122,43 @@ namespace DigiLocker3
             string entry_type = ddlEntryType.SelectedValue;
             entry_type = entry_type.Replace(" ", "_");
             string table_name = course_type + "_" + course_no + "_" + entry_type;
-            SqlCommand cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10), Name varchar(50), Rank varchar(20));", con);
-            cmd.ExecuteNonQuery();
+            Response.Write(course_type + "_" + entry_type + "_SUBJECT");
+            SqlCommand com = new SqlCommand("select Subject_Code, Term from " + course_type +"_" + entry_type + "_SUBJECT", con);
+            SqlDataReader dr = com.ExecuteReader();
+            List<string> column_List = new List<string>();
             
+            string col_name;
+            while (dr.Read())
+            { 
+                 col_name = dr.GetValue(1).ToString() +"_"+ dr.GetValue(0).ToString();
+                Response.Write(col_name + i);
+                i++;
+                
+                column_List.Add(col_name);
+
+
+            }
+
+            dr.Close();
+            string col_List = "";
+            foreach (string col_nam in column_List)
+            {
+                col_List = col_List + col_nam + " int, ";
+                
+            }
+            Response.Write(col_List);
+            SqlCommand cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10), Name varchar(50), Rank varchar(20), "+col_List+");", con);
+            cmd.ExecuteNonQuery();
+
             foreach (GridViewRow g1 in GridView1.Rows)
             {
                
                 cmd = new SqlCommand("insert into "+ table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
-                cmd.ExecuteNonQuery();
+               cmd.ExecuteNonQuery();
                 i++;
             }
             con.Close();
+            column_List.Clear();
 
             string script = "alert(\" "+ i + " Trainees Added to " + course_type + course_no + " " +entry_type +" \");";
             ScriptManager.RegisterStartupScript(this, GetType(),

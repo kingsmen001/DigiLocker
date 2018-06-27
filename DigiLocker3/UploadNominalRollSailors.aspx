@@ -410,7 +410,7 @@
                                         
                                         <div class="form-group">
                                             <label>Select Course Type</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlCourseTypeIndexChanged">
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseType" runat="server" OnSelectedIndexChanged = "ddlCourseTypeIndexChanged">
                                                 
                                                 
                                             </asp:DropDownList>
@@ -418,14 +418,14 @@
 
                                         <div class="form-group">
                                             <label>Select Course Number</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseNo" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "OnSelectedIndexChanged">
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseNo" runat="server" OnSelectedIndexChanged = "OnSelectedIndexChanged">
                                                 
                                                 
                                             </asp:DropDownList>
                                             </div>
                                         <div class="form-group">
                                             <label>Select Entry Type</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" AutoPostBack = "true">
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server">
                                                 
                                                 
                                             </asp:DropDownList>
@@ -438,7 +438,7 @@
                                             <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />
                                         </div>
                                         
-                                        <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />
+                                        <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click"  />
                                         
                                         <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
                                         <br /><br />

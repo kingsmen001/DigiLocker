@@ -40,13 +40,13 @@ namespace DigiLocker3 {
         protected global::System.Web.UI.WebControls.DropDownList ddlTerm;
         
         /// <summary>
-        /// ddlEntryType control.
+        /// lbEntryType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEntryType;
+        protected global::System.Web.UI.WebControls.ListBox lbEntryType;
         
         /// <summary>
         /// FileUpload1 control.
