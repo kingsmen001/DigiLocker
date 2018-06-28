@@ -17,47 +17,57 @@ namespace DigiLocker3
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack)
+            if (!this.IsPostBack)
             {
-                //reset();
-                Response.Write("Refreshed");
+                con.Open();
+
+                SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                DataSet ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlCourseType.DataBind();
+
+                string name = ddlCourseType.Items[0].Value;
+                string entry_type;
+                com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='" + name + "'", con); // table name 
+                da = new SqlDataAdapter(com);
+                ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlCourseNo.DataTextField = ds.Tables[0].Columns["Course_No"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseNo.DataValueField = ds.Tables[0].Columns["Course_No"].ToString();             // to retrive specific  textfield name 
+                ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlCourseNo.DataBind();
+
+                string term = ddlTerm.SelectedValue;
+
+                name = ddlCourseType.Items[0].Value + "_COURSE_TYPE";
+                com = new SqlCommand("select * from " + name, con); // table name 
+                da = new SqlDataAdapter(com);
+                ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlEntryType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                ddlEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlEntryType.DataBind();
+
+                entry_type = ddlEntryType.SelectedValue;
+                entry_type = entry_type.Replace(" ", "_");
+                name = ddlCourseType.SelectedValue + "_" + entry_type + "_SUBJECT";
+                com = new SqlCommand("select Subject_Name from " + name + " where Term ='" + term + "'", con); // table name 
+                da = new SqlDataAdapter(com);
+                ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlSubject.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+                ddlSubject.DataValueField = ds.Tables[0].Columns["Subject_Name"].ToString();             // to retrive specific  textfield name 
+                ddlSubject.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlSubject.DataBind();
+
+
+                con.Close();
             }
-            //reset();
-            Response.Write("Refreshed");
-
-            con.Open();
-
-            SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
-            SqlDataAdapter da = new SqlDataAdapter(com);
-            DataSet ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-            ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
-            ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlCourseType.DataBind();
-
-            string name = ddlCourseType.Items[0].Value;
-            com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='" + name + "'", con); // table name 
-            da = new SqlDataAdapter(com);
-            ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlCourseNo.DataTextField = ds.Tables[0].Columns["Course_No"].ToString(); // text field name of table dispalyed in dropdown
-            ddlCourseNo.DataValueField = ds.Tables[0].Columns["Course_No"].ToString();             // to retrive specific  textfield name 
-            ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlCourseNo.DataBind();
-
-            name = ddlCourseType.Items[0].Value + "_COURSE_TYPE";
-            com = new SqlCommand("select * from " + name, con); // table name 
-            da = new SqlDataAdapter(com);
-            ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlEntryType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-            ddlEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
-            ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlEntryType.DataBind();
-
-
-            con.Close();
         }
 
         protected void SubmitButton_Click(object sender, EventArgs e)
@@ -74,6 +84,13 @@ namespace DigiLocker3
                 ConfirmButton.Visible = true;
                 ConfirmButton.EnableViewState = true;
             }
+            string course_type = ddlCourseType.SelectedValue;
+            string course_no = ddlCourseNo.SelectedValue;
+            string entry_type = ddlEntryType.SelectedValue;
+            string subject = ddlSubject.SelectedValue;
+            entry_type = entry_type.Replace(" ", "_");
+            string table_name = course_type + "_" + entry_type + "_SUBJECT";
+            //Response.Write(table_name + subject + "submit");
         }
 
         private void Import_To_Grid(string FilePath, string Extension)
@@ -123,16 +140,33 @@ namespace DigiLocker3
             string course_type = ddlCourseType.SelectedValue;
             string course_no = ddlCourseNo.SelectedValue;
             string entry_type = ddlEntryType.SelectedValue;
+            string subject = ddlSubject.SelectedValue;
             entry_type = entry_type.Replace(" ", "_");
-            string table_name = course_type + "_" + course_no + "_" + entry_type;
-            SqlCommand cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10), Name varchar(50), Rank varchar(20));", con);
-            cmd.ExecuteNonQuery();
+            string table_name = course_type +  "_" + entry_type + "_SUBJECT";
+            SqlCommand cmd;
+            //Response.Write(table_name + subject +"confirm");
+            cmd = new SqlCommand("select Subject_code from " + table_name + " where Subject_Name = '" + subject + "'",con);
+            SqlDataReader dr = cmd.ExecuteReader();
+            string subject_code = "";
+            while (dr.Read())
+            {
+                subject_code = ddlTerm.SelectedValue + "_" + dr[0].ToString();
+            }
+            dr.Close();
+            //Response.Write(subject_code);
+
+            //SqlCommand cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10), Name varchar(50), Rank varchar(20));", con);
+            //cmd.ExecuteNonQuery();
+            string query;
 
             foreach (GridViewRow g1 in GridView1.Rows)
             {
-
-                cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
-                cmd.ExecuteNonQuery();
+                table_name = course_type + "_" + course_no + "_" + g1.Cells[0].Text ;
+                query = "update " + table_name + " set " + subject_code + "= " + g1.Cells[4].Text + " where Personal_No = '" + g1.Cells[1].Text + "'";
+                //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
+                cmd = new SqlCommand( query, con);
+                Response.Write(query+"      ");
+                //cmd.ExecuteNonQuery();
                 i++;
             }
             con.Close();
@@ -153,38 +187,7 @@ namespace DigiLocker3
             GridView1.DataBind();
         }
 
-        protected void updatecourselist()
-        {
-
-            con.Open();
-            //string course = this.DropDownList1.SelectedIndex; GetItemText(this.DropDownList1.SelectedItem);
-            int index = ddlCourseType.SelectedIndex;
-            string selectQuery;
-            SqlCommand cmd;
-            if (index == 0)
-                selectQuery = "select Course_No from Officer_Courses";
-            else
-                selectQuery = "select Course_No from Sailor_Courses";
-            SqlCommand selectCommand = new SqlCommand(selectQuery, con);
-            selectCommand.CommandType = CommandType.Text;
-            SqlDataReader selectData;
-            selectData = selectCommand.ExecuteReader();
-            if (selectData.HasRows)
-            {
-                ddlCourseNo.DataSource = selectData;
-                ddlCourseNo.DataValueField = "Course_No";
-                ddlCourseNo.DataTextField = "Course_No";
-                ddlCourseNo.DataBind();
-            }
-            else
-            {
-                //MessageBox.Show("No is found");
-                //CloseConnection = new Connection();
-                //CloseConnection.closeConnection(); // close the connection 
-            }
-
-            con.Close();
-        }
+        
 
         protected void ddlCourseTypeIndexChanged(object sender, EventArgs e)
         {
@@ -215,7 +218,7 @@ namespace DigiLocker3
             con.Close();
         }
 
-        protected void OnSelectedIndexChanged(object sender, EventArgs e)
+        protected void ddlCourseNoIndexChanged(object sender, EventArgs e)
         {
             String name = ddlCourseType.SelectedValue + "_COURSE_TYPE";
             SqlCommand com = new SqlCommand("select * from" + name, con); // table name 
@@ -227,6 +230,28 @@ namespace DigiLocker3
             ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             ddlEntryType.DataBind();
 
+        }
+        protected void ddlTermIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+
+        protected void ddlEntryTypeIndexChanged(object sender, EventArgs e)
+        {
+            con.Open();
+            string term = ddlTerm.SelectedValue;
+            string entry_type = ddlEntryType.SelectedValue;
+            entry_type = entry_type.Replace(" ", "_");
+            string name = ddlCourseType.SelectedValue + "_" + entry_type + "_SUBJECT";
+            SqlCommand com = new SqlCommand("select Subject_Name from " + name + " where Term ='" + term + "'", con); // table name 
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            DataSet ds = new DataSet();
+            da.Fill(ds);  // fill dataset
+            ddlSubject.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+            ddlSubject.DataValueField = ds.Tables[0].Columns["Subject_Name"].ToString();             // to retrive specific  textfield name 
+            ddlSubject.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+            ddlSubject.DataBind();
+            con.Close();
         }
     }
 }

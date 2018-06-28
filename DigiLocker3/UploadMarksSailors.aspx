@@ -418,14 +418,36 @@
 
                                         <div class="form-group">
                                             <label>Select Course Number</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseNo" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "OnSelectedIndexChanged">
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseNo" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlCourseNoIndexChanged">
                                                 
                                                 
                                             </asp:DropDownList>
                                             </div>
                                         <div class="form-group">
+                                            <label>Select Term</label>
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlTermIndexChanged">
+                                                <asp:ListItem>A1</asp:ListItem>
+                                                <asp:ListItem>A2</asp:ListItem>
+                                                <asp:ListItem>B1</asp:ListItem>
+                                                <asp:ListItem>B2</asp:ListItem>
+                                                <asp:ListItem>C</asp:ListItem>
+                                                <asp:ListItem>D1</asp:ListItem>
+                                                <asp:ListItem>D2</asp:ListItem>
+                                                <asp:ListItem>D3</asp:ListItem>
+                                                <asp:ListItem>E</asp:ListItem>
+                                            </asp:DropDownList>
+                                            </div>
+
+                                        <div class="form-group">
                                             <label>Select Entry Type</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" AutoPostBack = "true">
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlEntryTypeIndexChanged">
+                                                
+                                                
+                                            </asp:DropDownList>
+                                            </div>
+                                        <div class="form-group">
+                                            <label>Select Subject</label>
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlSubject" runat="server" AutoPostBack = "true">
                                                 
                                                 
                                             </asp:DropDownList>
@@ -434,7 +456,7 @@
                                         
                                         
                                         <div class="form-group">
-                                            <label>Nominal Roll Excel File</label>
+                                            <label>Marks Excel File</label>
                                             <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />
                                         </div>
                                         
