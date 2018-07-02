@@ -259,6 +259,7 @@
     <Content Include="Home\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Home\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Home\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="WebFormResultUpload.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Home\css\about.css" />
     <Content Include="Home\css\blog.css" />
@@ -373,6 +374,7 @@
     <Content Include="Uploaded.aspx" />
     <Content Include="UploadMarksSailors.aspx" />
     <Content Include="UploadNominalRollSailors.aspx" />
+    <Content Include="vendor\jquery\add_textbox.js" />
     <Content Include="ViewIndividualSailors.aspx" />
     <Content Include="ViewResultSailors.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -665,6 +667,13 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WebFormResultUpload.aspx.cs">
+      <DependentUpon>WebFormResultUpload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebFormResultUpload.aspx.designer.cs">
+      <DependentUpon>WebFormResultUpload.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup />

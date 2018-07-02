@@ -12,7 +12,7 @@ using System.Web.UI.WebControls;
 
 namespace DigiLocker3
 {
-    public partial class UploadMarks : System.Web.UI.Page
+    public partial class WebFormResultUpload : System.Web.UI.Page
     {
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
@@ -69,7 +69,6 @@ namespace DigiLocker3
                 con.Close();
             }
         }
-
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
 
@@ -103,19 +102,19 @@ namespace DigiLocker3
                 SqlCommand cmd = new SqlCommand("Delete from tblPersons", con);
                 cmd.ExecuteNonQuery();
                 using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
-                    {
-                        //Set the database table name
-                        sqlBulkCopy.DestinationTableName = "dbo.tblPersons";
+                {
+                    //Set the database table name
+                    sqlBulkCopy.DestinationTableName = "dbo.tblPersons";
 
-                        //[OPTIONAL]: Map the Excel columns with that of the database table
-                        sqlBulkCopy.ColumnMappings.Add("Entry", "Entry");
-                        sqlBulkCopy.ColumnMappings.Add("Personal_No", "Personal_No");
-                        sqlBulkCopy.ColumnMappings.Add("Name", "Name");
-                        sqlBulkCopy.ColumnMappings.Add("Rank", "Rank");
-                        
-                        sqlBulkCopy.WriteToServer(dtExcelData);
-                        
-                    }
+                    //[OPTIONAL]: Map the Excel columns with that of the database table
+                    sqlBulkCopy.ColumnMappings.Add("Entry", "Entry");
+                    sqlBulkCopy.ColumnMappings.Add("Personal_No", "Personal_No");
+                    sqlBulkCopy.ColumnMappings.Add("Name", "Name");
+                    sqlBulkCopy.ColumnMappings.Add("Rank", "Rank");
+
+                    sqlBulkCopy.WriteToServer(dtExcelData);
+
+                }
 
                 cmd = new SqlCommand("select * from tblPersons", con);
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
@@ -124,122 +123,33 @@ namespace DigiLocker3
                 GridView1.DataSource = ds;
                 GridView1.DataBind();
                 con.Close();
+                ConfirmButton.Visible = true;
+                ConfirmButton.EnableViewState = true;
                 // }
             }
         }
 
-        /*private void Import_To_Grid(string FilePath, string Extension)
-        {
-            string conStr = "";
-            switch (Extension)
-            {
-                case ".xls": //Excel 97-03
-                    conStr = ConfigurationManager.ConnectionStrings["Excel03ConString"].ConnectionString;
-                    break;
-                case ".xlsx": //Excel 07
-                    conStr = ConfigurationManager.ConnectionStrings["Excel07ConString"].ConnectionString;
-                    break;
-            }
-            conStr = String.Format(conStr, FilePath, "Yes");
-            OleDbConnection connExcel = new OleDbConnection(conStr);
-            OleDbCommand cmdExcel = new OleDbCommand();
-            OleDbDataAdapter oda = new OleDbDataAdapter();
-            DataTable dt = new DataTable();
-            cmdExcel.Connection = connExcel;
-
-            //Get the name of First Sheet
-            connExcel.Open();
-            DataTable dtExcelSchema;
-            dtExcelSchema = connExcel.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-            string SheetName = dtExcelSchema.Rows[0]["TABLE_NAME"].ToString();
-            connExcel.Close();
-
-            //Read Data from First Sheet
-            connExcel.Open();
-            cmdExcel.CommandText = "SELECT * From [" + SheetName + "]";
-            oda.SelectCommand = cmdExcel;
-            oda.Fill(dt);
-            connExcel.Close();
-
-            //Bind Data to GridView
-            GridView1.Caption = Path.GetFileName(FilePath);
-            int n = dt.Rows.Count;
-            
-            TemplateField tfield = new TemplateField();
-            tfield.HeaderText = "Marks";
-            //GridView1.Columns.Add(tfield);
-
-            GridView1.DataSource = dt;
-            GridView1.DataBind();
-            //BoundField test = new BoundField();
-            //test.DataField = "New DATAfield Name";
-            //test.Headertext = "New Header";
-            //GridView1.Columns.Add(test);
-            //GridView1.Columns.Add(TextBox tb1);
-            //GridView1.Columns[4];
-
-            //Response.Write("Hello World submit " + GridView1.Rows.Count);
-        }*/
-
         protected void ConfirmButton_Click(object sender, EventArgs e)
         {
-            con.Open();
-            int i = 0;
-            string course_type = ddlCourseType.SelectedValue;
-            string course_no = ddlCourseNo.SelectedValue;
-            string entry_type = ddlEntryType.SelectedValue;
-            string subject = ddlSubject.SelectedValue;
-            entry_type = entry_type.Replace(" ", "_");
-            string table_name = course_type +  "_" + entry_type + "_SUBJECT";
-            SqlCommand cmd;
-            //Response.Write(table_name + subject +"confirm");
-            cmd = new SqlCommand("select Subject_code from " + table_name + " where Subject_Name = '" + subject + "'",con);
-            SqlDataReader dr = cmd.ExecuteReader();
-            string subject_code = "";
-            while (dr.Read())
-            {
-                subject_code = ddlTerm.SelectedValue + "_" + dr[0].ToString();
-            }
-            dr.Close();
-            //Response.Write(subject_code);
-
-            //SqlCommand cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10), Name varchar(50), Rank varchar(20));", con);
-            //cmd.ExecuteNonQuery();
-            string query;
-
+            Response.Write("Confirm Clicked");
             foreach (GridViewRow g1 in GridView1.Rows)
             {
-                table_name = course_type + "_" + course_no + "_" + g1.Cells[0].Text ;
-                query = "update " + table_name + " set " + subject_code + "= " + g1.Cells[4].Text + " where Personal_No = '" + g1.Cells[1].Text + "'";
-                //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
-                cmd = new SqlCommand( query, con);
-                //string Marks = (g1.FindControl("txtMarks") as TextBox).Text;
-                //Response.Write(Marks+"      ");
-                //cmd.ExecuteNonQuery();
+                Response.Write(g1.Cells[3].Text + "    ");
+                TextBox xyz = (TextBox)g1.Cells[4].FindControl("TextBox1");
+                string abs = xyz.Text;
+                Response.Write(abs + "    ");
 
-                i++;
             }
-            con.Close();
-
-            string script = "alert(\" " + i + " Trainees Added to " + course_type + course_no + " " + entry_type + " \");";
-            ScriptManager.RegisterStartupScript(this, GetType(),
-                                  "ServerControlScript", script, true);
         }
 
         protected void ResetButton_Click(object sender, EventArgs e)
         {
-            reset();
-        }
-
-        protected void reset()
-        {
-            GridView1.DataSource = null;
-            GridView1.DataBind();
+            // reset();
         }
 
         protected void OnRowDataBound(object sender, GridViewRowEventArgs e)
         {
-            
+
         }
 
 
@@ -308,5 +218,7 @@ namespace DigiLocker3
             ddlSubject.DataBind();
             con.Close();
         }
+
+
     }
 }

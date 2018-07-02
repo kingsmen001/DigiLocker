@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UploadMarksSailors.aspx.cs" Inherits="DigiLocker3.UploadMarks" %>
 
 <!DOCTYPE html>
-
+<html>
 <head>
 
     <meta charset="utf-8">
@@ -467,8 +467,19 @@
                                             
                                     
                                     <div class="form-group" style="height:auto; max-height:500px; width:100%; overflow:auto;">
-                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" >
-                                            
+                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" OnRowDataBound = "OnRowDataBound" AutoGenerateColumns="False">
+                                          <columns>
+
+                                                <asp:BoundField HeaderText="Entry" DataField="Entry" />
+                                                <asp:BoundField HeaderText="Personal_No." DataField="Personal_No" />
+                                                <asp:BoundField HeaderText="Name" DataField="Name" />
+                                              <asp:BoundField HeaderText="Rank" DataField="Rank" />
+                                              <asp:TemplateField HeaderText="Marks">  
+                            <ItemTemplate>  
+                                <asp:TextBox ID="TextBox1" runat="server" Text=' '></asp:TextBox>  
+                                </ItemTemplate>
+                                                  </asp:TemplateField>
+                                          </columns>  
                                         </asp:GridView>
                                     </div>
                                         <asp:Button runat="server" id="ConfirmButton" class="btn btn-default" text="Confirm" onclick="ConfirmButton_Click" visible="False"  EnableViewState="false" />
@@ -560,7 +571,7 @@
 
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
-
+    
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -569,6 +580,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
+
 
 </body>
 

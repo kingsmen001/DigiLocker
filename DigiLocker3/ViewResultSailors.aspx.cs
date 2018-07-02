@@ -111,15 +111,28 @@ namespace DigiLocker3
 
             dr.Close();
             string col_List = "";
+            string col_List2 = "";
             foreach (string col_nam in column_List)
             {
                 col_List = col_List + ", " +col_nam ;
+                col_List2 = col_List2 + col_nam + " + ";
 
             }
-
+            col_List2 = col_List2.Remove(col_List2.Length - 2);
+            table_name = course_type + "_" + entry_type + "_SUBJECT" ;
+            string query = "Select SUM(Max_Marks) from " + table_name + " where term = '" + term + "'";
+            cmd = new SqlCommand(query, con);
+            dr = cmd.ExecuteReader();
+            string total_max_marks = "";
+            while (dr.Read())
+            {
+                total_max_marks = dr[0].ToString();
+            }
+            dr.Close();
             table_name = course_type + "_" + course_no + "_" + entry_type;
-            string query = "select Personal_No, Name, Rank" + col_List + " from " + table_name ;
-            Response.Write(query);
+            //query = "select Personal_No, Name, Rank" + col_List + " from " + table_name ;
+            query = "select Personal_No, Name, Rank" + col_List  + " as Total , (("+ col_List2 +")/" + total_max_marks + ")*100 as Percentage from " + table_name;
+            //Response.Write(query);
             cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
             adpt.Fill(dt);
