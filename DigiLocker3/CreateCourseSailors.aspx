@@ -1,7 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebFormResultUpload.aspx.cs" Inherits="DigiLocker3.WebFormResultUpload" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CreateCourseSailors.aspx.cs" Inherits="DigiLocker3.CreateCourse" %>
 
 <!DOCTYPE html>
-<html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
     <meta charset="utf-8">
@@ -10,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>DigiLocker: A digtal locker for Indian Navy</title>
+    <title>Result Generation System</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +51,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.aspx">DigiLocker</a>
+                <a class="navbar-brand" href="index.aspx">Result Section</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -91,23 +92,16 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.aspx"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        
-                        <li>
-                            <a href="download.aspx"><i class="fa fa-table fa-fw"></i> Download</a>
-                        </li>
-                        <li>
-                            <a href="upload.aspx"><i class="fa fa-edit fa-fw"></i> Upload</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Sailors<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Officers<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
+                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course</a>
                                 </li>
                                 <li>
                                     <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
+                                </li>
+                                <li>
+                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
                                 </li>
                                 <li>
                                     <a href="UploadNominalRollSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Trainees</a>
@@ -125,6 +119,35 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        <li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Sailors<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course</a>
+                                </li>
+                                <li>
+                                    <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
+                                </li>
+                                <li>
+                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
+                                </li>
+                                <li>
+                                    <a href="UploadNominalRollSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Trainees</a>
+                                </li>
+                                <li>
+                                    <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Upload Marks</a>
+                                </li>
+                                <li>
+                                    <a href="ViewResultSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
+                                </li>
+                                <li>
+                                    <a href="ViewIndividualSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Individual</a>
+                                </li>
+                                
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                         
                         
                     </ul>
                 </div>
@@ -135,7 +158,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Upload</h1>
+                    <h1 class="page-header">Create Course</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -155,62 +178,30 @@
                                         
                                         <div class="form-group">
                                             <div class ="form-row">
-                                                <div class="col-md-2">
+                                                <%--<div class="col-md-4">
                                                     <label>Select Course Type</label>
-                                                    <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlCourseTypeIndexChanged">
-                                                
-                                                
+                                                    <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseType" runat="server" AutoPostBack = "true" >
+                                                        <asp:ListItem>Officers</asp:ListItem>
+                                                        <asp:ListItem>Sailors</asp:ListItem>
                                                     </asp:DropDownList>
-                                                </div>
+                                                </div>--%>
 
                                                 <div class="col-md-4">
-                                                    <label>Select Course Number</label>
-                                                    <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseNo" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlCourseNoIndexChanged">
-                                                
-                                                
-                                                    </asp:DropDownList>
+                                                    <label>Enter Course Name</label>
+                                                    <asp:TextBox runat="server" CssClass="form-control" id="txtCourseName" type="text" aria-describedby="nameHelp" placeholder="Course Name" />
                                                 </div>
-                                        
-                                        
-                                                 <div class="col-md-2">
-                                                    <label>Select Term</label>
-                                                    <asp:DropDownList class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlTermIndexChanged">
-                                                        <asp:ListItem>A1</asp:ListItem>
-                                                        <asp:ListItem>A2</asp:ListItem>
-                                                        <asp:ListItem>B1</asp:ListItem>
-                                                        <asp:ListItem>B2</asp:ListItem>
-                                                        <asp:ListItem>C</asp:ListItem>
-                                                        <asp:ListItem>D1</asp:ListItem>
-                                                        <asp:ListItem>D2</asp:ListItem>
-                                                        <asp:ListItem>D3</asp:ListItem>
-                                                        <asp:ListItem>E</asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label>Select Entry Type</label>
-                                                    <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlEntryTypeIndexChanged">
-                                                   </asp:DropDownList>
-                                               </div>
                                             </div>
                                         </div>
                                         <br />
                                         <div class="form-group">
                                             <div class ="form-row">
                                                 <div class="col-md-4">
-                                                    <label>Select Subject</label>
-                                                    <asp:DropDownList class="form-control" style = "width:auto" ID="ddlSubject" runat="server" AutoPostBack = "true">
-                                                    </asp:DropDownList>
+                                                    <label>Entry Type Excel File</label>
+                                                    <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />                                                
                                                 </div>
                                                </div>
-                                         </div>
-                                                                             
-                                        
-                                        
-                                        <div class="form-group">
-                                            <label>Marks Excel File</label>
-                                            <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />
-                                        </div>
-                                        
+                                            </div>
+                                         
                                         <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />
                                         
                                         <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
@@ -218,25 +209,15 @@
                                             
                                     
                                     <div class="form-group" style="height:auto; max-height:500px; width:100%; overflow:auto;">
-                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" OnRowDataBound = "OnRowDataBound" AutoGenerateColumns="False">
-                                          <columns>
-
-                                                <asp:BoundField HeaderText="Entry" DataField="Entry" />
-                                                <asp:BoundField HeaderText="Personal_No." DataField="Personal_No" />
-                                                <asp:BoundField HeaderText="Name" DataField="Name" />
-                                              <asp:BoundField HeaderText="Rank" DataField="Rank" />
-                                              <asp:TemplateField HeaderText="Marks">  
-                            <ItemTemplate>  
-                                <asp:TextBox ID="TextBox1" runat="server" Text=' '></asp:TextBox>  
-                                </ItemTemplate>
-                                                  </asp:TemplateField>
-                                          </columns>  
+                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" >
+                                            
                                         </asp:GridView>
                                     </div>
                                         <asp:Button runat="server" id="ConfirmButton" class="btn btn-default" text="Confirm" onclick="ConfirmButton_Click" visible="False"  EnableViewState="false" />
+                                        
                                         </form>
                                 </div>
-                               
+                              </div> 
                             </div>
                             <!-- /.row (nested) -->
                         </div>
@@ -267,6 +248,4 @@
 
 
 </body>
-
 </html>
-
