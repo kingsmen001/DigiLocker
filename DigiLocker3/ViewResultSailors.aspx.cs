@@ -92,7 +92,7 @@ namespace DigiLocker3
             entry_type = entry_type.Replace(" ", "_");
             string table_name = course_type + "_" + entry_type + "_SUBJECT";
             con.Open();
-            SqlCommand cmd = new SqlCommand("select Subject_code from " + table_name + " where Term = '" + term + "'", con);
+            SqlCommand cmd = new SqlCommand("select Subject_Name from " + table_name + " where Term = '" + term + "'", con);
             SqlDataReader dr = cmd.ExecuteReader();
             string subject_code;
             List<string> column_List = new List<string>();

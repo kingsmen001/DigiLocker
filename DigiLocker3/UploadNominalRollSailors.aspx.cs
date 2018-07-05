@@ -42,7 +42,7 @@ namespace DigiLocker3
                 ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseNo.DataBind();
 
-                name = ddlCourseType.Items[0].Value + "_COURSE_TYPE";
+                name = ddlCourseType.Items[0].Value.Replace(" ","_") + "_COURSE_TYPE";
                 com = new SqlCommand("select * from " + name, con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
@@ -118,19 +118,20 @@ namespace DigiLocker3
             con.Open();
             int i = 0;
             string course_type = ddlCourseType.SelectedValue;
+            course_type = course_type.Replace(" ","_");
             string course_no = ddlCourseNo.SelectedValue;
             string entry_type = ddlEntryType.SelectedValue;
             entry_type = entry_type.Replace(" ", "_");
             string table_name = course_type + "_" + course_no + "_" + entry_type;
             Response.Write(course_type + "_" + entry_type + "_SUBJECT");
-            SqlCommand com = new SqlCommand("select Subject_Code, Term from " + course_type +"_" + entry_type + "_SUBJECT", con);
+            SqlCommand com = new SqlCommand("select Subject_Name, Term from " + course_type +"_" + entry_type + "_SUBJECT", con);
             SqlDataReader dr = com.ExecuteReader();
             List<string> column_List = new List<string>();
             
             string col_name;
             while (dr.Read())
             { 
-                 col_name = dr.GetValue(1).ToString() +"_"+ dr.GetValue(0).ToString();
+                 col_name = dr.GetValue(0).ToString().Replace(" ","_");
                 Response.Write(col_name + i);
                 i++;
                 
@@ -152,7 +153,7 @@ namespace DigiLocker3
 
             foreach (GridViewRow g1 in GridView1.Rows)
             {
-               
+              
                 cmd = new SqlCommand("insert into "+ table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                cmd.ExecuteNonQuery();
                 i++;

@@ -91,28 +91,43 @@ namespace DigiLocker3
         protected void ConfirmButton_Click(object sender, EventArgs e)
         {
             con.Open();
-            string courseTypeName = txtCourseName.Text;
-            SqlCommand cmd = new SqlCommand("insert into SAILOR_COURSE_TYPES (TYPE_NAME) values ('" + courseTypeName + "')", con);
+            string courseTypeName = txtCourseName.Text.ToUpper();
+            SqlCommand cmd = new SqlCommand("insert into SAILOR_COURSE_TYPE (TYPE_NAME) values ('" + courseTypeName + "')", con);
             cmd.ExecuteNonQuery();
-            
+            courseTypeName = courseTypeName.Replace(" ","_");
+            string table_name = courseTypeName + "_ENTRY_TYPE";
+            cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( TYPE_NAME VARCHAR(50), TERMS_NO int, TERM_LABEL varchar(50)  );", con);
+            cmd.ExecuteNonQuery();  
+            string termLabel = "";
+            string typename = "";
             int i = 0;
             foreach (GridViewRow g1 in GridView1.Rows)
-                {
+            {
 
                     i++;
-                    cmd = new SqlCommand("insert into " + table_name + "(Subject_Name, Max_Marks, Subject_Code, Term) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + j + "','" + ddlTerm.SelectedValue + "')", con);
-                    cmd.ExecuteNonQuery();
-
+                termLabel = g1.Cells[2].Text;
+                termLabel = termLabel.Replace(",", "_");
+                string query = "insert into " + table_name + " (TYPE_NAME, TERMS_NO, TERM_LABEL) values ( '" + g1.Cells[0].Text + "' , " + g1.Cells[1].Text + " , '" + termLabel + "' )";
+                cmd = new SqlCommand(query, con);
+                cmd.ExecuteNonQuery();
+                typename = g1.Cells[0].Text;
+                typename = typename.Replace(" ", "_");
+                table_name = courseTypeName + "_" + typename + "_SUBJECTS";
+                cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( SUBJECT_NAME VARCHAR(50), MAX_MARKS int, TERM varchar(10)  );", con);
+                cmd.ExecuteNonQuery();
+                Response.Write(query+ "       ");
 
                 }
-            }
-            entry_list.Clear();
             con.Close();
+
+            }
+            
+           
 
             //string script = "alert(\" " + i + " Trainees Added to " + course_type + entry_type + " \");";
             //ScriptManager.RegisterStartupScript(this, GetType(),
             //                      "ServerControlScript", script, true);
-        }
+        
 
     }
 }

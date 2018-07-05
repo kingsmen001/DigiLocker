@@ -41,7 +41,18 @@ namespace DigiLocker3
                 ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseNo.DataBind();
 
-                string term = ddlTerm.SelectedValue;
+                string table_name = name.Replace(" ", "_") + "_ENTRY_TYPE";
+                string term_Label = "";
+                com = new SqlCommand("select TOP 1 TERM_LABEL from " + table_name + " ORDER BY len(TERM_LABEL) DESC", con); // table name 
+                using (SqlDataReader dr = com.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        term_Label = dr[0].ToString();
+                    }
+                }
+                ddlTerm.DataSource = term_Label.Split('_');
+                ddlTerm.DataBind();
 
                 name = ddlCourseType.Items[0].Value + "_COURSE_TYPE";
                 com = new SqlCommand("select * from " + name, con); // table name 
@@ -52,6 +63,8 @@ namespace DigiLocker3
                 ddlEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
                 ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlEntryType.DataBind();
+
+                string term = "A1";
 
                 entry_type = ddlEntryType.SelectedValue;
                 entry_type = entry_type.Replace(" ", "_");

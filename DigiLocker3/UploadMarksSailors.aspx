@@ -191,15 +191,7 @@
                                         <div class="form-group">
                                             <label>Select Term</label>
                                             <asp:DropDownList class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlTermIndexChanged">
-                                                <asp:ListItem>A1</asp:ListItem>
-                                                <asp:ListItem>A2</asp:ListItem>
-                                                <asp:ListItem>B1</asp:ListItem>
-                                                <asp:ListItem>B2</asp:ListItem>
-                                                <asp:ListItem>C</asp:ListItem>
-                                                <asp:ListItem>D1</asp:ListItem>
-                                                <asp:ListItem>D2</asp:ListItem>
-                                                <asp:ListItem>D3</asp:ListItem>
-                                                <asp:ListItem>E</asp:ListItem>
+                                                
                                             </asp:DropDownList>
                                             </div>
 

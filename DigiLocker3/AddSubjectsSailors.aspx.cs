@@ -17,62 +17,57 @@ namespace DigiLocker3
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack)
+            if (!this.IsPostBack)
             {
-                //reset();
-                Response.Write("Refreshed");
-            }
-            //reset();
-            Response.Write("Refreshed");
+                con.Open();
+                        
+                SqlCommand com = new SqlCommand("select * from SAILOR_COURSE_TYPE", con); // table name 
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                DataSet ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlCourseType.DataBind();
 
-            con.Open();
 
-            SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
-            SqlDataAdapter da = new SqlDataAdapter(com);
-            DataSet ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-            ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
-            ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlCourseType.DataBind();
 
-            
+                string name = ddlCourseType.Items[0].Value + "_ENTRY_TYPE";
+                com = new SqlCommand("select * from " + name, con); // table name 
+                da = new SqlDataAdapter(com);
+                ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                lbEntryType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                lbEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                lbEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                lbEntryType.DataBind();
 
-            string name = ddlCourseType.Items[0].Value + "_COURSE_TYPE";
-            com = new SqlCommand("select * from " + name, con); // table name 
-            da = new SqlDataAdapter(com);
-            ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            lbEntryType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-            lbEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
-            lbEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            lbEntryType.DataBind();
-
-            com = new SqlCommand("select *from MEAT_COURSE_TYPE", con);
-            SqlDataReader dr = com.ExecuteReader();
-            List<string> typeList = new List<string>();
-            SqlCommand cmd;
-            string table_name;
-            while (dr.Read())
-            {
-                name = dr.GetValue(0).ToString();
-                name = name.Replace(" ", "_");
-                table_name = "MEAT_" + name + "_SUBJECT";
-                typeList.Add(table_name);
-                
-                            
-            }
-
-            dr.Close();
-            foreach(string table_nam in typeList)
+                com = new SqlCommand("select *from MEAT_ENTRY_TYPE", con);
+                SqlDataReader dr = com.ExecuteReader();
+                List<string> typeList = new List<string>();
+                SqlCommand cmd;
+                string table_name;
+                while (dr.Read())
                 {
-                //cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_nam + "') CREATE TABLE " + table_nam + "(Subject_Name varchar(10), Max_Marks int);", con);
-                //cmd = new SqlCommand("Alter Table " + table_nam +" Add Subject_Code varchar(10)", con);
-                //cmd.ExecuteNonQuery();
-                //cmd = new SqlCommand("Alter Table " + table_nam + " Add Term varchar(5)", con);
-                //cmd.ExecuteNonQuery();
+                    name = dr.GetValue(0).ToString();
+                    name = name.Replace(" ", "_");
+                    table_name = "MEAT_" + name + "_SUBJECT";
+                    typeList.Add(table_name);
+
+
+                }
+
+                dr.Close();
+                foreach (string table_nam in typeList)
+                {
+                    //cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_nam + "') CREATE TABLE " + table_nam + "(Subject_Name varchar(10), Max_Marks int);", con);
+                    //cmd = new SqlCommand("Alter Table " + table_nam +" Add Subject_Code varchar(10)", con);
+                    //cmd.ExecuteNonQuery();
+                    //cmd = new SqlCommand("Alter Table " + table_nam + " Add Term varchar(5)", con);
+                    //cmd.ExecuteNonQuery();
+                }
+                con.Close();
             }
-            con.Close();
         }
 
         protected void SubmitButton_Click(object sender, EventArgs e)
@@ -134,35 +129,94 @@ namespace DigiLocker3
         protected void ConfirmButton_Click(object sender, EventArgs e)
         {
             con.Open();
-            int i = 0;
+            //int i = 0;
             string course_type = ddlCourseType.SelectedValue;
+            course_type = course_type.Replace(" ","_");
             List<string> entry_list = new List<string>();
-            foreach (ListItem item in lbEntryType.Items)
+            
+
+            for (int i = 0; i < lbEntryType.Items.Count; i++)
             {
-                entry_list.Add(item.Text);
-            }
-            foreach (string type in entry_list)
-            {
-                string entry_type = type;
-                entry_type = entry_type.Replace(" ", "_");
-                string table_name = course_type + "_" + entry_type + "_SUBJECT";
-                int j = 100;
-                foreach (GridViewRow g1 in GridView1.Rows)
+                if (lbEntryType.Items[i].Selected)
                 {
+                    string entry_type = lbEntryType.Items[i].Text;
+                    string table_name = course_type + "_" + entry_type + "_" + "SUBJECTS";
+                    foreach (GridViewRow g1 in GridView1.Rows)
+                    {
 
-                    j++;
-                    SqlCommand cmd = new SqlCommand("insert into " + table_name + "(Subject_Name, Max_Marks, Subject_Code, Term) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + j + "','" + ddlTerm.SelectedValue + "')", con);
-                    cmd.ExecuteNonQuery();
+                        SqlCommand cmd = new SqlCommand("insert into " + table_name + "(Subject_Name, Max_Marks, Term) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + ddlTerm.SelectedValue + "')", con);
+                        cmd.ExecuteNonQuery();
 
 
+                    }
+                    //Response.Write(selectedItem + "   ");
+                    //insert command
                 }
             }
-            entry_list.Clear();
+
+            
             con.Close();
 
             //string script = "alert(\" " + i + " Trainees Added to " + course_type + entry_type + " \");";
             //ScriptManager.RegisterStartupScript(this, GetType(),
             //                      "ServerControlScript", script, true);
+        }
+
+        protected void lblEntryTypeIndexChanged(object sender, EventArgs e)
+        {
+            // MessageBox.Show(lbEntryType.SelectedItem.ToString());
+           // Response.Write(lbEntryType.SelectedValue);
+           // string script = "alert(\" " + " Trainees Added to " + lbEntryType.SelectedItem.ToString() + " \");";
+           //ScriptManager.RegisterStartupScript(this, GetType(),
+           //                       "ServerControlScript", script, true);
+            con.Open();
+
+
+
+            string term_Label = "______________";
+            string table_name = ddlCourseType.SelectedValue.Replace(" ","_") + "_ENTRY_TYPE";
+            for (int i = 0; i < lbEntryType.Items.Count; i++)
+            {
+                if (lbEntryType.Items[i].Selected)
+                {
+                    string new_term_Label = " ";
+                    string entry_name = lbEntryType.Items[i].Text;
+                    SqlCommand com = new SqlCommand("select TERM_LABEL from " + table_name + " where TYPE_NAME = '" + entry_name + "'", con); // table name 
+                    using (SqlDataReader dr = com.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                           new_term_Label = dr[0].ToString();
+                        }
+                    }
+                    if((new_term_Label.Split('_').Length - 1)<((term_Label.Split('_').Length - 1)))
+                    {
+                        term_Label = new_term_Label;
+                    }
+                    //Response.Write(selectedItem + "   ");
+                    //insert command
+                }
+            }
+            //string entry_name = lbEntryType.SelectedValue;
+            /*SqlCommand com = new SqlCommand("select TERM_LABEL from " + table_name + " where TYPE_NAME = '" + entry_name +"'"   , con); // table name 
+            using (SqlDataReader dr = com.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    term_Label = dr[0].ToString();
+                }
+            }*/
+            ddlTerm.DataSource = term_Label.Split('_');
+            ddlTerm.DataBind();
+            //DataSet ds = new DataSet();
+            //da.Fill(ds);  // fill dataset
+            //lbEntryType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+            //lbEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+            //lbEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+            //lbEntryType.DataBind();
+
+
+            con.Close();
         }
 
         protected void ResetButton_Click(object sender, EventArgs e)
