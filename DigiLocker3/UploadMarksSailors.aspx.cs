@@ -30,9 +30,9 @@ namespace DigiLocker3
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
 
-                string name = ddlCourseType.Items[0].Value;
+                string course_name = ddlCourseType.Items[0].Value;
                 string entry_type;
-                com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='" + name + "'", con); // table name 
+                com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='" + course_name + "'", con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -41,21 +41,25 @@ namespace DigiLocker3
                 ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseNo.DataBind();
 
-                string table_name = name.Replace(" ", "_") + "_ENTRY_TYPE";
-                string term_Label = "";
-                com = new SqlCommand("select TOP 1 TERM_LABEL from " + table_name + " ORDER BY len(TERM_LABEL) DESC", con); // table name 
+                string table_name = course_name.Replace(" ", "_") + "_ENTRY_TYPE";
+                List<string> termLabel = new List<string>();
+                //string term_Label = "";
+                com = new SqlCommand("select TERM_LABEL from " + table_name , con); // table name 
                 using (SqlDataReader dr = com.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        term_Label = dr[0].ToString();
+                        List<string> term_Label = dr[0].ToString().Split('_').ToList();
+                        foreach (string lbl in term_Label) {
+                            termLabel.Add(lbl);
+                                }
                     }
                 }
-                ddlTerm.DataSource = term_Label.Split('_');
+                ddlTerm.DataSource = termLabel.Distinct().ToList();
                 ddlTerm.DataBind();
 
-                name = ddlCourseType.Items[0].Value + "_COURSE_TYPE";
-                com = new SqlCommand("select * from " + name, con); // table name 
+                table_name = ddlCourseType.Items[0].Value.Replace(" ","_") + "_COURSE_TYPE";
+                com = new SqlCommand("select * from " + table_name, con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -64,12 +68,24 @@ namespace DigiLocker3
                 ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlEntryType.DataBind();
 
-                string term = "A1";
-
-                entry_type = ddlEntryType.SelectedValue;
-                entry_type = entry_type.Replace(" ", "_");
-                name = ddlCourseType.SelectedValue + "_" + entry_type + "_SUBJECT";
-                com = new SqlCommand("select Subject_Name from " + name + " where Term ='" + term + "'", con); // table name 
+                string term = ddlTerm.SelectedValue;
+                string query = "";
+                string type_name = "";
+                com = new SqlCommand("select TYPE_NAME from " + table_name, con); // table name 
+                using (SqlDataReader dr = com.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        type_name = dr[0].ToString().Replace(" ","_");
+                        table_name = course_name + "_" + type_name + "_" + "SUBJECTS";
+                        query = query + "Select Subject_Name from " + table_name + " where term = '" + term + "' UNION ";
+                    }
+                }
+                query = query.Substring(0, query.LastIndexOf("UNION"));
+                //entry_type = ddlEntryType.SelectedValue;
+                //entry_type = entry_type.Replace(" ", "_");
+                //name = ddlCourseType.SelectedValue + "_" + entry_type + "_SUBJECT";
+                com = new SqlCommand(query, con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset

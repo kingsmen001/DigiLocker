@@ -196,8 +196,8 @@
                                             </div>
 
                                         <div class="form-group">
-                                            <label>Select Entry Type</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlEntryTypeIndexChanged">
+                                            <%--<label>Select Entry Type</label>--%>
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlEntryTypeIndexChanged" EnableViewState ="False" Visible = "False">
                                                 
                                                 
                                             </asp:DropDownList>
