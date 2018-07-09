@@ -156,7 +156,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Upload</h1>
+                    <h1 class="page-header">Add Course Instance</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -165,7 +165,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Enter details here
+                            Enter Details here
                         </div>
                         <div class="panel-body">
                             <div class="row" style = "width:50%">
@@ -186,24 +186,29 @@
                                 
 							</div>
 						</div>--%>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" style = "width:100%">
                                     <form id="form1" runat="server" >
                                         <div class="form-group">
-                                            <label>Course Type</label>
-                                            <%--<select class="form-control" id="DropDownList1" name="DropDownList1" runat="server">
-                                                <option>Officers</option>
-                                                <option>Sailors</option>
-                                                
-                                            </select>--%>
-                                            <asp:DropDownList class="form-control" ID="ddlCourseType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "OnSelectedIndexChanged">
-                                                
-                                                
-                                            </asp:DropDownList>
-
-                                            </div>
-                                        <div class="form-group form-row">
-                                            <label>Course Number</label>
-                                            <asp:TextBox  ID="Course_Number_TextBox" CssClass="form-control" runat="server" ></asp:TextBox>
+                                            <div class ="form-row">
+                                                 <div class="col-md-6">
+                                                    <label>Course Type</label>
+                                                    <asp:DropDownList class="form-control" ID="ddlCourseType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "OnSelectedIndexChanged">
+                                                    </asp:DropDownList>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Existing Courses</label>
+                                                    <asp:DropDownList runat="server" CssClass="form-control" id="DropDownList1" >
+                                                    </asp:DropDownList>
+                                                </div>
+                                             </div>
+                                         </div>
+                                        <div class="form-group ">
+                                            <div class ="form-row">
+                                                 <div class="col-md-6">
+                                                    <label>Course Number</label>
+                                                    <asp:TextBox  ID="Course_Number_TextBox" CssClass="form-control" runat="server" ></asp:TextBox>
+                                                 </div>
+                                             </div>
                                           </div>
                                         
                                                                             

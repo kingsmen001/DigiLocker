@@ -19,7 +19,7 @@ namespace DigiLocker3
         protected void Page_Load(object sender, EventArgs e)
         {
             coursename = Request.QueryString["coursename"];
-            
+            string txt = " ";
             if (!this.IsPostBack)
             {
                 con.Open();
@@ -33,7 +33,7 @@ namespace DigiLocker3
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
 
-                if (!coursename.Equals(" "))
+                if (Request.QueryString.Count == 0)
                 {
                     ddlCourseType.SelectedValue = coursename;
                 }
@@ -142,6 +142,7 @@ namespace DigiLocker3
             }
 
             con.Close();
+            Response.Redirect("CreateCourseSailors.aspx?coursename=" + coursename);
 
             //string script = "alert(\" " + i + " Trainees Added to " + course_type + course_no + " " + entry_type + " \");";
             //ScriptManager.RegisterStartupScript(this, GetType(),

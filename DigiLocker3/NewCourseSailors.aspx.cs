@@ -18,9 +18,21 @@ namespace DigiLocker3
         {
             con.Open();
 
-            SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
+            SqlCommand com = new SqlCommand("select CONCAT(COURSE_NAME, ' ', COURSE_NO) AS TYPE_NAME from SAILOR_COURSES", con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
+            da.Fill(ds);  // fill dataset
+            DropDownList1.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+            DropDownList1.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+            DropDownList1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+            DropDownList1.DataBind();
+            con.Close();
+
+            con.Open();
+
+            com = new SqlCommand("select * from SAILOR_COURSE_TYPE", con); // table name 
+            da = new SqlDataAdapter(com);
+            ds = new DataSet();
             da.Fill(ds);  // fill dataset
             ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
             ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 

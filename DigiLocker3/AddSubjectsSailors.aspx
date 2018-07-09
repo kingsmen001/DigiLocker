@@ -156,7 +156,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Upload</h1>
+                    <h1 class="page-header">Add Subjects</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -165,7 +165,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default" >
                         <div class="panel-heading">
-                            Enter details here
+                            Enter Subject details here
                         </div>
                         <div class="panel-body">
                             <div class="row" style = "width:100%">
@@ -216,7 +216,7 @@
                                         
                                         
                                         <div class="form-group">
-                                            <label>Nominal Roll Excel File</label>
+                                            <label>Subject Detail Excel File</label>
                                             <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />
                                         </div>
                                         

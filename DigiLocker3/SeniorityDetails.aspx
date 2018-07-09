@@ -161,7 +161,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Upload</h1>
+                    <h1 class="page-header">Add Seniority</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -170,7 +170,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default" >
                         <div class="panel-heading">
-                            Enter Seniority details here
+                            Enter Seniority Criteria details here
                         </div>
                         <div class="panel-body">
                             <div class="row" style = "width:100%">
@@ -179,7 +179,7 @@
                                 <div class="col-lg-6" style = "width:100%">
                                     <form id="form1" runat="server" >
 
-                                       div class="form-group">
+                                       <div class="form-group">
                                             <label>Select Course Type</label>
                                             <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlCourseTypeIndexChanged">
                                                 
