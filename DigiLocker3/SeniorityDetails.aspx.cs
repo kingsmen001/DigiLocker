@@ -12,17 +12,40 @@ using System.Web.UI.WebControls;
 
 namespace DigiLocker3
 {
-    public partial class CreateCourse : System.Web.UI.Page
+    public partial class SeniorityDetails : System.Web.UI.Page
     {
+        string coursename = "";
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            coursename = Request.QueryString["coursename"];
+            if (!this.IsPostBack)
+            {
+                con.Open();
+                string table_name = coursename.Replace(" ", "_") + "_ENTRY_TYPE";
+                List<string> termLabel = new List<string>();
+                //string term_Label = "";
+                SqlCommand com = new SqlCommand("select TERM_LABEL from " + table_name, con); // table name 
+                using (SqlDataReader dr = com.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        List<string> term_Label = dr[0].ToString().Split('_').ToList();
+                        foreach (string lbl in term_Label)
+                        {
+                            termLabel.Add(lbl);
+                        }
+                    }
+                }
+                ddlTerm.DataSource = termLabel.Distinct().ToList();
+                ddlTerm.DataBind();
+                con.Close();
+            }
         }
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
+
             if (FileUpload1.HasFile)
             {
                 string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
@@ -77,6 +100,36 @@ namespace DigiLocker3
             //Response.Write("Hello World submit " + GridView1.Rows.Count);
         }
 
+        protected void ConfirmButton_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            //int i = 0;
+            //string course_type = ddlCourseType.SelectedValue;
+            //course_type = course_type.Replace(" ", "_");
+            //string table_name = course_type + "_SENIORITY";
+            //SqlCommand cmd;
+            //cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(lower_lmt decimal(2,2), upper_lmt decimal(2,2), seniority decimal(2,2));", con);
+            //cmd.ExecuteNonQuery();
+            //string query;
+
+            //foreach (GridViewRow g1 in GridView1.Rows)
+            //{
+
+            //    cmd = new SqlCommand("insert into " + table_name + "(lower_lmt, upper_lmt, seniority) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
+            //    cmd = new SqlCommand(query, con);
+            //    //string Marks = (g1.FindControl("txtMarks") as TextBox).Text;
+            //    //Response.Write(Marks+"      ");
+            //    cmd.ExecuteNonQuery();
+
+            //    i++;
+            //}
+            con.Close();
+
+            //string script = "alert(\" " + i + " Trainees Added to " + course_type + course_no + " " + entry_type + " \");";
+            //ScriptManager.RegisterStartupScript(this, GetType(),
+            //                      "ServerControlScript", script, true);
+        }
+
         protected void ResetButton_Click(object sender, EventArgs e)
         {
             reset();
@@ -88,50 +141,10 @@ namespace DigiLocker3
             GridView1.DataBind();
         }
 
-        protected void ConfirmButton_Click(object sender, EventArgs e)
+        protected void OnRowDataBound(object sender, GridViewRowEventArgs e)
         {
-            //con.Open();
-            string courseTypeName = txtCourseName.Text.ToUpper();
-            //SqlCommand cmd = new SqlCommand("insert into SAILOR_COURSE_TYPE (TYPE_NAME) values ('" + courseTypeName + "')", con);
-            //cmd.ExecuteNonQuery();
-            courseTypeName = courseTypeName.Replace(" ","_");
-            //string table_name = courseTypeName + "_ENTRY_TYPE";
-            //cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( TYPE_NAME VARCHAR(50), TERMS_NO int, TERM_LABEL varchar(50)  );", con);
-            //cmd.ExecuteNonQuery();  
-            //string termLabel = "";
-            //string typename = "";
-            //int i = 0;
-            //foreach (GridViewRow g1 in GridView1.Rows)
-            //{
 
-            //        i++;
-            //    termLabel = g1.Cells[2].Text;
-            //    termLabel = termLabel.Replace(",", "_");
-            //    string query = "insert into " + table_name + " (TYPE_NAME, TERMS_NO, TERM_LABEL) values ( '" + g1.Cells[0].Text + "' , " + g1.Cells[1].Text + " , '" + termLabel + "' )";
-            //    cmd = new SqlCommand(query, con);
-            //    cmd.ExecuteNonQuery();
-            //    typename = g1.Cells[0].Text;
-            //    typename = typename.Replace(" ", "_");
-            //    table_name = courseTypeName + "_" + typename + "_SUBJECTS";
-            //    cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( SUBJECT_NAME VARCHAR(50), MAX_MARKS int, TERM varchar(10)  );", con);
-            //    cmd.ExecuteNonQuery();
-            //    Response.Write(query+ "       ");
-
-            //    }
-            //con.Close();
-            if( CheckBox1.Checked)
-            {
-                Response.Redirect("SeniorityDetails.aspx?coursename=" + courseTypeName);
-            }
-
-            }
-            
-           
-
-            //string script = "alert(\" " + i + " Trainees Added to " + course_type + entry_type + " \");";
-            //ScriptManager.RegisterStartupScript(this, GetType(),
-            //                      "ServerControlScript", script, true);
-        
+        }
 
     }
 }

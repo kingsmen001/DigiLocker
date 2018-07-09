@@ -41,9 +41,9 @@ namespace DigiLocker3
                 ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseNo.DataBind();
 
-                string term = ddlTerm.SelectedValue;
+                
 
-                name = ddlCourseType.Items[0].Value + "_COURSE_TYPE";
+                name = ddlCourseType.Items[0].Value.Replace(" ","_") + "_ENTRY_TYPE";
                 com = new SqlCommand("select * from " + name, con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
@@ -56,6 +56,7 @@ namespace DigiLocker3
                 entry_type = ddlEntryType.SelectedValue;
                 entry_type = entry_type.Replace(" ", "_");
                 name = ddlCourseType.SelectedValue + "_" + entry_type + "_SUBJECT";
+                string term = "";
                 com = new SqlCommand("select Subject_Name from " + name + " where Term ='" + term + "'", con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();

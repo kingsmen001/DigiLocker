@@ -197,14 +197,24 @@
                                             <div class ="form-row">
                                                 <div class="col-md-4">
                                                     <label>Entry Type Excel File</label>
-                                                    <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />                                                
+                                                    <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server"  />                                                
                                                 </div>
                                                </div>
                                             </div>
-                                         
-                                        <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />
+
+                                        <div class="col-md-4">
+                                                    
+                                                    <asp:CheckBox ID="CheckBox1" runat="server"   />
+                                            <label>Seniority Applicable</label>
+                                                </div>
+                                        <br />
                                         
-                                        <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
+                                                <div class="col-md-4">  
+                                                    <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />
+                                        
+                                                    <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
+                                                    </div>
+                                               
                                         <br /><br />
                                             
                                     

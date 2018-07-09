@@ -46,7 +46,7 @@ namespace DigiLocker3 {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTerm;
+        protected global::System.Web.UI.WebControls.ListBox ddlTerm;
         
         /// <summary>
         /// FileUpload1 control.

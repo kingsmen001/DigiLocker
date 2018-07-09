@@ -144,10 +144,35 @@ namespace DigiLocker3
             string col_List = "";
             foreach (string col_nam in column_List)
             {
-                col_List = col_List + col_nam + " int, ";
+                col_List = col_List + col_nam + " int DEFAULT 0, ";
                 
             }
+            table_name = course_type + "_SENIORITY_DETAILS";
+            com = new SqlCommand("select Term_Label, seniority from " + table_name, con);
+            dr = com.ExecuteReader();
+            string term_label = "";
+            string seniority = "";
+            while (dr.Read())
+            {
+                term_label = dr.GetValue(0).ToString();
+                seniority = dr.GetValue(1).ToString();
+            }
+            if (seniority.Equals("yes"))
+            {
+                foreach (string term in term_label.Split('_'))
+                {
+                    col_List = col_List + term + "_total int DEFAULT 0, " + term + "_percentage decimal(2,2) DEFAULT 0, " + term + "_seniority_gained decimal(2,2) DEFAULT 0, " + term + "_seniority_lost decimal(2,2) DEFAULT 0, " + term + "_seniority_total decimal(2,2) DEFAULT 0 ";
+                }
+            }
+            else
+            {
+                foreach (string term in term_label.Split('_'))
+                {
+                    col_List = col_List + term + "_total int DEFAULT 0, " + term + "_percentage decimal(2,2) DEFAULT 0 ";
+                }
+            }
             Response.Write(col_List);
+            table_name = course_type + "_" + course_no + "_" + entry_type; 
             SqlCommand cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10), Name varchar(50), Rank varchar(20), "+col_List+");", con);
             cmd.ExecuteNonQuery();
 

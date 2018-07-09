@@ -85,14 +85,14 @@ namespace DigiLocker3
                 //entry_type = ddlEntryType.SelectedValue;
                 //entry_type = entry_type.Replace(" ", "_");
                 //name = ddlCourseType.SelectedValue + "_" + entry_type + "_SUBJECT";
-                com = new SqlCommand(query, con); // table name 
-                da = new SqlDataAdapter(com);
-                ds = new DataSet();
-                da.Fill(ds);  // fill dataset
-                ddlSubject.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
-                ddlSubject.DataValueField = ds.Tables[0].Columns["Subject_Name"].ToString();             // to retrive specific  textfield name 
-                ddlSubject.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-                ddlSubject.DataBind();
+                //com = new SqlCommand(query, con); // table name 
+                //da = new SqlDataAdapter(com);
+                //ds = new DataSet();
+                //da.Fill(ds);  // fill dataset
+                //ddlSubject.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+                //ddlSubject.DataValueField = ds.Tables[0].Columns["Subject_Name"].ToString();             // to retrive specific  textfield name 
+                //ddlSubject.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                //ddlSubject.DataBind();
 
 
                 con.Close();
@@ -113,10 +113,9 @@ namespace DigiLocker3
                 case ".xls": //Excel 97-03
                     conString = ConfigurationManager.ConnectionStrings["Excel03ConString"].ConnectionString;
                     break;
-                case ".xlsx": //Excel 07 or higher
-                    conString = ConfigurationManager.ConnectionStrings["Excel07+ConString"].ConnectionString;
+                case ".xlsx": //Excel 07
+                    conString = ConfigurationManager.ConnectionStrings["Excel07ConString"].ConnectionString;
                     break;
-
             }
             conString = string.Format(conString, excelPath, "Yes");
             using (OleDbConnection excel_con = new OleDbConnection(conString))

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddSubjectsSailors.aspx.cs" Inherits="DigiLocker3.AddSubjectsSailors" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddUser.aspx.cs" Inherits="DigiLocker3.AddUser" %>
 
 <!DOCTYPE html>
 
@@ -170,55 +170,43 @@
                         <div class="panel-body">
                             <div class="row" style = "width:100%">
                                 
-			<%--<div class="signin-form profile">
-							<div class="login-form">
-								<form id="form2" runat="server">
-									<input type="email" name="email" placeholder="E-mail" required="">
-                                    <asp:TextBox ID="Doc_Name_TextBox" runat="server" placeholder="Document Name"></asp:TextBox>
-									<input type="password" name="password" placeholder="Password" required="">
-                                    <asp:TextBox ID="Issued_By_TextBox" runat="server" placeholder="Issued By"></asp:TextBox>
-                                    <asp:TextBox ID="Issued_On_TextBox" runat="server" placeholder="Issued On (YYYY-MM-DD)"></asp:TextBox>
-                                    <asp:FileUpload id="FileUploadControl" runat="server" />
-                                    <asp:Button runat="server" id="UploadButton" text="Upload" onclick="UploadButton_Click" />
-									<asp:LinkButton id="myid" runat="server" OnClick="LinkButton_Click" >Click</asp:LinkButton>
-								</form>
-                                
-                                
-							</div>
-						</div>--%>
+			
                                 <div class="col-lg-6" style = "width:100%">
                                     <form id="form1" runat="server" >
                                         
                                         <div class="form-group">
-                                            <label>Select Course Type</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlCourseTypeIndexChanged">
+                                            <label>Enter Name</label>
+                                            <asp:TextBox class="form-control" style = "width:auto" ID="NameTextBox" runat="server" AutoPostBack = "true">
                                                 
                                                 
+                                            </asp:TextBox>
+                                            </div>
+
+                                        <div class="form-group">
+                                            <label>Enter Personal Number</label>
+                                            <asp:TextBox class="form-control" style = "width:auto" ID="NumberTextBox" runat="server" AutoPostBack = "true">
+                                                
+                                                
+                                            </asp:TextBox>
+                                            </div>
+                                        <div class="form-group">
+                                            <label>Enter Password</label>
+                                            <asp:TextBox class="form-control" style = "width:auto" ID="PasswordTextBox" runat="server" AutoPostBack = "true">
+                                                
+                                                
+                                            </asp:TextBox>
+                                            </div>
+                                        <div class="form-group">
+                                            <label>Select Acces Level</label>
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="Accessddl" runat="server" AutoPostBack = "true">
+                                                <asp:ListItem>RMC</asp:ListItem>
+                                                <asp:ListItem>Instructor</asp:ListItem>
+                                                <asp:ListItem>Result Section</asp:ListItem>
+                                                <asp:ListItem>Admin</asp:ListItem>
                                             </asp:DropDownList>
                                             </div>
 
                                         
-                                        <div class="form-group">
-                                            <label>Select Entry Type</label>
-                                            <asp:ListBox class="form-control" style = "width:auto" ID="lbEntryType" runat="server"  SelectionMode="Multiple"  AutoPostBack="True" OnSelectedIndexChanged = "lblEntryTypeIndexChanged">
-                                                
-                                                
-                                            </asp:ListBox>
-                                            </div>
-
-                                        <div class="form-group">
-                                            <label>Select Term</label>
-                                            <asp:ListBox class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" >
-                                                
-                                            </asp:ListBox>
-                                            </div>
-                                                                             
-                                        
-                                        
-                                        <div class="form-group">
-                                            <label>Nominal Roll Excel File</label>
-                                            <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />
-                                        </div>
                                         
                                         <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />
                                         
@@ -226,82 +214,11 @@
                                         <br /><br />
                                             
                                     
-                                    <div class="form-group" style="height:auto; max-height:500px; width:100%; overflow:auto;">
-                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" >
-                                            
-                                        </asp:GridView>
-                                    </div>
-                                        <asp:Button runat="server" id="ConfirmButton" class="btn btn-default" text="Confirm" onclick="ConfirmButton_Click" visible="False"  EnableViewState="false" />
+                                    
                                         </form>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
-                                <%--<div class="col-lg-6">
-                                    <h1>Disabled Form States</h1>
-                                    <form role="form">
-                                        <fieldset disabled>
-                                            <div class="form-group">
-                                                <label for="disabledSelect">Disabled input</label>
-                                                <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input" disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="disabledSelect">Disabled select menu</label>
-                                                <select id="disabledSelect" class="form-control">
-                                                    <option>Disabled select</option>
-                                                </select>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox">Disabled Checkbox
-                                                </label>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Disabled Button</button>
-                                        </fieldset>
-                                    </form>
-                                    <h1>Form Validation States</h1>
-                                    <form role="form">
-                                        <div class="form-group has-success">
-                                            <label class="control-label" for="inputSuccess">Input with success</label>
-                                            <input type="text" class="form-control" id="inputSuccess">
-                                        </div>
-                                        <div class="form-group has-warning">
-                                            <label class="control-label" for="inputWarning">Input with warning</label>
-                                            <input type="text" class="form-control" id="inputWarning">
-                                        </div>
-                                        <div class="form-group has-error">
-                                            <label class="control-label" for="inputError">Input with error</label>
-                                            <input type="text" class="form-control" id="inputError">
-                                        </div>
-                                    </form>
-                                    <h1>Input Groups</h1>
-                                    <form role="form">
-                                        <div class="form-group input-group">
-                                            <span class="input-group-addon">@</span>
-                                            <input type="text" class="form-control" placeholder="Username">
-                                        </div>
-                                        <div class="form-group input-group">
-                                            <input type="text" class="form-control">
-                                            <span class="input-group-addon">.00</span>
-                                        </div>
-                                        <div class="form-group input-group">
-                                            <span class="input-group-addon"><i class="fa fa-eur"></i>
-                                            </span>
-                                            <input type="text" class="form-control" placeholder="Font Awesome Icon">
-                                        </div>
-                                        <div class="form-group input-group">
-                                            <span class="input-group-addon">$</span>
-                                            <input type="text" class="form-control">
-                                            <span class="input-group-addon">.00</span>
-                                        </div>
-                                        <div class="form-group input-group">
-                                            <input type="text" class="form-control">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button"><i class="fa fa-search"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </form>
-                                </div>--%>
-                                <!-- /.col-lg-6 (nested) -->
+                                
                             </div>
                             <!-- /.row (nested) -->
                         </div>
@@ -320,7 +237,7 @@
 
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
-
+    
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -329,6 +246,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
+
 
 </body>
 
