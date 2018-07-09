@@ -1,6 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UploadMarksSailors.aspx.cs" Inherits="DigiLocker3.UploadMarks" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ViewResult1.aspx.cs" Inherits="DigiLocker3.ViewResult1" %>
 
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
@@ -169,8 +170,7 @@
                         <div class="panel-body">
                             <div class="row" style = "width:100%">
                                 
-			
-                                <div class="col-lg-6" style = "width:100%">
+			                    <div class="col-lg-6" style = "width:100%">
                                     <form id="form1" runat="server" >
                                         
                                         <div class="form-group">
@@ -189,37 +189,22 @@
                                             </asp:DropDownList>
                                             </div>
                                         <div class="form-group">
+                                            <label>Select Entry Type</label>
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlEntryTypeIndexChanged">
+                                                
+                                                
+                                            </asp:DropDownList>
+                                            </div>
+                                        <div class="form-group">
                                             <label>Select Term</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlTermIndexChanged">
+                                           <asp:ListBox class="form-control" style = "width:auto" ID="lbTerm" runat="server"  SelectionMode="Multiple"  AutoPostBack="True" >
                                                 
-                                            </asp:DropDownList>
+                                                
+                                            </asp:ListBox>
                                             </div>
-
-                                        <div class="form-group">
-                                            <%--<label>Select Entry Type</label>--%>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlEntryTypeIndexChanged" EnableViewState ="False" Visible = "False">
-                                                
-                                                
-                                            </asp:DropDownList>
-                                            </div>
-                                        <div class="form-group">
-                                            <label>Select Subject</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlSubject" runat="server" AutoPostBack = "true">
-                                                
-                                                
-                                            </asp:DropDownList>
-                                            </div>
-                                                                             
-                                        
-                                        
-                                        <div class="form-group">
-                                            <label>Marks Excel File</label>
-                                            <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />
-                                        </div>
-                                        
+                                                                    
                                         <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />
-                                        
-                                        <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
+                                
                                         <br /><br />
                                             
                                     
@@ -231,8 +216,8 @@
                                         <asp:Button runat="server" id="ConfirmButton" class="btn btn-default" text="Confirm" onclick="ConfirmButton_Click" visible="False"  EnableViewState="false" />
                                         </form>
                                 </div>
+                                
                                 <!-- /.col-lg-6 (nested) -->
-                                6
                             </div>
                             <!-- /.row (nested) -->
                         </div>
@@ -251,7 +236,7 @@
 
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
-    
+
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -260,7 +245,6 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
-
 
 </body>
 

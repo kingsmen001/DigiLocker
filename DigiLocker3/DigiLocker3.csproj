@@ -263,6 +263,7 @@
     <Content Include="Home\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="ManageUsers.aspx" />
     <Content Include="SeniorityDetails.aspx" />
+    <Content Include="ViewResult1.aspx" />
     <Content Include="WebFormResultUpload.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Home\css\about.css" />
@@ -685,6 +686,13 @@
     </Compile>
     <Compile Include="ViewIndividualSailors.aspx.designer.cs">
       <DependentUpon>ViewIndividualSailors.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewResult1.aspx.cs">
+      <DependentUpon>ViewResult1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewResult1.aspx.designer.cs">
+      <DependentUpon>ViewResult1.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewResultSailors.aspx.cs">
       <DependentUpon>ViewResultSailors.aspx</DependentUpon>

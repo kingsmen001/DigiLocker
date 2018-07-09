@@ -18,7 +18,17 @@ namespace DigiLocker3
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            con.Open();
+
+            SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            DataSet ds = new DataSet();
+            da.Fill(ds);  // fill dataset
+            ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+            ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+            ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+            ddlCourseType.DataBind();
+            con.Close();
         }
 
         protected void SubmitButton_Click(object sender, EventArgs e)
@@ -90,48 +100,47 @@ namespace DigiLocker3
 
         protected void ConfirmButton_Click(object sender, EventArgs e)
         {
-            //con.Open();
+            con.Open();
             string courseTypeName = txtCourseName.Text.ToUpper();
-            //SqlCommand cmd = new SqlCommand("insert into SAILOR_COURSE_TYPE (TYPE_NAME) values ('" + courseTypeName + "')", con);
-            //cmd.ExecuteNonQuery();
+            string query = "";
+            int seniority = 0;
+            if (CheckBox1.Checked)
+            {
+                seniority = 1;
+            }
+            SqlCommand cmd = new SqlCommand("insert into SAILOR_COURSE_TYPE (TYPE_NAME, SENIORITY) values ('" + courseTypeName + "', " + seniority +")", con);
+            cmd.ExecuteNonQuery();
             courseTypeName = courseTypeName.Replace(" ","_");
-            //string table_name = courseTypeName + "_ENTRY_TYPE";
-            //cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( TYPE_NAME VARCHAR(50), TERMS_NO int, TERM_LABEL varchar(50)  );", con);
-            //cmd.ExecuteNonQuery();  
-            //string termLabel = "";
-            //string typename = "";
-            //int i = 0;
-            //foreach (GridViewRow g1 in GridView1.Rows)
-            //{
+            string table_name = courseTypeName + "_ENTRY_TYPE";
+            cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( TYPE_NAME VARCHAR(50) PRIMARY KEY, TERMS_NO int, TERM_LABEL varchar(50)  );", con);
+            cmd.ExecuteNonQuery();  
+            string termLabel = "";
+            string typename = "";
+            int i = 0;
+            foreach (GridViewRow g1 in GridView1.Rows)
+            {
 
-            //        i++;
-            //    termLabel = g1.Cells[2].Text;
-            //    termLabel = termLabel.Replace(",", "_");
-            //    string query = "insert into " + table_name + " (TYPE_NAME, TERMS_NO, TERM_LABEL) values ( '" + g1.Cells[0].Text + "' , " + g1.Cells[1].Text + " , '" + termLabel + "' )";
-            //    cmd = new SqlCommand(query, con);
-            //    cmd.ExecuteNonQuery();
-            //    typename = g1.Cells[0].Text;
-            //    typename = typename.Replace(" ", "_");
-            //    table_name = courseTypeName + "_" + typename + "_SUBJECTS";
-            //    cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( SUBJECT_NAME VARCHAR(50), MAX_MARKS int, TERM varchar(10)  );", con);
-            //    cmd.ExecuteNonQuery();
-            //    Response.Write(query+ "       ");
+                i++;
+                termLabel = g1.Cells[2].Text;
+                termLabel = termLabel.Replace(",", "_");
+                table_name = courseTypeName + "_ENTRY_TYPE";
+                query = "insert into " + table_name + " (TYPE_NAME, TERMS_NO, TERM_LABEL) values ( '" + g1.Cells[0].Text + "' , " + g1.Cells[1].Text + " , '" + termLabel + "' )";
+                cmd = new SqlCommand(query, con);
+                cmd.ExecuteNonQuery();
+                typename = g1.Cells[0].Text;
+                typename = typename.Replace(" ", "_");
+                table_name = courseTypeName + "_" + typename + "_SUBJECTS";
+                cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( SUBJECT_NAME VARCHAR(50) PRIMARY KEY, MAX_MARKS int, TERM varchar(10)  );", con);
+                cmd.ExecuteNonQuery();
+                Response.Write(query + "       ");
 
-            //    }
-            //con.Close();
-            if( CheckBox1.Checked)
+            }
+            con.Close();
+            if ( CheckBox1.Checked)
             {
                 Response.Redirect("SeniorityDetails.aspx?coursename=" + courseTypeName);
             }
 
-            }
-            
-           
-
-            //string script = "alert(\" " + i + " Trainees Added to " + course_type + entry_type + " \");";
-            //ScriptManager.RegisterStartupScript(this, GetType(),
-            //                      "ServerControlScript", script, true);
-        
-
+        }
     }
 }

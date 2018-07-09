@@ -14,18 +14,34 @@ namespace DigiLocker3
 {
     public partial class SeniorityDetails : System.Web.UI.Page
     {
-        string coursename = "";
+        string coursename = " ";
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             coursename = Request.QueryString["coursename"];
+            
             if (!this.IsPostBack)
             {
                 con.Open();
-                string table_name = coursename.Replace(" ", "_") + "_ENTRY_TYPE";
+                
+                SqlCommand com = new SqlCommand("select * from SAILOR_COURSE_TYPE", con); // table name 
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                DataSet ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlCourseType.DataBind();
+
+                if (!coursename.Equals(" "))
+                {
+                    ddlCourseType.SelectedValue = coursename;
+                }
+
+                string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
                 List<string> termLabel = new List<string>();
                 //string term_Label = "";
-                SqlCommand com = new SqlCommand("select TERM_LABEL from " + table_name, con); // table name 
+                com = new SqlCommand("select TERM_LABEL from " + table_name, con); // table name 
                 using (SqlDataReader dr = com.ExecuteReader())
                 {
                     while (dr.Read())
@@ -104,25 +120,27 @@ namespace DigiLocker3
         {
             con.Open();
             //int i = 0;
-            //string course_type = ddlCourseType.SelectedValue;
-            //course_type = course_type.Replace(" ", "_");
-            //string table_name = course_type + "_SENIORITY";
-            //SqlCommand cmd;
-            //cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(lower_lmt decimal(2,2), upper_lmt decimal(2,2), seniority decimal(2,2));", con);
-            //cmd.ExecuteNonQuery();
-            //string query;
+            SqlCommand cmd;
+            string table_name = "";
+            string query = "";
+            for (int i = 0; i < ddlTerm.Items.Count; i++)
+            {
+                if (ddlTerm.Items[i].Selected)
+                {
+                    table_name = ddlCourseType.SelectedValue.Replace(" ","_") + ddlTerm.Items[i].Text + "_SENIORITY_CRITERIA";
+                    cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(upper_lmt decimal(2,2), lower_lmt decimal(2,2), seniority decimal(2,2));", con);
+                    cmd.ExecuteNonQuery();
+                    foreach (GridViewRow g1 in GridView1.Rows)
+                    {
+                        cmd = new SqlCommand("insert into " + table_name + "(lower_lmt, upper_lmt, seniority) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
+                        //        cmd = new SqlCommand(query, con);
+                        //string Marks = (g1.FindControl("txtMarks") as TextBox).Text;
+                        //Response.Write(Marks+"      ");
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
 
-            //foreach (GridViewRow g1 in GridView1.Rows)
-            //{
-
-            //    cmd = new SqlCommand("insert into " + table_name + "(lower_lmt, upper_lmt, seniority) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
-            //    cmd = new SqlCommand(query, con);
-            //    //string Marks = (g1.FindControl("txtMarks") as TextBox).Text;
-            //    //Response.Write(Marks+"      ");
-            //    cmd.ExecuteNonQuery();
-
-            //    i++;
-            //}
             con.Close();
 
             //string script = "alert(\" " + i + " Trainees Added to " + course_type + course_no + " " + entry_type + " \");";
@@ -144,6 +162,27 @@ namespace DigiLocker3
         protected void OnRowDataBound(object sender, GridViewRowEventArgs e)
         {
 
+        }
+
+        protected void ddlCourseTypeIndexChanged(object sender, EventArgs e)
+        {
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
+            List<string> termLabel = new List<string>();
+            //string term_Label = "";
+            SqlCommand com = new SqlCommand("select TERM_LABEL from " + table_name, con); // table name 
+            using (SqlDataReader dr = com.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    List<string> term_Label = dr[0].ToString().Split('_').ToList();
+                    foreach (string lbl in term_Label)
+                    {
+                        termLabel.Add(lbl);
+                    }
+                }
+            }
+            ddlTerm.DataSource = termLabel.Distinct().ToList();
+            ddlTerm.DataBind();
         }
 
     }

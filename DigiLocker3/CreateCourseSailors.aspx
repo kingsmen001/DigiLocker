@@ -123,10 +123,15 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Sailors<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course</a>
-                                </li>
-                                <li>
+                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                    <li>
+                                    <a href="SeniorityDetails.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Seniority</a>
+                                    </li>
+                                    <li>
                                     <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
+                                    </li>
+                                        </ul>
                                 </li>
                                 <li>
                                     <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
@@ -138,7 +143,7 @@
                                     <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Upload Marks</a>
                                 </li>
                                 <li>
-                                    <a href="ViewResultSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
+                                    <a href="ViewResult1.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
                                 </li>
                                 <li>
                                     <a href="ViewIndividualSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Individual</a>
@@ -178,17 +183,14 @@
                                         
                                         <div class="form-group">
                                             <div class ="form-row">
-                                                <%--<div class="col-md-4">
-                                                    <label>Select Course Type</label>
-                                                    <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseType" runat="server" AutoPostBack = "true" >
-                                                        <asp:ListItem>Officers</asp:ListItem>
-                                                        <asp:ListItem>Sailors</asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>--%>
-
-                                                <div class="col-md-4">
+                                                 <div class="col-md-4">
                                                     <label>Enter Course Name</label>
                                                     <asp:TextBox runat="server" CssClass="form-control" id="txtCourseName" type="text" aria-describedby="nameHelp" placeholder="Course Name" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label>Existing Courses</label>
+                                                    <asp:DropDownList runat="server" CssClass="form-control" id="ddlCourseType" >
+                                                        </asp:DropDownList>
                                                 </div>
                                             </div>
                                         </div>

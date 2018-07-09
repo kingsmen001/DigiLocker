@@ -32,7 +32,7 @@ namespace DigiLocker3
 
 
 
-                string name = ddlCourseType.Items[0].Value + "_ENTRY_TYPE";
+                string name = ddlCourseType.Items[0].Value.Replace(" ", "_") + "_ENTRY_TYPE";
                 com = new SqlCommand("select * from " + name, con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
@@ -42,30 +42,59 @@ namespace DigiLocker3
                 lbEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 lbEntryType.DataBind();
 
-                com = new SqlCommand("select *from MEAT_ENTRY_TYPE", con);
-                SqlDataReader dr = com.ExecuteReader();
-                List<string> typeList = new List<string>();
-                SqlCommand cmd;
-                string table_name;
-                while (dr.Read())
+                string term_Label = "______________";
+                string table_name = ddlCourseType.Items[0].Value.Replace(" ", "_") + "_ENTRY_TYPE";
+
+                for (int i = 0; i < lbEntryType.Items.Count; i++)
                 {
-                    name = dr.GetValue(0).ToString();
-                    name = name.Replace(" ", "_");
-                    table_name = "MEAT_" + name + "_SUBJECT";
-                    typeList.Add(table_name);
-
-
+                    if (lbEntryType.Items[i].Selected)
+                    {
+                        string new_term_Label = " ";
+                        string entry_name = lbEntryType.Items[i].Text;
+                        com = new SqlCommand("select TERM_LABEL from " + table_name + " where TYPE_NAME = '" + entry_name + "'", con); // table name 
+                        using (SqlDataReader dr = com.ExecuteReader())
+                        {
+                            while (dr.Read())
+                            {
+                                new_term_Label = dr[0].ToString();
+                            }
+                        }
+                        if ((new_term_Label.Split('_').Length - 1) < ((term_Label.Split('_').Length - 1)))
+                        {
+                            term_Label = new_term_Label;
+                        }
+                        //Response.Write(selectedItem + "   ");
+                        //insert command
+                    }
                 }
 
-                dr.Close();
-                foreach (string table_nam in typeList)
-                {
-                    //cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_nam + "') CREATE TABLE " + table_nam + "(Subject_Name varchar(10), Max_Marks int);", con);
-                    //cmd = new SqlCommand("Alter Table " + table_nam +" Add Subject_Code varchar(10)", con);
-                    //cmd.ExecuteNonQuery();
-                    //cmd = new SqlCommand("Alter Table " + table_nam + " Add Term varchar(5)", con);
-                    //cmd.ExecuteNonQuery();
-                }
+                ddlTerm.DataSource = term_Label.Split('_');
+                ddlTerm.DataBind();
+
+                //com = new SqlCommand("select * from MEAT_ENTRY_TYPE", con);
+                //SqlDataReader dr = com.ExecuteReader();
+                //List<string> typeList = new List<string>();
+                //SqlCommand cmd;
+                //string table_name;
+                //while (dr.Read())
+                //{
+                //    name = dr.GetValue(0).ToString();
+                //    name = name.Replace(" ", "_");
+                //    table_name = "MEAT_" + name + "_SUBJECT";
+                //    typeList.Add(table_name);
+
+
+                //}
+
+                //dr.Close();
+                //foreach (string table_nam in typeList)
+                //{
+                //    //cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_nam + "') CREATE TABLE " + table_nam + "(Subject_Name varchar(10), Max_Marks int);", con);
+                //    //cmd = new SqlCommand("Alter Table " + table_nam +" Add Subject_Code varchar(10)", con);
+                //    //cmd.ExecuteNonQuery();
+                //    //cmd = new SqlCommand("Alter Table " + table_nam + " Add Term varchar(5)", con);
+                //    //cmd.ExecuteNonQuery();
+                //}
                 con.Close();
             }
         }
@@ -139,7 +168,7 @@ namespace DigiLocker3
             {
                 if (lbEntryType.Items[i].Selected)
                 {
-                    string entry_type = lbEntryType.Items[i].Text;
+                    string entry_type = lbEntryType.Items[i].Text.Replace(" ","_");
                     string table_name = course_type + "_" + entry_type + "_" + "SUBJECTS";
                     foreach (GridViewRow g1 in GridView1.Rows)
                     {

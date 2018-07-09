@@ -204,8 +204,8 @@
                                             </asp:DropDownList>
                                             </div>
                                         <div class="form-group">
-                                            <%--<label >Select Entry Type</label>--%>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" visible="False"  EnableViewState="false">
+                                            <label >Select Entry Type</label>
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" >
                                                 
                                                 
                                             </asp:DropDownList>

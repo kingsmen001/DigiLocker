@@ -31,6 +31,15 @@ namespace DigiLocker3 {
         protected global::System.Web.UI.WebControls.TextBox txtCourseName;
         
         /// <summary>
+        /// ddlCourseType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCourseType;
+        
+        /// <summary>
         /// FileUpload1 control.
         /// </summary>
         /// <remarks>

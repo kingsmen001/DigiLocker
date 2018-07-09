@@ -197,10 +197,10 @@
                                             </div>
                                         <div class="form-group">
                                             <label>Select Term</label>
-                                           <asp:ListBox class="form-control" style = "width:auto" ID="lbTerm" runat="server"  SelectionMode="Multiple"  AutoPostBack="True" >
+                                           <asp:Dropdownlist class="form-control" style = "width:auto" ID="ddlTerm" runat="server"  SelectionMode="Multiple"  AutoPostBack="True" >
                                                 
                                                 
-                                            </asp:ListBox>
+                                            </asp:Dropdownlist>
                                             </div>
                                                                     
                                         <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />

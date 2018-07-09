@@ -208,9 +208,9 @@
 
                                         <div class="form-group">
                                             <label>Select Term</label>
-                                            <asp:ListBox class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" >
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" >
                                                 
-                                            </asp:ListBox>
+                                            </asp:DropDownList>
                                             </div>
                                                                              
                                         

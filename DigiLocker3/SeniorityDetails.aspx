@@ -123,10 +123,15 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Sailors<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course</a>
-                                </li>
-                                <li>
+                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                    <li>
+                                    <a href="SeniorityDetails.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Seniority</a>
+                                    </li>
+                                    <li>
                                     <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
+                                    </li>
+                                        </ul>
                                 </li>
                                 <li>
                                     <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
@@ -138,7 +143,7 @@
                                     <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Upload Marks</a>
                                 </li>
                                 <li>
-                                    <a href="ViewResultSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
+                                    <a href="ViewResult1.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
                                 </li>
                                 <li>
                                     <a href="ViewIndividualSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Individual</a>
@@ -173,6 +178,14 @@
 			
                                 <div class="col-lg-6" style = "width:100%">
                                     <form id="form1" runat="server" >
+
+                                       div class="form-group">
+                                            <label>Select Course Type</label>
+                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlCourseType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlCourseTypeIndexChanged">
+                                                
+                                                
+                                            </asp:DropDownList>
+                                            </div>
                                         
                                         
                                         <div class="form-group">
@@ -197,8 +210,8 @@
                                             
                                     
                                     <div class="form-group" style="height:auto; max-height:500px; width:100%; overflow:auto;">
-                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" OnRowDataBound = "OnRowDataBound" AutoGenerateColumns="False">
-                                         
+                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" >
+                                            
                                         </asp:GridView>
                                     </div>
                                         <asp:Button runat="server" id="ConfirmButton" class="btn btn-default" text="Confirm" onclick="ConfirmButton_Click" visible="False"  EnableViewState="false" />
