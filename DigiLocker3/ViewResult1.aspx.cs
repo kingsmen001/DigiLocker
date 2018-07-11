@@ -343,7 +343,7 @@ namespace DigiLocker3
             ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             ddlCourseNo.DataBind();
 
-            name = ddlCourseType.SelectedValue + "_COURSE_TYPE";
+            name = ddlCourseType.SelectedValue.Replace(" ","_") + "_ENTRY_TYPE";
             com = new SqlCommand("select * from " + name, con); // table name 
             da = new SqlDataAdapter(com);
             ds = new DataSet();
@@ -359,7 +359,7 @@ namespace DigiLocker3
 
         protected void ddlCourseNoIndexChanged(object sender, EventArgs e)
         {
-            String name = ddlCourseType.SelectedValue + "_COURSE_TYPE";
+            String name = ddlCourseType.SelectedValue.Replace(" ","_") + "_ENTRY_TYPE";
             SqlCommand com = new SqlCommand("select * from" + name, con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
@@ -381,7 +381,7 @@ namespace DigiLocker3
             string term = lbTerm.SelectedValue;
             string entry_type = ddlEntryType.SelectedValue;
             entry_type = entry_type.Replace(" ", "_");
-            string name = ddlCourseType.SelectedValue + "_" + entry_type + "_SUBJECT";
+            string name = ddlCourseType.SelectedValue + "_" + entry_type + "_SUBJECTS";
             SqlCommand com = new SqlCommand("select Subject_Name from " + name + " where Term ='" + term + "'", con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();

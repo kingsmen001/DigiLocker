@@ -233,6 +233,7 @@
     <Content Include="AddSubjectsSailors.aspx" />
     <Content Include="AddTrainees.aspx" />
     <Content Include="AddUser.aspx" />
+    <Content Include="AlreadyExisting.aspx" />
     <Content Include="App_Data\DigiLocker.mdf" />
     <Content Include="App_Data\DigiLocker_log.ldf">
       <DependentUpon>DigiLocker.mdf</DependentUpon>
@@ -241,99 +242,21 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CourseDetails.aspx" />
     <Content Include="CreateCourseSailors.aspx" />
     <Content Include="download.aspx" />
+    <Content Include="EnrolledCourseDetails.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
-    <Content Include="Home\fonts\fontawesome-webfont.svg" />
-    <Content Include="Home\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Home\Home.aspx" />
-    <Content Include="Home\images\Thumbs.db" />
-    <Content Include="Home\fonts\fontawesome-webfont.eot" />
-    <Content Include="Home\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Home\fonts\fontawesome-webfont.woff" />
-    <Content Include="Home\fonts\fontawesome-webfont.woff2" />
-    <Content Include="Home\fonts\FontAwesome.otf" />
-    <Content Include="Home\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Home\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Home\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Home\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Home.aspx" />
     <Content Include="ManageUsers.aspx" />
     <Content Include="SeniorityDetails.aspx" />
     <Content Include="ViewResult1.aspx" />
     <Content Include="WebFormResultUpload.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Home\css\about.css" />
-    <Content Include="Home\css\blog.css" />
-    <Content Include="Home\css\bootstrap.css" />
-    <Content Include="Home\css\checkout.css" />
-    <Content Include="Home\css\chocolat.css" />
-    <Content Include="Home\css\contact.css" />
-    <Content Include="Home\css\creditly.css" />
-    <Content Include="Home\css\easy-responsive-tabs.css" />
-    <Content Include="Home\css\flexslider.css" />
-    <Content Include="Home\css\font-awesome.css" />
-    <Content Include="Home\css\jquery-ui1.css" />
-    <Content Include="Home\css\shop.css" />
-    <Content Include="Home\css\style.css" />
-    <Content Include="Home\images\1.jpg" />
-    <Content Include="Home\images\2.jpg" />
-    <Content Include="Home\images\3.jpg" />
-    <Content Include="Home\images\ab.jpg" />
-    <Content Include="Home\images\ab1.jpg" />
-    <Content Include="Home\images\banner1.jpg" />
-    <Content Include="Home\images\banner11.jpg" />
-    <Content Include="Home\images\banner2.jpg" />
-    <Content Include="Home\images\banner21.jpg" />
-    <Content Include="Home\images\banner24.jpg" />
-    <Content Include="Home\images\banner3.jpg" />
-    <Content Include="Home\images\banner31.jpg" />
-    <Content Include="Home\images\banner4.jpg" />
-    <Content Include="Home\images\banner41.jpg" />
-    <Content Include="Home\images\close.png" />
-    <Content Include="Home\images\close_1.jpg" />
-    <Content Include="Home\images\d1.jpg" />
-    <Content Include="Home\images\d2.jpg" />
-    <Content Include="Home\images\d3.jpg" />
-    <Content Include="Home\images\g1.jpg" />
-    <Content Include="Home\images\g10.jpg" />
-    <Content Include="Home\images\g11.jpg" />
-    <Content Include="Home\images\g2.jpg" />
-    <Content Include="Home\images\g3.jpg" />
-    <Content Include="Home\images\g4.jpg" />
-    <Content Include="Home\images\g5.jpg" />
-    <Content Include="Home\images\g6.jpg" />
-    <Content Include="Home\images\left.png" />
-    <Content Include="Home\images\paypal.png" />
-    <Content Include="Home\images\right.png" />
-    <Content Include="Home\images\s1.jpg" />
-    <Content Include="Home\images\s2.jpg" />
-    <Content Include="Home\images\s3.jpg" />
-    <Content Include="Home\images\s4.jpg" />
-    <Content Include="Home\images\s5.jpg" />
-    <Content Include="Home\images\s6.jpg" />
-    <Content Include="Home\images\s7.jpg" />
-    <Content Include="Home\images\s8.jpg" />
-    <Content Include="Home\images\s9.jpg" />
-    <Content Include="Home\images\search.png" />
-    <Content Include="Home\images\t1.jpg" />
-    <Content Include="Home\images\up_arrow.png" />
-    <Content Include="Home\js\bootstrap.js" />
-    <Content Include="Home\js\creditly.js" />
-    <Content Include="Home\js\easy-responsive-tabs.js" />
-    <Content Include="Home\js\imagezoom.js" />
-    <Content Include="Home\js\jquery-2.1.4.min.js" />
-    <Content Include="Home\js\jquery-ui.js" />
-    <Content Include="Home\js\jquery.chocolat.js" />
-    <Content Include="Home\js\jquery.easing.min.js" />
-    <Content Include="Home\js\jquery.flexslider.js" />
-    <Content Include="Home\js\jquery.magnific-popup.js" />
-    <Content Include="Home\js\minicart.js" />
-    <Content Include="Home\js\move-top.js" />
-    <Content Include="Home\js\search.js" />
     <Content Include="Index.aspx" />
     <Content Include="Issued.aspx" />
     <Content Include="ListBoxx.html" />
@@ -523,6 +446,13 @@
     <Compile Include="AddUser.aspx.designer.cs">
       <DependentUpon>AddUser.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AlreadyExisting.aspx.cs">
+      <DependentUpon>AlreadyExisting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AlreadyExisting.aspx.designer.cs">
+      <DependentUpon>AlreadyExisting.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
@@ -540,6 +470,13 @@
     </Compile>
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CourseDetails.aspx.cs">
+      <DependentUpon>CourseDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CourseDetails.aspx.designer.cs">
+      <DependentUpon>CourseDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="CreateCourseSailors.aspx.cs">
       <DependentUpon>CreateCourseSailors.aspx</DependentUpon>
@@ -562,14 +499,21 @@
     <Compile Include="download.aspx.designer.cs">
       <DependentUpon>download.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EnrolledCourseDetails.aspx.cs">
+      <DependentUpon>EnrolledCourseDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EnrolledCourseDetails.aspx.designer.cs">
+      <DependentUpon>EnrolledCourseDetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Home\Home.aspx.cs">
+    <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Home\Home.aspx.designer.cs">
+    <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
     <Compile Include="Index.aspx.cs">

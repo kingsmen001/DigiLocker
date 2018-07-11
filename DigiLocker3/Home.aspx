@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SeniorityDetails.aspx.cs" Inherits="DigiLocker3.SeniorityDetails" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="DigiLocker3.Home" %>
 
 <!DOCTYPE html>
 
@@ -35,6 +35,27 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <style>
+.button {
+    background-color: #4286f4; /* Green */
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button1 {border-radius: 2px;}
+.button2 {border-radius: 4px;}
+.button3 {border-radius: 8px;}
+.button4 {border-radius: 12px;}
+.button5 {border-radius: 50%;}
+</style>
 
 </head>
 
@@ -90,34 +111,6 @@
                             </span>
                             </div>
                             <!-- /input-group -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Officers<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course</a>
-                                </li>
-                                <li>
-                                    <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
-                                </li>
-                                <li>
-                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
-                                </li>
-                                <li>
-                                    <a href="UploadNominalRollSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Trainees</a>
-                                </li>
-                                <li>
-                                    <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Upload Marks</a>
-                                </li>
-                                <li>
-                                    <a href="ViewResultSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
-                                </li>
-                                <li>
-                                    <a href="ViewIndividualSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Individual</a>
-                                </li>
-                                
-                            </ul>
-                            <!-- /.nav-second-level -->
                         </li>
                         <li>
                                     <a href="Home.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Courses</a>
@@ -194,7 +187,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Seniority</h1>
+                    <h1 class="page-header">Course Management System </h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -203,57 +196,60 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default" >
                         <div class="panel-heading">
-                            Enter Seniority Criteria details here
+                            List of Available Courses
                         </div>
                         <div class="panel-body">
                             <div class="row" style = "width:100%">
                                 
-			
-                                <div class="col-lg-6" style = "width:100%">
+			                    <div class="col-lg-8" style = "width:100%">
                                     <form id="form1" runat="server" >
-
-                                       <div class="form-group">
-                                            <label>Select Entry Type</label>
-                                            <asp:DropDownList class="form-control" style = "width:auto" ID="ddlEntryType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlEntryTypeIndexChanged">
-                                                
-                                                
-                                            </asp:DropDownList>
-                                            </div>
+                                        <div class="col-lg-6">
+                                            <label>Sailor Courses</label>
+                                            <%--<ul style="list-style-type:none">--%>
+                                         <table style ="width:200px" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <%--<th>Sr.No.</th>
+                                        <th>Course Name</th>--%>
                                         
-                                        
-                                        <div class="form-group">
-                                            <label>Select Term</label>
-                                            <asp:ListBox class="form-control" style = "width:auto; height:auto" ID="ddlTerm" runat="server"  SelectionMode="Multiple"  AutoPostBack="True" >
-                                                
-                                                
-                                            </asp:ListBox>
-                                            <%--<asp:DropDownList class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlTermIndexChanged">
-                                                
-                                            </asp:DropDownList>--%>
-                                            </div>
-                                        <div class="form-group">
-                                            <%--<label>Seniority Details Excel File</label>
-                                            <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />--%>
-                                        </div>
-                                        
-                                        <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />
-                                        
-                                        <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
-                                        <br /><br />
-                                            
-                                    
-                                    <div class="form-group" style="height:auto; max-height:500px; width:100%; overflow:auto;">
-                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" >
-                                            
-                                        </asp:GridView>
-                                    </div>
-                                        <asp:Button runat="server" id="ConfirmButton" class="btn btn-default" text="Confirm" onclick="ConfirmButton_Click" visible="False"  EnableViewState="false" />
-                                        </form>
-                                </div>
-                                <!-- /.col-lg-6 (nested) -->
+                                     </tr>
+                                </thead>
+                                <tbody>
+                                      <%=getCourseDetails()%>
+                                  <%--</ul>--%>
+                                </tbody>
                                 
+                            </table>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <%--<label>Courses Enrolled</label>
+                                         <table style ="width:400px" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.No.</th>
+                                        <th>Course Name</th>
+                                        
+                                     </tr>
+                                </thead>
+                                <tbody>
+                                      <%=getEnrolledCourseDetails()%>
+                                  
+                                </tbody>
+                                
+                            </table>--%>
+                                        </div>
+                                        </form>
+                                   
+                                    
+                                </div>
+                                
+                                <!-- /.col-lg-6 (nested) -->
                             </div>
                             <!-- /.row (nested) -->
+                            <div style="align-self:center">
+                            <a href ="CreateCourseSailors.aspx"><label class="button button3">Create Course</label></a>
+                                    <a href ="NewCourseSailors.aspx"><label class="button button4">Enroll Course</label></a>
+                                </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -270,7 +266,7 @@
 
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
-    
+
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -279,7 +275,6 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
-
 
 </body>
 

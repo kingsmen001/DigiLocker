@@ -16,29 +16,32 @@ namespace DigiLocker3
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-            con.Open();
+            
+            if (!this.IsPostBack)
+            { 
+                con.Open();
+                SqlCommand com = new SqlCommand("select CONCAT(COURSE_NAME, ' ', COURSE_NO) AS TYPE_NAME from SAILOR_COURSES", con); // table name 
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                DataSet ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                DropDownList1.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                DropDownList1.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                DropDownList1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                DropDownList1.DataBind();
+                con.Close();
 
-            SqlCommand com = new SqlCommand("select CONCAT(COURSE_NAME, ' ', COURSE_NO) AS TYPE_NAME from SAILOR_COURSES", con); // table name 
-            SqlDataAdapter da = new SqlDataAdapter(com);
-            DataSet ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            DropDownList1.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-            DropDownList1.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
-            DropDownList1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            DropDownList1.DataBind();
-            con.Close();
+                con.Open();
 
-            con.Open();
-
-            com = new SqlCommand("select * from SAILOR_COURSE_TYPE", con); // table name 
-            da = new SqlDataAdapter(com);
-            ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-            ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
-            ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlCourseType.DataBind();
-            con.Close();
+                com = new SqlCommand("select * from SAILOR_COURSE_TYPE", con); // table name 
+                da = new SqlDataAdapter(com);
+                ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlCourseType.DataBind();
+                con.Close();
+            }
         }
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
@@ -57,13 +60,20 @@ namespace DigiLocker3
                 cmd.Parameters.AddWithValue("@Course_No", Course_Number_TextBox.Text);
                 cmd.Parameters.AddWithValue("@Course_Name", name);
                 cmd.ExecuteNonQuery();
-                Response.Write("Record Uploaded Successfully!!!thank you");
+                //Response.Write("Record Uploaded Successfully!!!thank you");
+                Response.Redirect("SeniorityDetails.aspx?coursename=" + name);
 
                 con.Close();
             }
-            catch(Exception ex)
+            catch(SqlException ex)
             {
-                Response.Write(ex);
+                if (ex.Number == 2627)
+                {
+                    string script = "alert(\" Course Already Exists \");";
+                    ScriptManager.RegisterStartupScript(this, GetType(),
+                                          "ServerControlScript", script, true);
+                }
+                else Response.Write(ex);
             }
 
             

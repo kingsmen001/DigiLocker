@@ -92,6 +92,9 @@
                             <!-- /input-group -->
                         </li>
                         <li>
+                                    <a href="Home.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Courses</a>
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Officers<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -122,11 +125,20 @@
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Sailors<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                                
                                 <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course</a>
-                                </li>
-                                <li>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i> Create Course <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                    <li>
+                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Name and Entry Details</a>
+                                    </li>
+                                    <li>
+                                    <a href="SeniorityDetails.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Seniority</a>
+                                    </li>
+                                    <li>
                                     <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
+                                    </li>
+                                        </ul>
                                 </li>
                                 <li>
                                     <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
@@ -138,11 +150,9 @@
                                     <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Upload Marks</a>
                                 </li>
                                 <li>
-                                    <a href="ViewResultSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
+                                    <a href="ViewResult1.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
                                 </li>
-                                <li>
-                                    <a href="ViewIndividualSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Individual</a>
-                                </li>
+                                
                                 
                             </ul>
                             <!-- /.nav-second-level -->
@@ -170,34 +180,19 @@
                         <div class="panel-body">
                             <div class="row" style = "width:50%">
                                 
-			<%--<div class="signin-form profile">
-							<div class="login-form">
-								<form id="form2" runat="server">
-									<input type="email" name="email" placeholder="E-mail" required="">
-                                    <asp:TextBox ID="Doc_Name_TextBox" runat="server" placeholder="Document Name"></asp:TextBox>
-									<input type="password" name="password" placeholder="Password" required="">
-                                    <asp:TextBox ID="Issued_By_TextBox" runat="server" placeholder="Issued By"></asp:TextBox>
-                                    <asp:TextBox ID="Issued_On_TextBox" runat="server" placeholder="Issued On (YYYY-MM-DD)"></asp:TextBox>
-                                    <asp:FileUpload id="FileUploadControl" runat="server" />
-                                    <asp:Button runat="server" id="UploadButton" text="Upload" onclick="UploadButton_Click" />
-									<asp:LinkButton id="myid" runat="server" OnClick="LinkButton_Click" >Click</asp:LinkButton>
-								</form>
-                                
-                                
-							</div>
-						</div>--%>
+			
                                 <div class="col-lg-6" style = "width:100%">
                                     <form id="form1" runat="server" >
                                         <div class="form-group">
                                             <div class ="form-row">
                                                  <div class="col-md-6">
                                                     <label>Course Type</label>
-                                                    <asp:DropDownList class="form-control" ID="ddlCourseType" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "OnSelectedIndexChanged">
+                                                    <asp:DropDownList class="form-control" ID="ddlCourseType" runat="server" OnSelectedIndexChanged = "OnSelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label>Existing Courses</label>
-                                                    <asp:DropDownList runat="server" CssClass="form-control" id="DropDownList1" >
+                                                    <%--label>Existing Courses</label>--%>
+                                                    <asp:DropDownList runat="server" CssClass="form-control" id="DropDownList1" Visible="false" EnableViewState="false">
                                                     </asp:DropDownList>
                                                 </div>
                                              </div>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CreateCourseSailors.aspx.cs" Inherits="DigiLocker3.CreateCourse" %>
+﻿<%@ Page Language="C#" MaintainScrollPositionOnPostBack="true" AutoEventWireup="true" CodeBehind="CreateCourseSailors.aspx.cs" Inherits="DigiLocker3.CreateCourse" %>
 
 <!DOCTYPE html>
 
@@ -92,6 +92,9 @@
                             <!-- /input-group -->
                         </li>
                         <li>
+                                    <a href="Home.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Courses</a>
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Officers<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -122,9 +125,13 @@
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Sailors<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                                
                                 <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course <span class="fa arrow"></span></a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i> Create Course <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
+                                    <li>
+                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Name and Entry Details</a>
+                                    </li>
                                     <li>
                                     <a href="SeniorityDetails.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Seniority</a>
                                     </li>
@@ -145,9 +152,7 @@
                                 <li>
                                     <a href="ViewResult1.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
                                 </li>
-                                <li>
-                                    <a href="ViewIndividualSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Individual</a>
-                                </li>
+                                
                                 
                             </ul>
                             <!-- /.nav-second-level -->
@@ -185,11 +190,11 @@
                                             <div class ="form-row">
                                                  <div class="col-md-4">
                                                     <label>Enter Course Name</label>
-                                                    <asp:TextBox runat="server" CssClass="form-control" id="txtCourseName" type="text" aria-describedby="nameHelp" placeholder="Course Name" />
+                                                    <asp:TextBox runat="server" CssClass="form-control" id="txtCourseName" type="text" aria-describedby="nameHelp" placeholder="Course Name" AutoPostBack="true" OnTextChanged="txtCourseName_TextChanged"/>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label>Existing Courses</label>
-                                                    <asp:DropDownList runat="server" CssClass="form-control" id="ddlCourseType" >
+                                                    <%--<label>Existing Courses</label>--%>
+                                                    <asp:DropDownList runat="server" CssClass="form-control" id="ddlCourseType" Visible="false" EnableViewState="false">
                                                         </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -212,7 +217,7 @@
                                         <br />
                                         
                                                 <div class="col-md-4">  
-                                                    <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />
+                                                    <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" AutoPostback = "false" />
                                         
                                                     <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
                                                     </div>
