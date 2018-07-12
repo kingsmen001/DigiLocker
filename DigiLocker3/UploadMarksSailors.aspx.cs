@@ -21,17 +21,17 @@ namespace DigiLocker3
             {
                 con.Open();
 
-                SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
+                SqlCommand com = new SqlCommand("select Distinct(Course_Name) from SAILOR_COURSE", con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();
                 da.Fill(ds);  // fill dataset
-                ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-                ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlCourseType.DataTextField = ds.Tables[0].Columns["Course_Name"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseType.DataValueField = ds.Tables[0].Columns["Course_Name"].ToString();             // to retrive specific  textfield name 
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
 
                 string course_name = ddlCourseType.Items[0].Value;
-                com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='" + course_name + "'", con); // table name 
+                com = new SqlCommand("select Course_No from Sailor_Course where Course_Name ='" + course_name + "'", con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -109,6 +109,10 @@ namespace DigiLocker3
                 ConfirmButton.Visible = true;
                 ConfirmButton.EnableViewState = true;
             }
+            else
+            {
+                Response.Write("<script language='javascript'>alert('Please Select a File');</script>");
+            }
         }
 
         private void Import_To_Grid(string FilePath, string Extension)
@@ -175,6 +179,8 @@ namespace DigiLocker3
                 i++;
             }
             con.Close();
+            Response.Write("<script language='javascript'>alert('Marks Added Successfully');</script>");
+            reset();
         }
 
         protected void ResetButton_Click(object sender, EventArgs e)
@@ -201,7 +207,7 @@ namespace DigiLocker3
 
 
             string name = ddlCourseType.SelectedValue;
-            SqlCommand com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='" + name + "'", con); // table name 
+            SqlCommand com = new SqlCommand("select Course_No from Sailor_Course where Course_Name ='" + name + "'", con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
             da.Fill(ds);  // fill dataset
@@ -263,6 +269,7 @@ namespace DigiLocker3
         }
         protected void ddlTermIndexChanged(object sender, EventArgs e)
         {
+            con.Open();
             string query = "";
             string type_name = "";
             string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + "ENTRY_TYPE";

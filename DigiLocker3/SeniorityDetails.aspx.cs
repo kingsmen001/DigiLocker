@@ -19,11 +19,15 @@ namespace DigiLocker3
         protected void Page_Load(object sender, EventArgs e)
         {
             coursename = Request.QueryString["coursename"];
+            
             string txt = " ";
             if (!this.IsPostBack)
             {
-                con.Open();
+                ddlEntryType.SelectedIndex = 0;
+                ddlTerm.SelectedIndex = 0;
                 
+                con.Open();
+
                 SqlCommand com = new SqlCommand("select TYPE_NAME from " + coursename + "_ENTRY_TYPE", con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();
@@ -41,7 +45,7 @@ namespace DigiLocker3
                 string table_name = coursename + "_ENTRY_TYPE";
                 List<string> termLabel = new List<string>();
                 //string term_Label = "";
-                com = new SqlCommand("select TERM_LABEL from " + table_name + " where TYPE_NAME = '" + ddlEntryType.Items[0].Text +"'", con); // table name 
+                com = new SqlCommand("select TERM_LABEL from " + table_name + " where TYPE_NAME = '" + ddlEntryType.Items[0].Text + "'", con); // table name 
                 using (SqlDataReader dr = com.ExecuteReader())
                 {
                     while (dr.Read())
@@ -56,11 +60,48 @@ namespace DigiLocker3
                 ddlTerm.DataSource = termLabel.Distinct().ToList();
                 ddlTerm.DataBind();
                 con.Close();
+                checkData();
             }
         }
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
+            con.Open();
+            string table_name = coursename + "_" + ddlEntryType.SelectedValue.Replace(" ","_") + "_" + ddlTerm.SelectedValue + "_SENIORITY";
+            SqlCommand cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(upper_lmt nvarchar(10) unique, lower_lmt nvarchar(10) unique, seniority nvarchar(10) unique)", con);
+            cmd.ExecuteNonQuery();
+
+            foreach (GridViewRow r in excelgrd.Rows)
+            {
+                string maxMarks = (r.FindControl("txtMaxMarks") as TextBox).Text;
+                string minMarks = (r.FindControl("txtMinMarks") as TextBox).Text;
+                string seniority = (r.FindControl("txtSeniority") as TextBox).Text;
+
+                try
+                {
+                    
+                    string query = "insert into " + table_name + "(lower_lmt, upper_lmt, seniority) values(" + minMarks + ", " + maxMarks + ", " + seniority + ")";
+                    cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
+
+
+                }
+                catch (Exception e1)
+                {
+                    string error = e1.ToString();
+                    Response.Write(error);
+                }
+                finally
+                {
+                   
+
+                }
+
+
+            }
+            Response.Write("<script language='javascript'>alert('Seniority Criteria Added Successfully');</script>");
+            con.Close();
+            checkData();
 
             //if (FileUpload1.HasFile)
             //{
@@ -118,32 +159,29 @@ namespace DigiLocker3
 
         protected void ConfirmButton_Click(object sender, EventArgs e)
         {
-            con.Open();
-            //int i = 0;
-            SqlCommand cmd;
-            string table_name = "";
-            string query = "";
-            for (int i = 0; i < ddlTerm.Items.Count; i++)
-            {
-                if (ddlTerm.Items[i].Selected)
-                {
-                    table_name = ddlEntryType.SelectedValue.Replace(" ","_") + "_" + ddlTerm.Items[i].Text + "_SENIORITY";
-                    cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(upper_lmt nvarchar(10) unique, lower_lmt nvarchar(10) unique, seniority nvarchar(10) unique)", con);
-                    cmd.ExecuteNonQuery();
-                    foreach (GridViewRow g1 in GridView1.Rows)
-                    {
-                        query = "insert into " + table_name + "(lower_lmt, upper_lmt, seniority) values(" + System.Convert.ToDecimal(g1.Cells[1].Text) + ", " + System.Convert.ToDecimal(g1.Cells[0].Text) + ", " + System.Convert.ToDecimal(g1.Cells[2].Text) + ")";
-                        cmd = new SqlCommand(query, con);
-                        //Response.Write(query);
-                        //        cmd = new SqlCommand(query, con);
-                        //string Marks = (g1.FindControl("txtMarks") as TextBox).Text;
-                        //Response.Write(Marks+"      ");
-                        //cmd.ExecuteNonQuery();
-                    }
-                }
-            }
+            //con.Open();
+            
+            //SqlCommand cmd;
+            //string table_name = "";
+            //string query = "";
+            //for (int i = 0; i < ddlTerm.Items.Count; i++)
+            //{
+            //    if (ddlTerm.Items[i].Selected)
+            //    {
+            //        table_name = ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + ddlTerm.Items[i].Text + "_SENIORITY";
+            //        cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(upper_lmt nvarchar(10) unique, lower_lmt nvarchar(10) unique, seniority nvarchar(10) unique)", con);
+            //        cmd.ExecuteNonQuery();
+            //        foreach (GridViewRow g1 in GridView1.Rows)
+            //        {
+            //            query = "insert into " + table_name + "(lower_lmt, upper_lmt, seniority) values(" + System.Convert.ToDecimal(g1.Cells[1].Text) + ", " + System.Convert.ToDecimal(g1.Cells[0].Text) + ", " + System.Convert.ToDecimal(g1.Cells[2].Text) + ")";
+            //            cmd = new SqlCommand(query, con);
+                        
+            //        }
+            //    }
+            //}
 
-            con.Close();
+            //con.Close();
+            
             Response.Redirect("AddSubjectsSailors.aspx?coursename=" + coursename);
 
             //string script = "alert(\" " + i + " Trainees Added to " + course_type + course_no + " " + entry_type + " \");";
@@ -179,13 +217,166 @@ namespace DigiLocker3
             {
                 while (dr.Read())
                 {
-                     termLabel = dr[0].ToString().Split('_').ToList();
-                    
+                    termLabel = dr[0].ToString().Split('_').ToList();
+
                 }
             }
-            
+
             ddlTerm.DataSource = termLabel.Distinct().ToList();
             ddlTerm.DataBind();
+            con.Close();
+            checkData();
+        }
+
+        protected void ddlTermIndexChanged(object sender, EventArgs e)
+        {
+            checkData();
+        }
+
+        protected void checkData()
+        {
+            con.Open();
+            string table_name = coursename + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + ddlTerm.SelectedValue + "_SENIORITY";
+            SqlCommand cmd = new SqlCommand("If exists(select name from sysobjects where name = '" + table_name + "') Select upper_lmt as \"Max Marks(in %)\", lower_lmt as \"Min Marks(in %)\", seniority as \"Seniority(in Months)\" from  " + table_name, con);
+            SqlDataAdapter adpt = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adpt.Fill(dt);
+            if (dt.Rows.Count > 0)
+            {
+                GridView1.DataSource = dt;
+                GridView1.DataBind();
+                div1.Visible = false;
+                div2.Visible = true;
+                ConfirmButton.Visible = true;
+                ConfirmButton.EnableViewState = true;
+
+            }
+            else
+            {
+                SetInitialRow();
+                div2.Visible = false;
+                div1.Visible = true;
+                ConfirmButton.Visible = false;
+                ConfirmButton.EnableViewState = false;
+            }
+                con.Close();
+        }
+
+        protected void addnewrow()
+        {
+            int rowIndex = 0;
+            if (ViewState["CurrentTable"] != null)
+            {
+                DataTable dtCurrentTable = (DataTable)ViewState["CurrentTable"];
+                DataRow drCurrentRow = null;
+                if (dtCurrentTable.Rows.Count > 0)
+                {
+                    for (int i = 1; i <= dtCurrentTable.Rows.Count; i++)
+                    {
+                        //extract the TextBox values
+                        TextBox tx1 = (TextBox)excelgrd.Rows[rowIndex].Cells[0].FindControl("txtMaxMarks");
+                        TextBox tx2 = (TextBox)excelgrd.Rows[rowIndex].Cells[1].FindControl("txtMinMarks");
+                        TextBox tx3 = (TextBox)excelgrd.Rows[rowIndex].Cells[2].FindControl("txtSeniority");
+                        drCurrentRow = dtCurrentTable.NewRow();
+                        dtCurrentTable.Rows[i - 1]["Max Marks(in %)"] = tx1.Text;
+                        dtCurrentTable.Rows[i - 1]["Min Marks(in %)"] = tx2.Text;
+                        dtCurrentTable.Rows[i - 1]["Seniority(in Months)"] = tx3.Text;
+                        rowIndex++;
+                    }
+                    dtCurrentTable.Rows.Add(drCurrentRow);
+                    ViewState["CurrentTable"] = dtCurrentTable;
+
+                    excelgrd.DataSource = dtCurrentTable;
+                    excelgrd.DataBind();
+                }
+            }
+            else
+            {
+                Response.Write("ViewState is null");
+            }
+
+            //Set Previous Data on Postbacks
+            SetPreviousData();
+        }
+        private void SetPreviousData()
+        {
+            int rowIndex = 0;
+            if (ViewState["CurrentTable"] != null)
+            {
+                DataTable dt = (DataTable)ViewState["CurrentTable"];
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        TextBox tx1 = (TextBox)excelgrd.Rows[rowIndex].Cells[0].FindControl("txtMaxMarks");
+                        TextBox tx2 = (TextBox)excelgrd.Rows[rowIndex].Cells[1].FindControl("txtMinMarks");
+                        TextBox tx3 = (TextBox)excelgrd.Rows[rowIndex].Cells[2].FindControl("txtSeniority");
+                        tx1.Text = dt.Rows[i]["Max Marks(in %)"].ToString();
+                        tx2.Text = dt.Rows[i]["Min Marks(in %)"].ToString();
+                        tx3.Text = dt.Rows[i]["Seniority(in Months)"].ToString();
+                        rowIndex++;
+                    }
+                }
+            }
+        }
+
+        protected void ButtonAdd_Click(object sender, EventArgs e)
+        {
+            addnewrow();
+        }
+
+        protected void SetInitialRow()
+
+        {
+
+            DataTable dt = new DataTable();
+
+            DataRow dr = null;
+
+            
+
+            dt.Columns.Add(new DataColumn("Max Marks(in %)", typeof(string)));
+
+            dt.Columns.Add(new DataColumn("Min Marks(in %)", typeof(string)));
+
+            dt.Columns.Add(new DataColumn("Seniority(in Months)", typeof(string)));
+
+            dr = dt.NewRow();
+
+            
+
+            dr["Max Marks(in %)"] = string.Empty;
+
+            dr["Min Marks(in %)"] = string.Empty;
+
+            dr["Seniority(in Months)"] = string.Empty;
+
+            dt.Rows.Add(dr);
+
+            //dr = dt.NewRow();
+
+
+
+            //Store the DataTable in ViewState
+
+            ViewState["CurrentTable"] = dt;
+
+
+
+            excelgrd.DataSource = dt;
+
+            excelgrd.DataBind();
+
+        }
+
+        protected void OntextChanged(object sender, EventArgs e)
+        {
+            TextBox textBox = (sender as TextBox);
+            textBox.Focus();
+            if(string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                Response.Write("<script language='javascript'>alert('This field Cannot be left blank');</script>");
+            }
         }
 
     }

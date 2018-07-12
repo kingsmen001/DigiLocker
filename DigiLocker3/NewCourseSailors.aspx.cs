@@ -20,7 +20,7 @@ namespace DigiLocker3
             if (!this.IsPostBack)
             { 
                 con.Open();
-                SqlCommand com = new SqlCommand("select CONCAT(COURSE_NAME, ' ', COURSE_NO) AS TYPE_NAME from SAILOR_COURSES", con); // table name 
+                SqlCommand com = new SqlCommand("select CONCAT(COURSE_NAME, ' ', COURSE_NO) AS TYPE_NAME from SAILOR_COURSE", con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -45,35 +45,46 @@ namespace DigiLocker3
         }
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            try
+            if (string.IsNullOrWhiteSpace(Course_Number_TextBox.Text))
             {
-                //string filename = Path.GetFileName(FileUploadControl.FileName);
-                //FileUploadControl.SaveAs(Server.MapPath("~/Records/MEAT19/NominalRolls/") + filename);
-                
-                con.Open();
-                //string course = this.DropDownList1.SelectedIndex; GetItemText(this.DropDownList1.SelectedItem);
-                string name = ddlCourseType.SelectedValue;
-                string insertQuery;
-                SqlCommand cmd;
-                insertQuery = "insert into Sailor_Courses(Course_No, Course_Name)values (@Course_No, @Course_Name)";
-                cmd = new SqlCommand(insertQuery, con);
-                cmd.Parameters.AddWithValue("@Course_No", Course_Number_TextBox.Text);
-                cmd.Parameters.AddWithValue("@Course_Name", name);
-                cmd.ExecuteNonQuery();
-                //Response.Write("Record Uploaded Successfully!!!thank you");
-                Response.Redirect("SeniorityDetails.aspx?coursename=" + name);
-
-                con.Close();
+                string script = "alert(\" Enter Course Number \");";
+                ScriptManager.RegisterStartupScript(this, GetType(),
+                                      "ServerControlScript", script, true);
+                Course_Number_TextBox.Text = "";
             }
-            catch(SqlException ex)
+            else
             {
-                if (ex.Number == 2627)
+                try
                 {
-                    string script = "alert(\" Course Already Exists \");";
-                    ScriptManager.RegisterStartupScript(this, GetType(),
-                                          "ServerControlScript", script, true);
+                    //string filename = Path.GetFileName(FileUploadControl.FileName);
+                    //FileUploadControl.SaveAs(Server.MapPath("~/Records/MEAT19/NominalRolls/") + filename);
+
+                    con.Open();
+                    //string course = this.DropDownList1.SelectedIndex; GetItemText(this.DropDownList1.SelectedItem);
+                    string name = ddlCourseType.SelectedValue;
+                    string insertQuery;
+                    SqlCommand cmd;
+                    insertQuery = "insert into Sailor_Course(Course_No, Course_Name)values (@Course_No, @Course_Name)";
+                    cmd = new SqlCommand(insertQuery, con);
+                    cmd.Parameters.AddWithValue("@Course_No", Course_Number_TextBox.Text);
+                    cmd.Parameters.AddWithValue("@Course_Name", name);
+                    cmd.ExecuteNonQuery();
+                    //Response.Write("Record Uploaded Successfully!!!thank you");
+                    Response.Redirect("UploadNominalRollSailors.aspx?coursename=" + name);
+
+                    con.Close();
                 }
-                else Response.Write(ex);
+                catch (SqlException ex)
+                {
+                    if (ex.Number == 2627)
+                    {
+                        string script = "alert(\" Course Already Exists \");";
+                        ScriptManager.RegisterStartupScript(this, GetType(),
+                                              "ServerControlScript", script, true);
+                        Course_Number_TextBox.Text = "";
+                    }
+                    else Response.Write(ex);
+                }
             }
 
             

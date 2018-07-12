@@ -123,7 +123,7 @@ namespace DigiLocker3
                 cmd.ExecuteNonQuery();
                 courseTypeName = courseTypeName.Replace(" ", "_");
                 string table_name = courseTypeName + "_ENTRY_TYPE";
-                cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( TYPE_NAME VARCHAR(50) PRIMARY KEY, TERMS_NO int, TERM_LABEL varchar(50)  );", con);
+                cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( TYPE_NAME VARCHAR(50) PRIMARY KEY, TERMS_NO int NOT NULL, TERM_LABEL varchar(50) NOT NULL  );", con);
                 cmd.ExecuteNonQuery();
                 string termLabel = "";
                 string typename = "";
@@ -144,20 +144,26 @@ namespace DigiLocker3
                     cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( ID int IDENTITY PRIMARY KEY, SUBJECT_NAME VARCHAR(50) UNIQUE, MAX_MARKS int, TERM varchar(10)  );", con);
                     cmd.ExecuteNonQuery();
                    // Response.Write(query + "       ");
-                    if (CheckBox1.Checked)
-                    {
-                        Response.Redirect("SeniorityDetails.aspx?coursename=" + courseTypeName);
-                    }
+                    
 
+                }
+                if (CheckBox1.Checked)
+                {
+                    Response.Redirect("SeniorityDetails.aspx?coursename=" + courseTypeName);
+                }
+                else
+                {
+                    Response.Redirect("AddSubjectsSailors.aspx?coursename=" + courseTypeName);
                 }
             }
             catch(SqlException ex)
             {
-                if (ex.Number == 2627)
+                if (ex.Number == 2627 || ex.Number == 2601)
                 {
                     string script = "alert(\" Course Name Already Exists \");";
                     ScriptManager.RegisterStartupScript(this, GetType(),
                                           "ServerControlScript", script, true);
+                    reset();
                 }
                 else throw;
             }

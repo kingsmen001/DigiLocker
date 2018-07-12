@@ -38,10 +38,10 @@
 
     <style>
 .button {
-    background-color: #4286f4; /* Green */
+    background-color: #007bff; /* Green */
     border: none;
     color: white;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -53,7 +53,7 @@
 .button1 {border-radius: 2px;}
 .button2 {border-radius: 4px;}
 .button3 {border-radius: 8px;}
-.button4 {border-radius: 12px;}
+.button4 {border-radius: 10px;}
 .button5 {border-radius: 50%;}
 </style>
 
@@ -247,8 +247,8 @@
                             </div>
                             <!-- /.row (nested) -->
                             <div style="align-self:center">
-                            <a href ="CreateCourseSailors.aspx"><label class="button button3">Create Course</label></a>
-                                    <a href ="NewCourseSailors.aspx"><label class="button button4">Enroll Course</label></a>
+                            <a href ="CreateCourseSailors.aspx"><label class="button button3 btn btn-primary">Create Course</label></a>
+                                    <a href ="NewCourseSailors.aspx"><label class="button button3  btn btn-primary">Enrol Course</label></a>
                                 </div>
                         </div>
                         <!-- /.panel-body -->

@@ -21,18 +21,18 @@ namespace DigiLocker3
             {
                 con.Open();
 
-                SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
+                SqlCommand com = new SqlCommand("select Distinct(Course_Name) from SAILOR_COURSE", con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();
                 da.Fill(ds);  // fill dataset
-                ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-                ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlCourseType.DataTextField = ds.Tables[0].Columns["Course_Name"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseType.DataValueField = ds.Tables[0].Columns["Course_Name"].ToString();             // to retrive specific  textfield name 
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
 
                 string name = ddlCourseType.Items[0].Value;
                 string entry_type;
-                com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='" + name + "'", con); // table name 
+                com = new SqlCommand("select Course_No from Sailor_Course where Course_Name ='" + name + "'", con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -200,7 +200,8 @@ namespace DigiLocker3
                     cmd.ExecuteNonQuery();
                     string lower_lmt = "";
                     string period = "";
-                    table_name = course.Replace(" ","_") + "_" + term + "_SENIORITY";
+                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + lbTerm.Items[i].Value + "_SENIORITY";
+
                     query = "Select lower_lmt, seniority from " + table_name + " order by upper_lmt desc";
                     cmd = new SqlCommand(query, con);
                     dr = cmd.ExecuteReader();
@@ -334,7 +335,7 @@ namespace DigiLocker3
 
 
             string name = ddlCourseType.SelectedValue;
-            SqlCommand com = new SqlCommand("select Course_No from Sailor_Courses where Course_Name ='" + name + "'", con); // table name 
+            SqlCommand com = new SqlCommand("select Course_No from Sailor_Course where Course_Name ='" + name + "'", con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
             da.Fill(ds);  // fill dataset
@@ -381,7 +382,7 @@ namespace DigiLocker3
             string term = lbTerm.SelectedValue;
             string entry_type = ddlEntryType.SelectedValue;
             entry_type = entry_type.Replace(" ", "_");
-            string name = ddlCourseType.SelectedValue + "_" + entry_type + "_SUBJECTS";
+            string name = ddlCourseType.SelectedValue.Replace(" ","_") + "_" + entry_type + "_SUBJECTS";
             SqlCommand com = new SqlCommand("select Subject_Name from " + name + " where Term ='" + term + "'", con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
