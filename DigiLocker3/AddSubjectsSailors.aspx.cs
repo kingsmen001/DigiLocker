@@ -151,7 +151,7 @@ namespace DigiLocker3
             }
             else
             {
-                if(txtMarks.Text!="" & txtSubject.Text!="")
+                if(!string.IsNullOrWhiteSpace(txtMarks.Text) & !string.IsNullOrWhiteSpace(txtSubject.Text))
                 {
                     con.Open();
                     try {
@@ -424,19 +424,29 @@ namespace DigiLocker3
 
         protected void txtCourseName_TextChanged(object sender, EventArgs e)
         {
-            con.Open();
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
-            Response.Write(table_name);
-            SqlCommand com = new SqlCommand("select Count(SUBJECT_NAME) from " + table_name + " where SUBJECT_NAME = '" + txtSubject.Text + "'", con); // table name 
-            int count = (int)com.ExecuteScalar();
-            if (count == 1)
+            if (!System.Text.RegularExpressions.Regex.IsMatch(txtSubject.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtSubject.Text[0]!=' ' & txtSubject.Text[0] != '\t')
             {
-                string script = "alert(\" Course Name Already Exists \");";
+                con.Open();
+                string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+                Response.Write(table_name);
+                SqlCommand com = new SqlCommand("select Count(SUBJECT_NAME) from " + table_name + " where SUBJECT_NAME = '" + txtSubject.Text + "'", con); // table name 
+                int count = (int)com.ExecuteScalar();
+                if (count == 1)
+                {
+                    string script = "alert(\" Course Name Already Exists \");";
+                    ScriptManager.RegisterStartupScript(this, GetType(),
+                                          "ServerControlScript", script, true);
+                    txtSubject.Text = "";
+                }
+                con.Close();
+            }
+            else
+            {
+                string script = "alert(\" Only AlphaNumeric Characters are Allowed. Name Cannot start from Space. \");";
                 ScriptManager.RegisterStartupScript(this, GetType(),
                                       "ServerControlScript", script, true);
                 txtSubject.Text = "";
             }
-            con.Close();
         }
 
         protected void ShowData()

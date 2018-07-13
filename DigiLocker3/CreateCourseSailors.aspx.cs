@@ -33,7 +33,7 @@ namespace DigiLocker3
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            if(txtCourseName.Text == "")
+            if(string.IsNullOrWhiteSpace(txtCourseName.Text))
             {
                 
                 Response.Write("<script language='javascript'>alert('Enter Course Name');</script>");
@@ -174,18 +174,29 @@ namespace DigiLocker3
 
         protected void txtCourseName_TextChanged(object sender, EventArgs e)
         {
-            con.Open();
-
-            SqlCommand com = new SqlCommand("select Count(TYPE_NAME) from Sailor_Course_type where TYPE_NAME = '" + txtCourseName.Text + "'", con); // table name 
-            int count = (int)com.ExecuteScalar();
-            if(count ==1)
+            if (!System.Text.RegularExpressions.Regex.IsMatch(txtCourseName.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtSubject.Text[0] != ' ' & txtSubject.Text[0] != '\t')
             {
-                string script = "alert(\" Course Name Already Exists \");";
+                
+                con.Open();
+
+                SqlCommand com = new SqlCommand("select Count(TYPE_NAME) from Sailor_Course_type where TYPE_NAME = '" + txtCourseName.Text + "'", con); // table name 
+                int count = (int)com.ExecuteScalar();
+                if (count == 1)
+                {
+                    string script = "alert(\" Course Name Already Exists \");";
+                    ScriptManager.RegisterStartupScript(this, GetType(),
+                                          "ServerControlScript", script, true);
+                    txtCourseName.Text = "";
+                }
+                con.Close();
+            }
+            else
+            {
+                string script = "alert(\" Only AlphaNumeric Characters are Allowed. Name Cannot start with Space \");";
                 ScriptManager.RegisterStartupScript(this, GetType(),
                                       "ServerControlScript", script, true);
                 txtCourseName.Text = "";
             }
-            con.Close();
         }
     }
 }
