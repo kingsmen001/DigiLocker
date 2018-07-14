@@ -15,14 +15,14 @@ namespace DigiLocker3
     public partial class AddSubjectsSailors : System.Web.UI.Page
     {
         string coursename = " ";
-        
+
         string table_name = "";
-        int flag ;
+        int flag;
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
             coursename = Request.QueryString["coursename"];
-            
+
 
             if (!this.IsPostBack)
             {
@@ -78,7 +78,7 @@ namespace DigiLocker3
                         //Response.Write(selectedItem + "   ");
                         //insert command
                     }
-                   
+
                 }
 
                 entry_name = lbEntryType.Items[0].Text;
@@ -124,7 +124,7 @@ namespace DigiLocker3
             }
             else
             {
-                
+
             }
         }
 
@@ -151,10 +151,11 @@ namespace DigiLocker3
             }
             else
             {
-                if(!string.IsNullOrWhiteSpace(txtMarks.Text) & !string.IsNullOrWhiteSpace(txtSubject.Text))
+                if (!string.IsNullOrWhiteSpace(txtMarks.Text) & !string.IsNullOrWhiteSpace(txtSubject.Text))
                 {
                     con.Open();
-                    try {
+                    try
+                    {
                         string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
                         string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Term) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + ddlTerm.SelectedValue + "')";
                         SqlCommand cmd = new SqlCommand(query, con);
@@ -293,28 +294,22 @@ namespace DigiLocker3
 
             string term_Label = "______________";
             string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
-            for (int i = 0; i < lbEntryType.Items.Count; i++)
+
+            string new_term_Label = " ";
+            string entry_name = lbEntryType.SelectedValue;
+            SqlCommand com = new SqlCommand("select TERM_LABEL from " + table_name + " where TYPE_NAME = '" + entry_name + "'", con); // table name 
+            using (SqlDataReader dr = com.ExecuteReader())
             {
-                if (lbEntryType.Items[i].Selected)
+                while (dr.Read())
                 {
-                    string new_term_Label = " ";
-                    string entry_name = lbEntryType.Items[i].Text;
-                    SqlCommand com = new SqlCommand("select TERM_LABEL from " + table_name + " where TYPE_NAME = '" + entry_name + "'", con); // table name 
-                    using (SqlDataReader dr = com.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            new_term_Label = dr[0].ToString();
-                        }
-                    }
-                    if ((new_term_Label.Split('_').Length - 1) < ((term_Label.Split('_').Length - 1)))
-                    {
-                        term_Label = new_term_Label;
-                    }
-                    //Response.Write(selectedItem + "   ");
-                    //insert command
+                    term_Label = dr[0].ToString();
                 }
             }
+            
+            //Response.Write(selectedItem + "   ");
+            //insert command
+
+
 
             ddlTerm.DataSource = term_Label.Split('_');
             ddlTerm.DataBind();
@@ -334,7 +329,7 @@ namespace DigiLocker3
 
 
 
-            
+
         }
 
         protected void ResetButton_Click(object sender, EventArgs e)
@@ -381,7 +376,7 @@ namespace DigiLocker3
             //GridView2.DataBind();
 
 
-            
+
         }
 
         protected void ddlTermIndexChanged(object sender, EventArgs e)
@@ -405,7 +400,7 @@ namespace DigiLocker3
 
 
 
-            
+
         }
 
         protected void OnSelectedIndexChanged(object sender, EventArgs e)
@@ -424,7 +419,7 @@ namespace DigiLocker3
 
         protected void txtCourseName_TextChanged(object sender, EventArgs e)
         {
-            if (!System.Text.RegularExpressions.Regex.IsMatch(txtSubject.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtSubject.Text[0]!=' ' & txtSubject.Text[0] != '\t')
+            if (!System.Text.RegularExpressions.Regex.IsMatch(txtSubject.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtSubject.Text[0] != ' ' & txtSubject.Text[0] != '\t')
             {
                 con.Open();
                 string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
@@ -452,7 +447,7 @@ namespace DigiLocker3
         protected void ShowData()
         {
             con.Open();
-            table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
+            table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
             string query = "Select ID, Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
             Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);

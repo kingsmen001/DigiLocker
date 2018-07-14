@@ -202,7 +202,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Select Term</label>
-                                            <asp:ListBox class="form-control" Style="width: auto" ID="lbTerm" runat="server" SelectionMode="Multiple" AutoPostBack="True" OnSelectedIndexChanged="SubmitButton_Click"></asp:ListBox>
+                                            <asp:DropDownList class="form-control" Style="width: auto" ID="lbTerm" runat="server"  AutoPostBack="True" OnSelectedIndexChanged="SubmitButton_Click" ><asp:ListItem Selected="true"></asp:ListItem></asp:DropDownList>
                                         </div>
 
                                         <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" Visible="False" EnableViewState="false" />

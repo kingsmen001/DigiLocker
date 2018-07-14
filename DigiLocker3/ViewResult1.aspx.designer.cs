@@ -55,7 +55,7 @@ namespace DigiLocker3 {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox lbTerm;
+        protected global::System.Web.UI.WebControls.DropDownList lbTerm;
         
         /// <summary>
         /// SubmitButton control.

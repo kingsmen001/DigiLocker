@@ -57,7 +57,7 @@ namespace DigiLocker3
                 ddlTerm.DataSource = termLabel.Distinct().ToList();
                 ddlTerm.DataBind();
 
-                table_name = ddlCourseType.Items[0].Value.Replace(" ","_") + "_ENTRY_TYPE";
+                table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
                 com = new SqlCommand("select * from " + table_name, con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
@@ -70,13 +70,13 @@ namespace DigiLocker3
                 string term = ddlTerm.SelectedValue;
                 string query = "";
                 string type_name = "";
-                com = new SqlCommand("select TYPE_NAME from " + table_name, con); // table name 
+                com = new SqlCommand("select TYPE_NAME from " + ddlCourseType.SelectedValue.Replace(" ","_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE", con); // table name 
                 using (SqlDataReader dr = com.ExecuteReader())
                 {
                     while (dr.Read())
                     {
                         type_name = dr[0].ToString().Replace(" ","_");
-                        table_name = course_name.Replace(" ","_") + "_" + type_name + "_" + "SUBJECTS";
+                        table_name = course_name.Replace(" ","_") +"_" + ddlCourseNo.SelectedValue + "_" + type_name + "_" + "SUBJECTS";
                         query = query + "Select Subject_Name from " + table_name + " where term = '" + term + "' UNION ";
                     }
                 }
@@ -216,7 +216,7 @@ namespace DigiLocker3
             ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             ddlCourseNo.DataBind();
 
-            name = ddlCourseType.SelectedValue.Replace(" ","_") + "_ENTRY_TYPE";
+            name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
             com = new SqlCommand("select * from " + name, con); // table name 
             da = new SqlDataAdapter(com);
             ds = new DataSet();
@@ -228,14 +228,14 @@ namespace DigiLocker3
 
             string query = "";
             string type_name = "";
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") +  "_ENTRY_TYPE";
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue +  "_ENTRY_TYPE";
             com = new SqlCommand("select TYPE_NAME from " + table_name, con); // table name 
             using (SqlDataReader dr = com.ExecuteReader())
             {
                 while (dr.Read())
                 {
                     type_name = dr[0].ToString().Replace(" ", "_");
-                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + type_name + "_" + "SUBJECTS";
+                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") +"_" + ddlCourseNo.SelectedValue + "_" + type_name + "_" + "SUBJECTS";
                     query = query + "Select Subject_Name from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "' UNION ";
                 }
             }
@@ -256,7 +256,7 @@ namespace DigiLocker3
 
         protected void ddlCourseNoIndexChanged(object sender, EventArgs e)
         {
-            String name = ddlCourseType.SelectedValue.Replace(" ","_") + "_ENTRY_TYPE";
+            String name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
             SqlCommand com = new SqlCommand("select * from" + name, con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
@@ -272,14 +272,14 @@ namespace DigiLocker3
             con.Open();
             string query = "";
             string type_name = "";
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + "ENTRY_TYPE";
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
             SqlCommand com = new SqlCommand("select TYPE_NAME from " + table_name, con); // table name 
             using (SqlDataReader dr = com.ExecuteReader())
             {
                 while (dr.Read())
                 {
                     type_name = dr[0].ToString().Replace(" ", "_");
-                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + type_name + "_" + "SUBJECTS";
+                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + type_name + "_" + "SUBJECTS";
                     query = query + "Select Subject_Name from " + table_name + " where term = '" + ddlTerm.SelectedValue + "' UNION ";
                 }
             }
@@ -321,7 +321,7 @@ namespace DigiLocker3
                 while (dr.Read())
                 {
                     type_name = dr[0].ToString().Replace(" ", "_");
-                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + type_name + "_" + "SUBJECTS";
+                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + type_name + "_" + "SUBJECTS";
                     query = query + "Select Subject_Name from " + table_name + " where term = '" + term + "' UNION ";
                 }
             }

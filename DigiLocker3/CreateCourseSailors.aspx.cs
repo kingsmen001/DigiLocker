@@ -174,7 +174,7 @@ namespace DigiLocker3
 
         protected void txtCourseName_TextChanged(object sender, EventArgs e)
         {
-            if (!System.Text.RegularExpressions.Regex.IsMatch(txtCourseName.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtSubject.Text[0] != ' ' & txtSubject.Text[0] != '\t')
+            if (!System.Text.RegularExpressions.Regex.IsMatch(txtCourseName.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtCourseName.Text[0] != ' ' & txtCourseName.Text[0] != '\t')
             {
                 
                 con.Open();

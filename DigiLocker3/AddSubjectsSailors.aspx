@@ -190,7 +190,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Select Entry Type</label>
-                                            <asp:ListBox class="form-control" Style="width: auto" ID="lbEntryType" runat="server" SelectionMode="Multiple" AutoPostBack="True" OnSelectedIndexChanged="lblEntryTypeIndexChanged"></asp:ListBox>
+                                            <asp:DropDownList class="form-control" Style="width: auto" ID="lbEntryType" runat="server"  AutoPostBack="True" OnSelectedIndexChanged="lblEntryTypeIndexChanged"></asp:DropDownList>
                                         </div>
                                         <div class="form-group">
                                             <label>Select Term</label>

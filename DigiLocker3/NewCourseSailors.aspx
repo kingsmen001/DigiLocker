@@ -166,7 +166,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Course Instance</h1>
+                    <h1 class="page-header" id ="heading" runat="server">Add Course</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -186,7 +186,7 @@
                                         <div class="form-group">
                                             <div class ="form-row">
                                                  <div class="col-md-6">
-                                                    <label>Course Type</label>
+                                                    <label id="labeltype" runat="server">Course Type</label>
                                                     <asp:DropDownList class="form-control" ID="ddlCourseType" runat="server" OnSelectedIndexChanged = "OnSelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </div>

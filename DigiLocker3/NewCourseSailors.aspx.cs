@@ -13,12 +13,36 @@ namespace DigiLocker3
 {
     public partial class Terms : System.Web.UI.Page
     {
+        string name;
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+           
+            if (Request.QueryString["coursename"]!=null)
+            {
+                heading.InnerHtml = Request.QueryString["coursename"];
+                ddlCourseType.Visible = false;
+                ddlCourseType.EnableViewState = false;
+                labeltype.Visible = false;
+                labeltype.EnableViewState = false;
+                name = Request.QueryString["coursename"];
+                
+            }
+
+
             if (!this.IsPostBack)
-            { 
+            {
+                if (Request.QueryString["coursename"] != null)
+                {
+                    heading.InnerHtml = Request.QueryString["coursename"];
+                    ddlCourseType.Visible = false;
+                    ddlCourseType.EnableViewState = false;
+                    labeltype.Visible = false;
+                    labeltype.EnableViewState = false;
+                    name = Request.QueryString["coursename"];
+
+                }
+
                 con.Open();
                 SqlCommand com = new SqlCommand("select CONCAT(COURSE_NAME, ' ', COURSE_NO) AS TYPE_NAME from SAILOR_COURSE", con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
@@ -41,6 +65,7 @@ namespace DigiLocker3
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
                 con.Close();
+                
             }
         }
         protected void SubmitButton_Click(object sender, EventArgs e)
@@ -52,8 +77,9 @@ namespace DigiLocker3
                                       "ServerControlScript", script, true);
                 Course_Number_TextBox.Text = "";
             }
-            else
+            else if(!System.Text.RegularExpressions.Regex.IsMatch(Course_Number_TextBox.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & Course_Number_TextBox.Text[0] != ' ' & Course_Number_TextBox.Text[0] != '\t')
             {
+                
                 try
                 {
                     //string filename = Path.GetFileName(FileUploadControl.FileName);
@@ -61,7 +87,10 @@ namespace DigiLocker3
 
                     con.Open();
                     //string course = this.DropDownList1.SelectedIndex; GetItemText(this.DropDownList1.SelectedItem);
-                    string name = ddlCourseType.SelectedValue;
+                    if(name == null)
+                    {
+                        name = ddlCourseType.SelectedValue;
+                    }
                     string insertQuery;
                     SqlCommand cmd;
                     insertQuery = "insert into Sailor_Course(Course_No, Course_Name)values (@Course_No, @Course_Name)";
@@ -69,8 +98,29 @@ namespace DigiLocker3
                     cmd.Parameters.AddWithValue("@Course_No", Course_Number_TextBox.Text);
                     cmd.Parameters.AddWithValue("@Course_Name", name);
                     cmd.ExecuteNonQuery();
+                    string query = "Select Type_Name from SAILOR_COURSE_TYPE";
+                    //cmd = new SqlCommand(query, con);
+                    //SqlDataReader dr = cmd.ExecuteReader();
+                    //List<string> entryList = new List<string>();
+                    //while(dr.Read())
+                    //{
+                    //    entryList.Add(dr.GetString(0));
+                    //}
+                    //dr.Close();
+                    //foreach(string entry in entryList)
+                    //{
+                    //    query = "Select * into " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_" + entry.Replace(" ", "_") + "_SUBJECTS from " + name.Replace(" ", "_") + "_" + entry.Replace(" ", "_") + "_SUBJECTS" ;
+                    //    cmd = new SqlCommand(query, con);
+                    //    cmd.ExecuteNonQuery();
+                    //}
+                    query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_ENTRY_TYPE ( TYPE_NAME VARCHAR(50))";
+                    cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
                     //Response.Write("Record Uploaded Successfully!!!thank you");
-                    Response.Redirect("UploadNominalRollSailors.aspx?coursename=" + name);
+                    Response.Redirect("UploadNominalRollSailors.aspx?coursename=" + name + "&courseno=" + Course_Number_TextBox.Text);
+                    string script = "alert(\" Course Enrolled Succefullly \");";
+                    ScriptManager.RegisterStartupScript(this, GetType(),
+                                          "ServerControlScript", script, true);
 
                     con.Close();
                 }
@@ -85,9 +135,15 @@ namespace DigiLocker3
                     }
                     else Response.Write(ex);
                 }
+                }
+                else{
+                string script = "alert(\" Only AlphaNumeric Characters are Allowed. Name Cannot start with Space \");";
+                ScriptManager.RegisterStartupScript(this, GetType(),
+                                      "ServerControlScript", script, true);
+                Course_Number_TextBox.Text = "";
             }
 
-            
+
         }
 
         protected void ddlCourseTypeIndexChanged(object sender, EventArgs e)

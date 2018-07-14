@@ -164,7 +164,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Trainees</h1>
+                    <h1 class="page-header" id="heading" runat="server">Add Trainees</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -184,13 +184,13 @@
                                         <div class="form-row" style="width: 100%">
                                             <div class="form-group col-md-4">
 
-                                                <label>Select Course Type</label>
+                                                <label id="labeltype" runat="server">Select Course Type</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseType" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlCourseTypeIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
 
                                             <div class="form-group col-md-4">
-                                                <label>Select Course Number</label>
+                                                <label id="labelnumber" runat="server">Select Course Number</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" AutoPostBack="true" runat="server" OnSelectedIndexChanged="OnSelectedIndexChanged">
                                                 </asp:DropDownList>
                                             </div>

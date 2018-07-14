@@ -35,7 +35,7 @@ namespace DigiLocker3
                         //int DocID = sqlRdr.GetInt32(0);
                         string CourseName = sqlRdr.GetString(0);
                         i++;
-                        data += "<tr><td><a href=\"CourseDetails.aspx?id=" + CourseName + "\" >" + CourseName + "</a></td></tr>";
+                        data += "<tr><td><a href=\"CourseDetails.aspx?coursename=" + CourseName + "\" >" + CourseName + "</a></td></tr>";
                         //data += "<tr><td>" + DocID + "</td><td><a href=\"#\" runat=\"server\" onServerClick=\"MyFuncion_Click\" >" + DocName + "</a></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
                         //data += "<tr><td>" + DocID + "</td><td><asp:LinkButton id=\"myid\" runat=\"server\" OnClick=\"MyFunction_Click\" >" + DocName + "</asp:LinkButton></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
                     }
