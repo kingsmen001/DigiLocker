@@ -24,7 +24,7 @@ namespace DigiLocker3
                 ddlCourseType.SelectedIndex = 0;
                 ddlCourseNo.SelectedIndex = 0;
                 ddlEntryType.SelectedIndex = 0;
-                
+
                 //lbTerm.SelectedIndex = null;
 
                 SqlCommand com = new SqlCommand("select Distinct(Course_Name) from SAILOR_COURSE", con); // table name 
@@ -136,7 +136,7 @@ namespace DigiLocker3
                     {
                         col_List = col_List + ", " + col_nam;
                     }
-                    col_List = col_List + ", " + term + "_total, " + term + "_percentage, " + term + "_Seniority_gained, " + term + "_Seniority_lost, " + term + "_Seniority_total";
+                    col_List = col_List + ", " + term + "_total, " + term + "_failed, " + term + "_percentage, " + term + "_Seniority_gained, " + term + "_Seniority_lost, " + term + "_Seniority_total";
                     column_List.Clear();
                 }
             }
@@ -152,6 +152,49 @@ namespace DigiLocker3
             GridView1.DataBind();
             con.Close();
         }
+        public override void VerifyRenderingInServerForm(Control control)
+        {
+            /* Verifies that the control is rendered */
+        }
+
+        protected void Export_Clicked(object sender, EventArgs e)
+        {
+            Response.Clear();
+            Response.Buffer = true;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.Charset = "";
+            string FileName;
+            string heading;
+            if (lbTerm.SelectedItem.Text.Equals("Please Select"))
+            {
+                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "Result.xls";
+                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", " ");
+            }
+            else {
+                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + lbTerm.SelectedItem.Text + "Result.xls";
+                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue + " " + ddlEntryType.SelectedValue.Replace(" ", " ") + " " + lbTerm.SelectedItem.Text + "_Term";
+            }
+            StringWriter strwritter = new StringWriter();
+            HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", "attachment;filename=" + FileName);
+            //for (int i = 0; i < GridView3.Rows.Count; i++)
+            //{
+            //    GridViewRow row = GridView1.Rows[i];
+            //    row.Cells[3].Visible = false;
+            //}
+            
+            GridView1.GridLines = GridLines.Both;
+            GridView1.HeaderStyle.Font.Bold = true;
+            GridView1.RenderControl(htmltextwrtter);
+            Response.Write("<B>");
+            Response.Write(ddlCourseType.SelectedValue + " " + ddlCourseNo.SelectedValue + " " + ddlEntryType.SelectedValue);
+            Response.Write("</B>");
+            Response.Write(strwritter.ToString());
+            Response.End();
+        }
 
         protected void showResult()
         {
@@ -160,8 +203,8 @@ namespace DigiLocker3
             string course = ddlCourseType.SelectedValue;
             string course_no = ddlCourseNo.SelectedValue;
             string entry_type = ddlEntryType.SelectedValue;
-            
-            string table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type.Replace(" ","_");
+
+            string table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type.Replace(" ", "_");
             SqlCommand cmd;
             con.Open();
 
@@ -176,10 +219,10 @@ namespace DigiLocker3
             dr.Close();
             term_label = term_label.Remove(term_label.Length - 1);
             string col_list1 = "";
-            
+
             foreach (string term in term_label.Split('_'))
             {
-                col_list1 = col_list1 + term + "_total, " + term + "_percentage, ";
+                col_list1 = col_list1 + term + "_total, " + term + "_percentage, " + term + "_failed, ";
                 if (seniority.Equals("1"))
                 {
                     col_list1 = col_list1 + term + "_seniority_gained, " + term + "_seniority_lost, " + term + "_seniority_total, ";
@@ -187,8 +230,8 @@ namespace DigiLocker3
             }
             col_list1 = col_list1 + "Total_Marks, TOTAL_Percentage, total_seniority_gained, total_seniority_lost, total_seniority";
             table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type.Replace(" ", "_");
-            query = "Select " + col_list1 + " from " + table_name;
-            
+            query = "Select Personal_No, Name, Rank, " + col_list1 + " from " + table_name;
+
             cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
             adpt.Fill(dt);
@@ -206,7 +249,7 @@ namespace DigiLocker3
             string course_no = ddlCourseNo.SelectedValue;
             string entry_type = ddlEntryType.SelectedValue;
             con.Open();
-            string query = "Select DISTINCT(TERM) from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS" ;
+            string query = "Select DISTINCT(TERM) from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
             SqlCommand com = new SqlCommand(query, con);
             SqlDataReader dt = com.ExecuteReader();
             string term_label = "";
@@ -492,7 +535,7 @@ namespace DigiLocker3
             //}
             lbTerm.DataSource = termLabel.Distinct().ToList();
             lbTerm.DataBind();
-
+            lbTerm.Items.Insert(0, new ListItem("Please Select", "0"));
 
             con.Close();
             showResult();
@@ -537,6 +580,7 @@ namespace DigiLocker3
             //}
             lbTerm.DataSource = termLabel.Distinct().ToList();
             lbTerm.DataBind();
+            lbTerm.Items.Insert(0, new ListItem("Please Select", "0"));
 
             con.Close();
             showResult();
@@ -588,6 +632,7 @@ namespace DigiLocker3
             //}
             lbTerm.DataSource = termLabel.Distinct().ToList();
             lbTerm.DataBind();
+            lbTerm.Items.Insert(0, new ListItem("Please Select", "0"));
             con.Close();
             showResult();
         }

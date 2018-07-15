@@ -122,6 +122,7 @@ namespace DigiLocker3
 
                 con.Close();
             }
+            showData();
         }
 
         protected void SubmitButton_Click(object sender, EventArgs e)
@@ -377,6 +378,10 @@ namespace DigiLocker3
                 {
                     col_List = col_List + ", " + term + "_total int DEFAULT 0, " + term + "_percentage decimal(4,2) DEFAULT 0 ";
                 }
+            }
+            foreach (string term in term_label.Split('_'))
+            {
+                col_List = col_List + ", " + term + "_Failed int DEFAULT 0 ";
             }
             col_List = col_List + ", Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0 ";
             //Response.Write(col_List);

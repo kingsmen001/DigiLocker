@@ -92,31 +92,31 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="Home.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>View Courses</a>
+                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>View Courses</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Create Course</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course</a>
                                 </li>
                                 <li>
-                                    <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
                                 </li>
                                 <li>
-                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Add Course</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Course</a>
                                 </li>
                                 <li>
-                                    <a href="UploadNominalRollSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
                                 </li>
                                 <li>
-                                    <a href="ViewResultSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>View Result</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
                                 <li>
-                                    <a href="ViewIndividualSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>View Individual</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>View Individual</a>
                                 </li>
 
                             </ul>
@@ -130,27 +130,30 @@
                                     <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Add Name and Entry Details</a>
+                                            <a href="CreateCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Name and Entry Details</a>
                                         </li>
+                                        <%--<li>
+                                            <a href="SeniorityDetails.aspx"><i class="fa fa-edit fa-fw"></i>Add Seniority</a>
+                                        </li>--%>
                                         <li>
-                                            <a href="SeniorityDetails.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Add Seniority</a>
-                                        </li>
-                                        <li>
-                                            <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
+                                            <a href="AddSubjectsSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Add Course</a>
+                                    <a href="NewCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Course</a>
                                 </li>
                                 <li>
-                                    <a href="UploadNominalRollSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
+                                    <a href="UploadNominalRollSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+                                    <a href="ViewTrainees.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="ViewResult1.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i>View Result</a>
+                                    <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+                                </li>
+                                <li>
+                                    <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
 
 
@@ -166,7 +169,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Subjects</h1>
+                    <h1 class="page-header" id="heading" runat="server">Add Subjects</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -180,98 +183,106 @@
                         <form id="form1" runat="server">
                             <div class="panel-body">
 
-                                <div class="row">
-                                    <div class="col-lg-6">
-
-                                        <div class="form-group">
-                                            <label>Select Course Type</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseTypeIndexChanged">
-                                            </asp:DropDownList>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Select Entry Type</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="lbEntryType" runat="server"  AutoPostBack="True" OnSelectedIndexChanged="lblEntryTypeIndexChanged"></asp:DropDownList>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Select Term</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="ddlTerm" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTermIndexChanged">
-                                            </asp:DropDownList>
+                                <div class="row" style="width:80%">
+                                    <div class="col-lg-6" style="width:80%">
+                                        <div class="form-row" style="width:80%">
+                                            <div class="form-group col-lg-4" id="divType" runat ="server">
+                                                <label runat="server" id="lblType">Select Course Type</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseTypeIndexChanged">
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Select Entry Type</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="lbEntryType" runat="server" AutoPostBack="True" OnSelectedIndexChanged="lblEntryTypeIndexChanged"></asp:DropDownList>
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Select Term</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlTerm" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTermIndexChanged">
+                                                </asp:DropDownList>
+                                            </div>
                                         </div>
                                         <div class="form-group" runat="server" id="exlfile">
                                             <label>Subject Detail Excel File</label>
                                             <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
                                         </div>
+                                        <div class="form-group">
+                                            <label>Existing Subjects</label>
+                                            <div class="form-group" style="height: auto; max-height: 350px; width: 100%; overflow: auto;">
+                                                <asp:GridView ID="GridView3" CssClass="table table-striped table-bordered table-hover columnscss" runat="server" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1_RowCancelingEdit"
+                                                    OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowDeleting="GridView1_RowDeleting" ShowHeaderWhenEmpty="True" EmptyDataText="No records Found">
+                                                    <Columns>
+
+                                                        <asp:TemplateField HeaderText="ID" Visible="false">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_ID" runat="server" Text='<%#Eval("ID") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Subject Name">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_Name" runat="server" Text='<%#Eval("Subject_Name") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("Subject_Name") %>'></asp:TextBox>
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Max Marks">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_City" runat="server" Text='<%#Eval("Max_Marks") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:TextBox ID="txt_City" runat="server" Text='<%#Eval("Max_Marks") %>'></asp:TextBox>
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:Button ID="btn_Edit" runat="server" Text="Edit" CommandName="Edit" />
+                                                                <asp:Button ID="btn_Delete" runat="server" Text="Delete" CommandName="Delete" />
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:Button ID="btn_Update" runat="server" Text="Update" CommandName="Update" />
+                                                                <asp:Button ID="btn_Cancel" runat="server" Text="Cancel" CommandName="Cancel" />
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                </asp:GridView>
+                                                <%--<asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView2" runat="server" ScrollBars="Both" AllowPaging="False" >
+                                            </asp:GridView>--%>
+                                            </div>
+                                        </div>
                                         <div class="form-group" runat="server" id="single">
-                                            <label>Add New Subject</label>
+
                                             <div class="form-row">
+
                                                 <div class="form-group col-md-4">
-                                                    <label for="lbl_equip_code">Subject Name</label>
+                                                    <%--<label for="lbl_equip_code">Subject Name</label>--%>
                                                     <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtSubject" placeholder="Subject Name" AutoPostBack="true" OnTextChanged="txtCourseName_TextChanged" />
                                                 </div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="lbl_equip_desc">Maximum Marks</label>
+                                                <div class="form-group col-md-4">
+                                                    <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
                                                     <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtMarks" placeholder="Maximum Marks" />
                                                 </div>
-
+                                                <div class="form-group col-md-2">
+                                                     <asp:Button runat="server" ID="SubmitButton" Cssclass="form-control btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
+                                                </div>
                                             </div>
 
                                         </div>
 
-                                        <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
-                                        <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" />
+
+
+                                        <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" Visible="false" EnableViewState="false" />
                                         <br />
                                         <br />
 
-
                                     </div>
-                                    <!-- /.col-lg-6 (nested) -->
-                                    <div class="col-lg-6">
-                                        <label>Existing Subjects</label>
-                                        <div class="form-group" style="height: auto; max-height: 350px; width: 100%; overflow: auto;">
-                                            <asp:GridView ID="GridView3" CssClass="table table-striped table-bordered table-hover columnscss" runat="server" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1_RowCancelingEdit"
-                                                OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating">
-                                                <Columns>
-                                                    <asp:TemplateField>
-                                                        <ItemTemplate>
-                                                            <asp:Button ID="btn_Edit" runat="server" Text="Edit" CommandName="Edit" />
-                                                        </ItemTemplate>
-                                                        <EditItemTemplate>
-                                                            <asp:Button ID="btn_Update" runat="server" Text="Update" CommandName="Update" />
-                                                            <asp:Button ID="btn_Cancel" runat="server" Text="Cancel" CommandName="Cancel" />
-                                                        </EditItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="ID" Visible="false">
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="lbl_ID" runat="server" Text='<%#Eval("ID") %>'></asp:Label>
-                                                        </ItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Subject Name">
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="lbl_Name" runat="server" Text='<%#Eval("Subject_Name") %>'></asp:Label>
-                                                        </ItemTemplate>
-                                                        <EditItemTemplate>
-                                                            <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("Subject_Name") %>'></asp:TextBox>
-                                                        </EditItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Max Marks">
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="lbl_City" runat="server" Text='<%#Eval("Max_Marks") %>'></asp:Label>
-                                                        </ItemTemplate>
-                                                        <EditItemTemplate>
-                                                            <asp:TextBox ID="txt_City" runat="server" Text='<%#Eval("Max_Marks") %>'></asp:TextBox>
-                                                        </EditItemTemplate>
-                                                    </asp:TemplateField>
-                                                </Columns>
-                                            </asp:GridView>
-                                            <%--<asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView2" runat="server" ScrollBars="Both" AllowPaging="False" >
-                                            </asp:GridView>--%>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.col-lg-6 (nested) -->
                                 </div>
-                                <!-- /.row (nested) -->
+                                <!-- /.col-lg-6 (nested) -->
+                                <div class="col-lg-6">
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
                             </div>
+                            <!-- /.row (nested) -->
+
                             <div class="panel-body">
 
                                 <div class="row" style="width: 100%">
@@ -290,13 +301,13 @@
                         </form>
                         <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
+                <!-- /.panel -->
             </div>
-            <!-- /.row -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->

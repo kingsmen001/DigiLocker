@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ViewResult1.aspx.cs" Inherits="DigiLocker3.ViewResult1" EnableEventValidation="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ViewTrainees1.aspx.cs" Inherits="DigiLocker3.ViewTrainees1" EnableEventValidation="false" %>
 
 <!DOCTYPE html>
 
@@ -155,8 +155,6 @@
                                 <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
-
-
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -169,7 +167,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">View Result</h1>
+                    <h1 class="page-header" id="heading" runat="server">Trainees Details</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -178,65 +176,147 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Enter details here
+                            See All Trainees here
                         </div>
-                        <div class="panel-body">
-                            <div class="row" style="width: 100%">
+                        <form id="form1" runat="server">
+                            <div class="panel-body">
 
-                                <div class="col-lg-6" style="width: 100%">
-                                    <form id="form1" runat="server">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-2">
+                                <div class="row" style="width:100%">
+                                    <div class="col-lg-6" style="width:100%">
+                                        <div class="form-row" style="width:100%">
+                                            <div class="form-group col-lg-4">
                                                 <label>Select Course Type</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseTypeIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
-
-                                            <div class="form-group col-md-2">
+                                            <div class="form-group col-lg-4">
                                                 <label>Select Course Number</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseNoIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Select Entry Type</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="lbEntryType" runat="server" AutoPostBack="True" OnSelectedIndexChanged="lblEntryTypeIndexChanged"></asp:DropDownList>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="form-group" runat="server" id="exlfile" visible="false" enableviewstate="false">
+                                            <label>Subject Detail Excel File</label>
+                                            <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
                                         </div>
                                         <div class="form-group">
-                                            <label>Select Entry Type</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged">
-                                            </asp:DropDownList>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Select Term</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="lbTerm" runat="server"  AutoPostBack="True" OnSelectedIndexChanged="SubmitButton_Click" ><asp:ListItem Selected="true"></asp:ListItem></asp:DropDownList>
-                                        </div>
-
-                                        <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" Visible="False" EnableViewState="false" />
-
-                                        <br />
-                                        <br />
-
-
-                                        <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
-                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
-                                            </asp:GridView>
-                                        </div>
-                                        <div class="form-group col-md-2">
+                                            <label>Enrolled Trainees</label>
+                                            <div class="form-group" style="height: auto; max-height: 350px; width: 100%; overflow: auto;">
+                                                <asp:GridView ID="GridView3" CssClass="table table-striped table-bordered table-hover columnscss" runat="server" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1_RowCancelingEdit"
+                                                    OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowDeleting="GridView1_RowDeleting" ShowHeaderWhenEmpty="True" EmptyDataText="No records Found">
+                                                    <Columns>
+                                                        <asp:TemplateField HeaderText="ID" Visible="false">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_ID" runat="server" Text='<%#Eval("ID") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Personal No" >
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_No" runat="server" Text='<%#Eval("Personal No") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:TextBox ID="txt_No" runat="server" Text='<%#Eval("Personal No") %>'></asp:TextBox>
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Name">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_Name" runat="server" Text='<%#Eval("Name") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("Name") %>'></asp:TextBox>
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Rank">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_Rank" runat="server" Text='<%#Eval("Rank") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:TextBox ID="txt_Rank" runat="server" Text='<%#Eval("Rank") %>'></asp:TextBox>
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:Button ID="btn_Edit" runat="server" Text="Edit" CommandName="Edit" />
+                                                                <asp:Button ID="btn_Delete" runat="server" Text="Delete" CommandName="Delete" />
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:Button ID="btn_Update" runat="server" Text="Update" CommandName="Update" />
+                                                                <asp:Button ID="btn_Cancel" runat="server" Text="Cancel" CommandName="Cancel" />
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                </asp:GridView>
+                                                <%--<asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView2" runat="server" ScrollBars="Both" AllowPaging="False" >
+                                            </asp:GridView>--%>
+                                            </div>
+                                            <div class="form-group col-md-2">
                                                      <asp:Button runat="server" ID="Button1" Cssclass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" />
                                                 </div>
-                                    </form>
-                                </div>
+                                        </div>
+                                        <div class="form-group" runat="server" id="single" visible="false" enableviewstate="false">
 
+                                            <div class="form-row">
+
+                                                <div class="form-group col-md-4">
+                                                    <%--<label for="lbl_equip_code">Subject Name</label>--%>
+                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtSubject" placeholder="Subject Name" AutoPostBack="true" OnTextChanged="txtCourseName_TextChanged" />
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
+                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtMarks" placeholder="Maximum Marks" />
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                     <asp:Button runat="server" ID="SubmitButton" Cssclass="form-control btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
+                                        <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" Visible="false" EnableViewState="false" />
+                                        <br />
+                                        <br />
+
+                                    </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                <div class="col-lg-6">
+                                </div>
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
                             <!-- /.row (nested) -->
-                        </div>
+
+                            <div class="panel-body">
+
+                                <div class="row" style="width: 100%">
+                                    <div class="col-lg-6" style="width: 100%">
+                                        <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
+
+                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
+                                            </asp:GridView>
+                                        </div>
+                                        <asp:Button runat="server" ID="ConfirmButton" class="btn btn-default" Text="Confirm" OnClick="ConfirmButton_Click" Visible="False" EnableViewState="false" />
+                                    </div>
+                                    <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                <!-- /.row (nested) -->
+                            </div>
+                        </form>
                         <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
+                <!-- /.panel -->
             </div>
-            <!-- /.row -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->

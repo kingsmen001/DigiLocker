@@ -18,12 +18,16 @@ namespace DigiLocker3
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-            coursename = Request.QueryString["coursename"];
+            coursename = Request.QueryString["coursename"].Replace(" ","_");
             
             string txt = " ";
             if (!this.IsPostBack)
             {
-                ddlEntryType.SelectedIndex = 0;
+                if (Request.QueryString["coursename"] != null)
+                {
+                    heading.InnerHtml = Request.QueryString["coursename"] + " (Add Subjects)";
+                }
+                    ddlEntryType.SelectedIndex = 0;
                 ddlTerm.SelectedIndex = 0;
                 
                 con.Open();
@@ -182,7 +186,7 @@ namespace DigiLocker3
 
             //con.Close();
             
-            Response.Redirect("AddSubjectsSailors.aspx?coursename=" + coursename);
+            Response.Redirect("AddSubjectsSailors.aspx?coursename=" + coursename.Replace("_"," "));
 
             //string script = "alert(\" " + i + " Trainees Added to " + course_type + course_no + " " + entry_type + " \");";
             //ScriptManager.RegisterStartupScript(this, GetType(),

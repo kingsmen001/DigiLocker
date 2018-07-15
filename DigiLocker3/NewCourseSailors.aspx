@@ -92,65 +92,68 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                                    <a href="Home.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Courses</a>
+                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>View Courses</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Officers<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course</a>
                                 </li>
                                 <li>
-                                    <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
                                 </li>
                                 <li>
-                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Course</a>
                                 </li>
                                 <li>
-                                    <a href="UploadNominalRollSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Trainees</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Upload Marks</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
                                 </li>
                                 <li>
-                                    <a href="ViewResultSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
                                 <li>
-                                    <a href="ViewIndividualSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Individual</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>View Individual</a>
                                 </li>
-                                
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Sailors<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Sailors<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                
+
                                 <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i> Create Course <span class="fa arrow"></span></a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
-                                    <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Name and Entry Details</a>
-                                    </li>
-                                    <li>
-                                    <a href="SeniorityDetails.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Seniority</a>
-                                    </li>
-                                    <li>
-                                    <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
-                                    </li>
-                                        </ul>
+                                        <li>
+                                            <a href="CreateCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Name and Entry Details</a>
+                                        </li>
+                                        <%--<li>
+                                            <a href="SeniorityDetails.aspx"><i class="fa fa-edit fa-fw"></i>Add Seniority</a>
+                                        </li>--%>
+                                        <li>
+                                            <a href="AddSubjectsSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
-                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
+                                    <a href="NewCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Course</a>
                                 </li>
                                 <li>
-                                    <a href="UploadNominalRollSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Trainees</a>
+                                    <a href="UploadNominalRollSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Upload Marks</a>
+                                    <a href="ViewTrainees.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="ViewResult1.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
+                                    <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+                                </li>
+                                <li>
+                                    <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
                                 
                                 

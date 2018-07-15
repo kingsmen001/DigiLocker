@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MaintainScrollPositionOnPostBack="true" AutoEventWireup="true" CodeBehind="CreateCourseSailors.aspx.cs" Inherits="DigiLocker3.CreateCourse" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CreateCourseSailors.aspx.cs" Inherits="DigiLocker3.CreateCourse" %>
 
 <!DOCTYPE html>
 
@@ -92,65 +92,68 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                                    <a href="Home.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Courses</a>
+                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>View Courses</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Officers<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Create Course</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course</a>
                                 </li>
                                 <li>
-                                    <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
                                 </li>
                                 <li>
-                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Course</a>
                                 </li>
                                 <li>
-                                    <a href="UploadNominalRollSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Trainees</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Upload Marks</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
                                 </li>
                                 <li>
-                                    <a href="ViewResultSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
                                 <li>
-                                    <a href="ViewIndividualSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Individual</a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>View Individual</a>
                                 </li>
-                                
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Sailors<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Sailors<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                
+
                                 <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i> Create Course <span class="fa arrow"></span></a>
+                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
-                                    <li>
-                                    <a href="CreateCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Name and Entry Details</a>
-                                    </li>
-                                    <li>
-                                    <a href="SeniorityDetails.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Seniority</a>
-                                    </li>
-                                    <li>
-                                    <a href="AddSubjectsSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Subjects</a>
-                                    </li>
-                                        </ul>
+                                        <li>
+                                            <a href="CreateCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Name and Entry Details</a>
+                                        </li>
+                                        <%--<li>
+                                            <a href="SeniorityDetails.aspx"><i class="fa fa-edit fa-fw"></i>Add Seniority</a>
+                                        </li>--%>
+                                        <li>
+                                            <a href="AddSubjectsSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
-                                    <a href="NewCourseSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Course</a>
+                                    <a href="NewCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Course</a>
                                 </li>
                                 <li>
-                                    <a href="UploadNominalRollSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Add Trainees</a>
+                                    <a href="UploadNominalRollSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="UploadMarksSailors.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> Upload Marks</a>
+                                    <a href="ViewTrainees.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="ViewResult1.aspx?id=<%=Server.UrlDecode(Request.QueryString["id"]) %>"><i class="fa fa-edit fa-fw"></i> View Result</a>
+                                    <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+                                </li>
+                                <li>
+                                    <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
                                 
                                 
@@ -203,8 +206,8 @@
                                         <div class="form-group">
                                             <div class ="form-row">
                                                 <div class="col-md-4">
-                                                    <label>Entry Type Excel File</label>
-                                                    <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server"  />                                                
+                                                    <%--<label>Entry Type Excel File</label>--%>
+                                                    <%--<asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server"  />--%>                                                
                                                 </div>
                                                </div>
                                             </div>
@@ -216,20 +219,46 @@
                                                 </div>
                                         <br />
                                         
-                                                <div class="col-md-4">  
-                                                    <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" AutoPostback = "false" />
-                                        
-                                                    <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
-                                                    </div>
+                                                
                                                
                                         <br /><br />
                                             
                                     
                                     <div class="form-group" style="height:auto; max-height:500px; width:100%; overflow:auto;">
-                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" >
+                                        <%--<asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" >
                                             
-                                        </asp:GridView>
+                                        </asp:GridView>--%>
+
+                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="excelgrd" runat="server" AutoGenerateColumns="false" ShowFooter="true" PageSize="50">
+                                                    <Columns>
+
+                                                        <asp:TemplateField HeaderText="Entry Name">
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtMaxMarks" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Term Label">
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtMinMarks" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Duration(in Weeks)">
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtSeniority" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                            <FooterStyle HorizontalAlign="Right" />
+                                                            <FooterTemplate>
+                                                                <asp:Button class="btn btn-default" ID="ButtonAdd" runat="server" Text="Add New Row" OnClick="ButtonAdd_Click" />
+                                                            </FooterTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                </asp:GridView>
                                     </div>
+                                        <div class="col-md-4">  
+                                                    <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" AutoPostback = "false" />
+                                        
+                                                    <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
+                                                    </div>  
                                         <asp:Button runat="server" id="ConfirmButton" class="btn btn-default" text="Confirm" onclick="ConfirmButton_Click" visible="False"  EnableViewState="false" />
                                         
                                         </form>

@@ -14,14 +14,27 @@ namespace DigiLocker3
 {
     public partial class AddSubjectsSailors : System.Web.UI.Page
     {
-        string coursename = " ";
+        string coursename;
 
         string table_name = "";
         int flag;
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-            coursename = Request.QueryString["coursename"];
+            if (Request.QueryString["coursename"] != null)
+            {
+                heading.InnerHtml = Request.QueryString["coursename"] + " (Add Subjects)";
+                //ddlCourseType.Visible = false;
+                //ddlCourseType.EnableViewState = false;
+                //lblType.Visible = false;
+                //lblType.EnableViewState = false;
+                divType.Visible = false;
+                divType.EnableViewState = false;
+                coursename = Request.QueryString["coursename"].Replace(" ", "_");
+
+
+
+            }
 
 
             if (!this.IsPostBack)
@@ -42,9 +55,9 @@ namespace DigiLocker3
                 ddlCourseType.DataBind();
 
 
-
-                string name = ddlCourseType.Items[0].Value.Replace(" ", "_") + "_ENTRY_TYPE";
-                com = new SqlCommand("select * from " + name, con); // table name 
+                if (coursename == null)
+                    coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+                com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE", con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -54,7 +67,7 @@ namespace DigiLocker3
                 lbEntryType.DataBind();
 
                 string term_Label = "______________";
-                string table_name = ddlCourseType.Items[0].Value.Replace(" ", "_") + "_ENTRY_TYPE";
+                string table_name = coursename.Replace(" ", "_") + "_ENTRY_TYPE";
                 string entry_name = "";
 
                 for (int i = 0; i < lbEntryType.Items.Count; i++)
@@ -94,7 +107,7 @@ namespace DigiLocker3
                 ddlTerm.DataSource = term_Label.Split('_');
                 ddlTerm.DataBind();
 
-                table_name = ddlCourseType.Items[0].Value.Replace(" ", "_") + "_" + lbEntryType.Items[0].Text.Replace(" ", "_") + "_SUBJECTS";
+                table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.Items[0].Text.Replace(" ", "_") + "_SUBJECTS";
                 string query = "Select ID, Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
                 Response.Write(query);
                 SqlCommand cmd = new SqlCommand(query, con);
@@ -102,22 +115,22 @@ namespace DigiLocker3
                 DataTable dt = new DataTable();
                 adpt.Fill(dt);
 
-                if (dt.Rows.Count > 0)
-                {
-                    exlfile.Visible = false;
-                    single.Visible = true;
-                    GridView3.DataSource = dt;
-                    GridView3.DataBind();
-                    flag = 1;
-                    SubmitButton.Text = "Add";
-                }
-                else
-                {
-                    exlfile.Visible = true;
-                    single.Visible = false;
-                    flag = 0;
-                    SubmitButton.Text = "Submit";
-                }
+                //if (dt.Rows.Count > 0)
+                //{
+                exlfile.Visible = false;
+                single.Visible = true;
+                GridView3.DataSource = dt;
+                GridView3.DataBind();
+                flag = 1;
+                SubmitButton.Text = "Add";
+                //}
+                //else
+                //{
+                //    exlfile.Visible = true;
+                //    single.Visible = false;
+                //    flag = 0;
+                //    SubmitButton.Text = "Submit";
+                //}
 
 
                 con.Close();
@@ -130,56 +143,58 @@ namespace DigiLocker3
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            if (flag == 0)
-            {
-                if (FileUpload1.HasFile)
-                {
-                    string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
-                    string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-                    string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
+            //if (flag == 0)
+            //{
+            //    if (FileUpload1.HasFile)
+            //    {
+            //        string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
+            //        string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
+            //        string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
 
-                    string FilePath = Server.MapPath(FolderPath + FileName);
-                    FileUpload1.SaveAs(FilePath);
-                    Import_To_Grid(FilePath, Extension);
-                    ConfirmButton.Visible = true;
-                    ConfirmButton.EnableViewState = true;
-                }
-                else
+            //        string FilePath = Server.MapPath(FolderPath + FileName);
+            //        FileUpload1.SaveAs(FilePath);
+            //        Import_To_Grid(FilePath, Extension);
+            //        ConfirmButton.Visible = true;
+            //        ConfirmButton.EnableViewState = true;
+            //    }
+            //    else
+            //    {
+            //        Response.Write("<script language='javascript'>alert('Please Select a File');</script>");
+            //    }
+            //}
+            //else
+            //{
+            if (coursename == null)
+                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+            if (!string.IsNullOrWhiteSpace(txtMarks.Text) & !string.IsNullOrWhiteSpace(txtSubject.Text))
+            {
+                con.Open();
+                try
                 {
-                    Response.Write("<script language='javascript'>alert('Please Select a File');</script>");
+                    string table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+                    string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Term) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + ddlTerm.SelectedValue + "')";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
                 }
+                catch (SqlException ex)
+                {
+                    if (ex.Number == 2627 || ex.Number == 2601)
+                    {
+                        string script = "alert(\" Subject Already Exists. \");";
+                        ScriptManager.RegisterStartupScript(this, GetType(),
+                                              "ServerControlScript", script, true);
+
+                    }
+                    Response.Write(ex.Message);
+                }
+                con.Close();
+                ShowData();
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(txtMarks.Text) & !string.IsNullOrWhiteSpace(txtSubject.Text))
-                {
-                    con.Open();
-                    try
-                    {
-                        string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
-                        string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Term) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + ddlTerm.SelectedValue + "')";
-                        SqlCommand cmd = new SqlCommand(query, con);
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (SqlException ex)
-                    {
-                        if (ex.Number == 2627 || ex.Number == 2601)
-                        {
-                            string script = "alert(\" Subject Already Exists. \");";
-                            ScriptManager.RegisterStartupScript(this, GetType(),
-                                                  "ServerControlScript", script, true);
-
-                        }
-                        Response.Write(ex.Message);
-                    }
-                    con.Close();
-                    ShowData();
-                }
-                else
-                {
-                    Response.Write("<script language='javascript'>alert('Please Fill Complete Details');</script>");
-                }
+                Response.Write("<script language='javascript'>alert('Please Fill Complete Details');</script>");
             }
+
         }
 
         private void Import_To_Grid(string FilePath, string Extension)
@@ -287,13 +302,15 @@ namespace DigiLocker3
 
         protected void lblEntryTypeIndexChanged(object sender, EventArgs e)
         {
+            if (coursename == null)
+                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
 
             con.Open();
 
 
 
             string term_Label = "______________";
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
+            string table_name = coursename.Replace(" ", "_") + "_ENTRY_TYPE";
 
             string new_term_Label = " ";
             string entry_name = lbEntryType.SelectedValue;
@@ -305,7 +322,7 @@ namespace DigiLocker3
                     term_Label = dr[0].ToString();
                 }
             }
-            
+
             //Response.Write(selectedItem + "   ");
             //insert command
 
@@ -314,7 +331,7 @@ namespace DigiLocker3
             ddlTerm.DataSource = term_Label.Split('_');
             ddlTerm.DataBind();
 
-            table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
+            table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
             string query = "Select Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
             Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
@@ -381,9 +398,11 @@ namespace DigiLocker3
 
         protected void ddlTermIndexChanged(object sender, EventArgs e)
         {
+            if (coursename == null)
+                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
             con.Open();
 
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
+            string table_name = coursename + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
             string query = "Select Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.SelectedValue + "'";
             Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
@@ -419,10 +438,12 @@ namespace DigiLocker3
 
         protected void txtCourseName_TextChanged(object sender, EventArgs e)
         {
+            if (coursename == null)
+                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
             if (!System.Text.RegularExpressions.Regex.IsMatch(txtSubject.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtSubject.Text[0] != ' ' & txtSubject.Text[0] != '\t')
             {
                 con.Open();
-                string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+                string table_name = coursename + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
                 Response.Write(table_name);
                 SqlCommand com = new SqlCommand("select Count(SUBJECT_NAME) from " + table_name + " where SUBJECT_NAME = '" + txtSubject.Text + "'", con); // table name 
                 int count = (int)com.ExecuteScalar();
@@ -442,37 +463,42 @@ namespace DigiLocker3
                                       "ServerControlScript", script, true);
                 txtSubject.Text = "";
             }
+            txtMarks.Focus();
         }
 
         protected void ShowData()
         {
+            if (coursename == null)
+                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
             con.Open();
-            table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
-            string query = "Select ID, Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
+            table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
+            string query = "Select ID, Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.SelectedValue + "'";
             Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             adpt.Fill(dt);
 
-            if (dt.Rows.Count > 0)
-            {
-                exlfile.Visible = false;
-                single.Visible = true;
-                GridView3.DataSource = dt;
-                GridView3.DataBind();
-                flag = 1;
-                SubmitButton.Text = "Add";
-            }
-            else
-            {
-                GridView3.DataSource = dt;
-                GridView3.DataBind();
-                exlfile.Visible = true;
-                single.Visible = false;
-                flag = 0;
-                SubmitButton.Text = "Submit";
-            }
+            //if (dt.Rows.Count > 0)
+            //{
+            exlfile.Visible = false;
+            single.Visible = true;
+            GridView3.DataSource = dt;
+            GridView3.DataBind();
+            flag = 1;
+            SubmitButton.Text = "Add";
+            txtMarks.Text = "";
+            txtSubject.Text = "";
+            //}
+            //else
+            //{
+            //    GridView3.DataSource = dt;
+            //    GridView3.DataBind();
+            //    exlfile.Visible = true;
+            //    single.Visible = false;
+            //    flag = 0;
+            //    SubmitButton.Text = "Submit";
+            //}
 
 
             con.Close();
@@ -487,13 +513,15 @@ namespace DigiLocker3
         }
         protected void GridView1_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
         {
+            if (coursename == null)
+                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
             //Finding the controls from Gridview for the row which is going to update
-            Label id = GridView1.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
-            TextBox name = GridView1.Rows[e.RowIndex].FindControl("txt_Name") as TextBox;
-            TextBox marks = GridView1.Rows[e.RowIndex].FindControl("txt_City") as TextBox;
+            Label id = GridView3.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
+            TextBox name = GridView3.Rows[e.RowIndex].FindControl("txt_Name") as TextBox;
+            TextBox marks = GridView3.Rows[e.RowIndex].FindControl("txt_City") as TextBox;
             con.Open();
             //updating the record  
-
+            table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
             SqlCommand cmd = new SqlCommand("Update " + table_name + " set SUBJECT_NAME ='" + name.Text + "', MAX_MARKS='" + marks.Text + "' where ID=" + Convert.ToInt32(id.Text), con);
             cmd.ExecuteNonQuery();
             con.Close();
@@ -506,6 +534,19 @@ namespace DigiLocker3
         {
             //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
             GridView3.EditIndex = -1;
+            ShowData();
+        }
+
+        protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            if (coursename == null)
+                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+            Label id = GridView3.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
+            con.Open();
+            table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
+            SqlCommand cmd = new SqlCommand("delete FROM " + table_name + " where ID=" + Convert.ToInt32(id.Text), con);
+            cmd.ExecuteNonQuery();
+            con.Close();
             ShowData();
         }
     }

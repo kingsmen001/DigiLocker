@@ -256,6 +256,7 @@
     <Content Include="ManageUsers.aspx" />
     <Content Include="SeniorityDetails.aspx" />
     <Content Include="ViewResult1.aspx" />
+    <Content Include="ViewTrainees1.aspx" />
     <Content Include="WebFormResultUpload.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Index.aspx" />
@@ -659,6 +660,13 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewTrainees1.aspx.cs">
+      <DependentUpon>ViewTrainees1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewTrainees1.aspx.designer.cs">
+      <DependentUpon>ViewTrainees1.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebFormResultUpload.aspx.cs">
       <DependentUpon>WebFormResultUpload.aspx</DependentUpon>
