@@ -51,14 +51,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.aspx">Result Section</a>
+                <a class="navbar-brand" href="Home.aspx">Result Section</a>
             </div>
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
 
                 <!-- /.dropdown -->
-                <li class="dropdown">
+                <%--<li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
                     </a>
@@ -67,12 +67,12 @@
                         </li>
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li class="divider"></li>--%>
+                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
-                    </ul>
+                    <%--</ul>--%>
                     <!-- /.dropdown-user -->
-                </li>
+                <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
@@ -147,7 +147,7 @@
                                     <a href="UploadNominalRollSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="ViewTrainees.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
+                                    <a href="ViewTrainees1.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
                                 </li>
                                 <li>
                                     <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
@@ -207,6 +207,8 @@
                                         <div class="form-group">
                                             <label>Enrolled Trainees</label>
                                             <div class="form-group" style="height: auto; max-height: 350px; width: 100%; overflow: auto;">
+                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" >
+                                            </asp:GridView>
                                                 <asp:GridView ID="GridView3" CssClass="table table-striped table-bordered table-hover columnscss" runat="server" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1_RowCancelingEdit"
                                                     OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowDeleting="GridView1_RowDeleting" ShowHeaderWhenEmpty="True" EmptyDataText="No records Found">
                                                     <Columns>
@@ -298,7 +300,7 @@
                                     <div class="col-lg-6" style="width: 100%">
                                         <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
 
-                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
+                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView2" runat="server" ScrollBars="Both" AllowPaging="False">
                                             </asp:GridView>
                                         </div>
                                         <asp:Button runat="server" ID="ConfirmButton" class="btn btn-default" Text="Confirm" OnClick="ConfirmButton_Click" Visible="False" EnableViewState="false" />

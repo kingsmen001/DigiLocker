@@ -35,6 +35,13 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .HeaderFreez {
+            position: relative;
+            top: expression(this.offsetParent.scrollTop);
+            z-index: 10;
+        }
+    </style>
 
 </head>
 
@@ -51,14 +58,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.aspx">Result Section</a>
+                <a class="navbar-brand" href="Home.aspx">Result Section</a>
             </div>
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
 
                 <!-- /.dropdown -->
-                <li class="dropdown">
+                <%--<li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
                     </a>
@@ -67,12 +74,12 @@
                         </li>
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
+                        <li class="divider"></li>--%>
+                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                 </li>
+                <%--</ul>--%>
+                <!-- /.dropdown-user -->
+                <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
@@ -147,7 +154,7 @@
                                     <a href="UploadNominalRollSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="ViewTrainees.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
+                                    <a href="ViewTrainees1.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
                                 </li>
                                 <li>
                                     <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
@@ -205,7 +212,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Select Term</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="lbTerm" runat="server"  AutoPostBack="True" OnSelectedIndexChanged="SubmitButton_Click" ><asp:ListItem Selected="true"></asp:ListItem></asp:DropDownList>
+                                            <asp:DropDownList class="form-control" Style="width: auto" ID="lbTerm" runat="server" AutoPostBack="True" OnSelectedIndexChanged="SubmitButton_Click">
+                                                <asp:ListItem Selected="true"></asp:ListItem>
+                                            </asp:DropDownList>
                                         </div>
 
                                         <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" Visible="False" EnableViewState="false" />
@@ -215,12 +224,12 @@
 
 
                                         <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
-                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
+                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss " ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
                                             </asp:GridView>
                                         </div>
                                         <div class="form-group col-md-2">
-                                                     <asp:Button runat="server" ID="Button1" Cssclass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" />
-                                                </div>
+                                            <asp:Button runat="server" ID="Button1" CssClass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" />
+                                        </div>
                                     </form>
                                 </div>
 

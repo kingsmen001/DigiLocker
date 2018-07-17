@@ -51,14 +51,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.aspx">Result Section</a>
+               <a class="navbar-brand" href="Home.aspx">Result Section</a>
             </div>
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
 
                 <!-- /.dropdown -->
-                <li class="dropdown">
+                <%--<li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
                     </a>
@@ -67,12 +67,12 @@
                         </li>
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li class="divider"></li>--%>
+                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
-                    </ul>
+                    <%--</ul>--%>
                     <!-- /.dropdown-user -->
-                </li>
+                <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
@@ -147,7 +147,7 @@
                                     <a href="UploadNominalRollSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
                                 </li>
                                 <li>
-                                    <a href="ViewTrainees.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
+                                    <a href="ViewTrainees1.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
                                 </li>
                                 <li>
                                     <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>

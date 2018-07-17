@@ -85,7 +85,7 @@ namespace DigiLocker3
                 //}
                 lbTerm.DataSource = termLabel.Distinct().ToList();
                 lbTerm.DataBind();
-                lbTerm.Items.Insert(0, new ListItem("Please Select", "0"));
+                lbTerm.Items.Insert(0, new ListItem("All", "0"));
 
 
                 con.Close();
@@ -95,62 +95,70 @@ namespace DigiLocker3
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            lbTerm.Items.RemoveAt(0);
-            lbTerm.Items.Remove(lbTerm.Items.FindByValue("Please Select"));
+            //lbTerm.Items.RemoveAt(0);
+            //lbTerm.Items.Remove(lbTerm.Items.FindByValue("Please Select"));
             calculateResult();
-            DataTable dt = new DataTable();
-            string course = ddlCourseType.SelectedValue;
-            string course_no = ddlCourseNo.SelectedValue;
-            string entry_type = ddlEntryType.SelectedValue;
-            string col_List = "";
-            string table_name = "";
-            SqlCommand cmd;
-            con.Open();
-            for (int i = 0; i < lbTerm.Items.Count; i++)
+            if (lbTerm.SelectedItem.Text.Equals("All"))
             {
-                if (lbTerm.Items[i].Selected)
-                {
-                    string term = lbTerm.Items[i].Value;
-                    table_name = course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
-
-                    cmd = new SqlCommand("select Subject_Name from " + table_name + " where Term = '" + term + "'", con);
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    //string subject_code;
-                    List<string> column_List = new List<string>();
-
-                    string col_name;
-                    while (dr.Read())
-                    {
-                        col_name = dr.GetValue(0).ToString().Replace(" ", "_");
-                        //Response.Write(col_name + i);
-                        //i++;
-
-                        column_List.Add(col_name);
-
-
-                    }
-
-                    dr.Close();
-
-                    foreach (string col_nam in column_List)
-                    {
-                        col_List = col_List + ", " + col_nam;
-                    }
-                    col_List = col_List + ", " + term + "_total, " + term + "_failed, " + term + "_percentage, " + term + "_Seniority_gained, " + term + "_Seniority_lost, " + term + "_Seniority_total";
-                    column_List.Clear();
-                }
+                showResult();
             }
-            //con.Open();
-            table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type.Replace(" ", "_");
-            string query = "select Personal_No, Name, Rank" + col_List + " from " + table_name;
-            //Response.Write(query);
-            cmd = new SqlCommand(query, con);
-            SqlDataAdapter adpt = new SqlDataAdapter(cmd);
-            adpt.Fill(dt);
+            else
+            {
 
-            GridView1.DataSource = dt;
-            GridView1.DataBind();
-            con.Close();
+                DataTable dt = new DataTable();
+                string course = ddlCourseType.SelectedValue;
+                string course_no = ddlCourseNo.SelectedValue;
+                string entry_type = ddlEntryType.SelectedValue;
+                string col_List = "";
+                string table_name = "";
+                SqlCommand cmd;
+                con.Open();
+                for (int i = 0; i < lbTerm.Items.Count; i++)
+                {
+                    if (lbTerm.Items[i].Selected)
+                    {
+                        string term = lbTerm.Items[i].Value;
+                        table_name = course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
+
+                        cmd = new SqlCommand("select Subject_Name from " + table_name + " where Term = '" + term + "'", con);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        //string subject_code;
+                        List<string> column_List = new List<string>();
+
+                        string col_name;
+                        while (dr.Read())
+                        {
+                            col_name = dr.GetValue(0).ToString().Replace(" ", "_");
+                            //Response.Write(col_name + i);
+                            //i++;
+
+                            column_List.Add(col_name);
+
+
+                        }
+
+                        dr.Close();
+
+                        foreach (string col_nam in column_List)
+                        {
+                            col_List = col_List + ", " + col_nam;
+                        }
+                        col_List = col_List + ", " + term + "_total, " + term + "_failed, " + term + "_percentage, " + term + "_Seniority_gained, " + term + "_Seniority_lost, " + term + "_Seniority_total, " + term + "_Qualified ";
+                        column_List.Clear();
+                    }
+                }
+                //con.Open();
+                table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type.Replace(" ", "_");
+                string query = "select Personal_No, Name, Rank" + col_List + " from " + table_name;
+                //Response.Write(query);
+                cmd = new SqlCommand(query, con);
+                SqlDataAdapter adpt = new SqlDataAdapter(cmd);
+                adpt.Fill(dt);
+
+                GridView1.DataSource = dt;
+                GridView1.DataBind();
+                con.Close();
+            }
         }
         public override void VerifyRenderingInServerForm(Control control)
         {
@@ -225,10 +233,10 @@ namespace DigiLocker3
                 col_list1 = col_list1 + term + "_total, " + term + "_percentage, " + term + "_failed, ";
                 if (seniority.Equals("1"))
                 {
-                    col_list1 = col_list1 + term + "_seniority_gained, " + term + "_seniority_lost, " + term + "_seniority_total, ";
+                    col_list1 = col_list1 + term + "_seniority_gained, " + term + "_seniority_lost, " + term + "_seniority_total, " + term + "_Qualified, ";
                 }
             }
-            col_list1 = col_list1 + "Total_Marks, TOTAL_Percentage, total_seniority_gained, total_seniority_lost, total_seniority";
+            col_list1 = col_list1 + "Total_Marks, TOTAL_Percentage, total_seniority_gained, total_seniority_lost, total_seniority, Qualified";
             table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type.Replace(" ", "_");
             query = "Select Personal_No, Name, Rank, " + col_list1 + " from " + table_name;
 
@@ -247,7 +255,7 @@ namespace DigiLocker3
         {
             string course = ddlCourseType.SelectedValue;
             string course_no = ddlCourseNo.SelectedValue;
-            string entry_type = ddlEntryType.SelectedValue;
+            string entry_type = ddlEntryType.SelectedValue.Replace(" ","_");
             con.Open();
             string query = "Select DISTINCT(TERM) from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
             SqlCommand com = new SqlCommand(query, con);
@@ -263,10 +271,11 @@ namespace DigiLocker3
             string query2 = "update " + table_name + " set Total_marks = ";
             string query3 = "update " + table_name + " set Total_seniority_gained = ";
             string query4 = "update " + table_name + " set Total_seniority_lost = ";
+            string col_list3 = "";
             foreach (string term in term_label.Split('_'))
             {
 
-
+                col_list3 = col_list3 + term + "_Qualified, ";
                 table_name = course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
                 //string query = "Select Subject_Name from " + table_name;
                 //table_name = course.Replace(" ", "_") + "_" + lbTerm.Items[i].Value + "_SENIORITY_CRITERIA";
@@ -293,10 +302,11 @@ namespace DigiLocker3
                 string col_List2 = "";
                 foreach (string col_nam in column_List)
                 {
-                    col_List = col_List + ", " + col_nam;
+                    col_List = col_List + col_nam + ", ";
                     col_List2 = col_List2 + col_nam + " + ";
 
                 }
+                col_List = col_List.Remove(col_List.Length - 2);
                 col_List2 = col_List2.Remove(col_List2.Length - 2);
                 //table_name = course_type + "_" + entry_type + "_SUBJECT";
                 query = "Select SUM(Max_Marks) from " + table_name + " where term = '" + term + "'";
@@ -364,11 +374,13 @@ namespace DigiLocker3
 
 
                 column_List.Clear();
-
-
-
+                table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type;
+                query = "update " + table_name + " set " + term + "_QUALIFIED = 'YES' where Personal_No IN ( Select Personal_No from " + table_name + " where 0 not in ( " + col_List + " ) and Personal_No in ( Select Personal_No from " + table_name + " where " + term + "_failed = 0 ))";
+                com = new SqlCommand(query, con);
+                com.ExecuteNonQuery();
 
             }
+            col_list3 = col_list3.Remove(col_list3.Length - 2);
             query2 = query2.Remove(query2.Length - 2);
             query3 = query3.Remove(query3.Length - 2);
             query4 = query4.Remove(query4.Length - 2);
@@ -383,6 +395,21 @@ namespace DigiLocker3
             }
             table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type;
             query = "update " + table_name + " set total_seniority = total_seniority_gained - total_seniority_lost";
+            com = new SqlCommand(query, con);
+            com.ExecuteNonQuery();
+            query = "Select SUM(Max_Marks) from " + table_name + "_SUBJECTS";
+            com = new SqlCommand(query, con);
+            SqlDataReader rdr = com.ExecuteReader();
+            int grandtotal = 0;
+            while(rdr.Read())
+            {
+                grandtotal = rdr.GetInt32(0);
+            }
+            rdr.Close();
+            query = "update " + table_name + " set total_Percentage = (total_marks *100.0)/" + grandtotal.ToString();
+            com = new SqlCommand(query, con);
+            com.ExecuteNonQuery();
+            query = "update " + table_name + " set Qualified = 'Yes' where Personal_No NOT IN ( Select Personal_No from " + table_name + " where 'No' in ( " + col_list3 + ")) ";
             com = new SqlCommand(query, con);
             com.ExecuteNonQuery();
             con.Close();
@@ -535,17 +562,17 @@ namespace DigiLocker3
             //}
             lbTerm.DataSource = termLabel.Distinct().ToList();
             lbTerm.DataBind();
-            lbTerm.Items.Insert(0, new ListItem("Please Select", "0"));
+            lbTerm.Items.Insert(0, new ListItem("All", "0"));
 
             con.Close();
-            showResult();
+            //showResult();
         }
 
         protected void ddlCourseNoIndexChanged(object sender, EventArgs e)
         {
             con.Open();
             String name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
-            SqlCommand com = new SqlCommand("select * from" + name, con); // table name 
+            SqlCommand com = new SqlCommand("select * from " + name, con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
             da.Fill(ds);  // fill dataset
@@ -580,7 +607,7 @@ namespace DigiLocker3
             //}
             lbTerm.DataSource = termLabel.Distinct().ToList();
             lbTerm.DataBind();
-            lbTerm.Items.Insert(0, new ListItem("Please Select", "0"));
+            lbTerm.Items.Insert(0, new ListItem("All", "0"));
 
             con.Close();
             showResult();
@@ -632,7 +659,7 @@ namespace DigiLocker3
             //}
             lbTerm.DataSource = termLabel.Distinct().ToList();
             lbTerm.DataBind();
-            lbTerm.Items.Insert(0, new ListItem("Please Select", "0"));
+            lbTerm.Items.Insert(0, new ListItem("All", "0"));
             con.Close();
             showResult();
         }

@@ -109,7 +109,7 @@ namespace DigiLocker3
 
                 table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.Items[0].Text.Replace(" ", "_") + "_SUBJECTS";
                 string query = "Select ID, Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
-                Response.Write(query);
+                //Response.Write(query);
                 SqlCommand cmd = new SqlCommand(query, con);
                 SqlDataAdapter adpt = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
@@ -333,7 +333,7 @@ namespace DigiLocker3
 
             table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
             string query = "Select Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
-            Response.Write(query);
+            //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -381,7 +381,7 @@ namespace DigiLocker3
 
             string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.Items[0].Text.Replace(" ", "_") + "_SUBJECTS";
             string query = "Select Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
-            Response.Write(query);
+            //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -404,7 +404,7 @@ namespace DigiLocker3
 
             string table_name = coursename + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
             string query = "Select Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.SelectedValue + "'";
-            Response.Write(query);
+            //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -444,7 +444,7 @@ namespace DigiLocker3
             {
                 con.Open();
                 string table_name = coursename + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
-                Response.Write(table_name);
+                //Response.Write(table_name);
                 SqlCommand com = new SqlCommand("select Count(SUBJECT_NAME) from " + table_name + " where SUBJECT_NAME = '" + txtSubject.Text + "'", con); // table name 
                 int count = (int)com.ExecuteScalar();
                 if (count == 1)
@@ -473,7 +473,7 @@ namespace DigiLocker3
             con.Open();
             table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
             string query = "Select ID, Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.SelectedValue + "'";
-            Response.Write(query);
+            //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();

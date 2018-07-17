@@ -35,8 +35,12 @@
 
 </head>
 
-<body>
-
+<body style="background-color:white">
+    <div class="col-lg-12" style="display:table-cell; vertical-align:middle; text-align:center; margin-top:50px;"><img src="logo39.jpg" alt="alternate text" style="width:auto; height:auto" /></div>
+    <div class="col-lg-12" style="text-align:center">
+        <h1 class="page-header" id="heading" runat="server" style="text-align:center;">Course Management System</h1>
+    </div>
+    
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
@@ -44,44 +48,21 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
-                    <%--<div class="panel-body"style = "width:100%">
-                        <form id="form_login" runat="server">
-                            <fieldset>
-                                <div class="form-group" style = "width:100%">
-                                    <asp:TextBox ID="email" runat="server" placeholder="E-mail"></asp:TextBox>
-                                 <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
-                                </div>
-                                <div class="form-group">
-                                    <asp:TextBox ID="Password" runat="server" placeholder="Password"></asp:TextBox>
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
-                                </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <div class="btn btn-lg btn-success btn-block">
-                                    <asp:Button runat="server" id="LogInBtn" text="Login"  />
 
-                                </div>
-                            </fieldset>
-                        </form>
-                    </div>--%>
                     <%--<div class="panel-body">--%>
-                            <div class="row" style = "width:100%; margin: 0 auto">
-                                <div class="signin-form profile">
-							        <div class="login-form">
-								        <form id="form2" runat="server">
-									        <%--<input type="email" name="email" placeholder="E-mail" required="">--%>
-                                            <asp:TextBox ID="PNo_TextBox" runat="server" placeholder="Personal No."></asp:TextBox>
-									        <%--<input type="password" name="password" placeholder="Password" required="">--%>
-                                            <asp:TextBox ID="PAssword_TextBox" runat="server" placeholder="Password"></asp:TextBox>
-                                            <asp:Button runat="server" id="LoginButton" text="Login" onclick="LoginButton_Click"/>
-										</form>
-							        </div>
-						        </div>
+                    <div class="row" style="width: 100%; margin: 0 auto">
+                        <div class="signin-form profile">
+                            <div class="login-form">
+                                <form id="form2" runat="server">
+                                    <%--<input type="email" name="email" placeholder="E-mail" required="">--%>
+                                    <asp:TextBox ID="PNo_TextBox" runat="server" placeholder="Personal No."></asp:TextBox>
+                                    <%--<input type="password" name="password" placeholder="Password" required="">--%>
+                                    <asp:TextBox ID="Password_TextBox" type="password" runat="server" placeholder="Password"></asp:TextBox>
+                                    <asp:Button runat="server" ID="LoginButton" Text="Login" OnClick="LoginButton_Click" />
+                                </form>
                             </div>
+                        </div>
+                    </div>
                     <%--</div>--%>
                 </div>
             </div>

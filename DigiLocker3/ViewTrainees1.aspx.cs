@@ -39,6 +39,7 @@ namespace DigiLocker3
                 flag = 0;
                 con.Open();
                 ddlCourseType.SelectedIndex = 0;
+                ddlCourseNo.SelectedIndex = 0;
                 lbEntryType.SelectedIndex = 0;
 
                 SqlCommand com = new SqlCommand("select * from SAILOR_COURSE_TYPE", con); // table name 
@@ -65,7 +66,7 @@ namespace DigiLocker3
 
 
 
-                com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE", con); // table name 
+                com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + "ENTRY_TYPE", con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -73,8 +74,10 @@ namespace DigiLocker3
                 lbEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
                 lbEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 lbEntryType.DataBind();
+                lbEntryType.Items.Insert(0, new ListItem("All", "0"));
                 con.Close();
 
+                lbEntryType.SelectedIndex = 0;
                 ShowData();
             }
             else
@@ -122,10 +125,18 @@ namespace DigiLocker3
             //    GridViewRow row = GridView1.Rows[i];
             //    row.Cells[3].Visible = false;
             //}
-            GridView3.Columns[4].Visible = false;
-            GridView3.GridLines = GridLines.Both;
-            GridView3.HeaderStyle.Font.Bold = true;
-            GridView3.RenderControl(htmltextwrtter);
+            if (lbEntryType.SelectedItem.Text.Equals("All"))
+            {
+                GridView1.GridLines = GridLines.Both;
+                GridView1.HeaderStyle.Font.Bold = true;
+                GridView1.RenderControl(htmltextwrtter);
+            }
+            else {
+                GridView3.Columns[4].Visible = false;
+                GridView3.GridLines = GridLines.Both;
+                GridView3.HeaderStyle.Font.Bold = true;
+                GridView3.RenderControl(htmltextwrtter);
+            }
             Response.Write("<B>");
             Response.Write(ddlCourseType.SelectedValue + " " + ddlCourseNo.SelectedValue + " " + lbEntryType.SelectedValue);
             Response.Write("</B>");
@@ -157,7 +168,7 @@ namespace DigiLocker3
             ddlCourseNo.DataBind();
 
 
-            string name = coursename.Replace(" ", "_") + "_ENTRY_TYPE";
+            string name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + "ENTRY_TYPE";
             com = new SqlCommand("select * from " + name, con); // table name 
             da = new SqlDataAdapter(com);
             ds = new DataSet();
@@ -166,6 +177,7 @@ namespace DigiLocker3
             lbEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
             lbEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             lbEntryType.DataBind();
+            lbEntryType.Items.Insert(0, new ListItem("All", "0"));
 
             con.Close();
             ShowData();
@@ -186,7 +198,7 @@ namespace DigiLocker3
 
 
 
-            string name = coursename.Replace(" ", "_") + "_ENTRY_TYPE";
+            string name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + "ENTRY_TYPE";
             SqlCommand com = new SqlCommand("select * from " + name, con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
@@ -195,6 +207,7 @@ namespace DigiLocker3
             lbEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
             lbEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             lbEntryType.DataBind();
+            lbEntryType.Items.Insert(0, new ListItem("All", "0"));
 
             con.Close();
             ShowData();
@@ -219,7 +232,7 @@ namespace DigiLocker3
             {
                 con.Open();
                 string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
-                Response.Write(table_name);
+                //Response.Write(table_name);
                 SqlCommand com = new SqlCommand("select Count(SUBJECT_NAME) from " + table_name + " where SUBJECT_NAME = '" + txtSubject.Text + "'", con); // table name 
                 int count = (int)com.ExecuteScalar();
                 if (count == 1)
@@ -242,25 +255,59 @@ namespace DigiLocker3
 
         protected void ShowData()
         {
+            string query;
+            SqlCommand cmd;
+            SqlDataAdapter adpt;
+            DataTable dt;
             if (coursename == null)
                 coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
             con.Open();
-            table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
-            string query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"ID\", Personal_No as \"Personal No\", Name, Rank from " + table_name;
-            Response.Write(query);
-            SqlCommand cmd = new SqlCommand(query, con);
-            SqlDataAdapter adpt = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            adpt.Fill(dt);
 
-            //if (dt.Rows.Count > 0)
-            //{
-            //exlfile.Visible = false;
-            //single.Visible = true;
-            GridView3.DataSource = dt;
-            GridView3.DataBind();
-            flag = 1;
-            SubmitButton.Text = "Add";
+            if (lbEntryType.SelectedItem.Text.Equals("All"))
+            {
+                query = "select Type_name from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_Entry_Type";
+                cmd = new SqlCommand(query, con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                query = "";
+                while (dr.Read())
+                {
+                    query = query + "Select Personal_No as \"Personal No\", Name, Rank from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + dr.GetString(0).Replace(" ", "_") + " UNION ";
+                }
+                dr.Close();
+                query = query.Substring(0, query.LastIndexOf("UNION"));
+                cmd = new SqlCommand(query, con);
+                adpt = new SqlDataAdapter(cmd);
+                dt = new DataTable();
+                adpt.Fill(dt);
+                GridView1.DataSource = dt;
+                GridView1.DataBind();
+                GridView3.Visible = false;
+                GridView3.EnableViewState = false;
+                GridView1.Visible = true;
+                GridView1.EnableViewState = true;
+            }
+            else {
+                table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
+                query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"ID\", Personal_No as \"Personal No\", Name, Rank from " + table_name;
+                //Response.Write(query);
+                cmd = new SqlCommand(query, con);
+                adpt = new SqlDataAdapter(cmd);
+                dt = new DataTable();
+                adpt.Fill(dt);
+
+                //if (dt.Rows.Count > 0)
+                //{
+                //exlfile.Visible = false;
+                //single.Visible = true;
+                GridView3.DataSource = dt;
+                GridView3.DataBind();
+                GridView3.Visible = true;
+                GridView3.EnableViewState = true;
+                GridView1.Visible = false;
+                GridView1.EnableViewState = false;
+                flag = 1;
+                SubmitButton.Text = "Add";
+            }
             //}
             //else
             //{

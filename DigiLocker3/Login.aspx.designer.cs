@@ -13,6 +13,15 @@ namespace DigiLocker3 {
     public partial class Login {
         
         /// <summary>
+        /// heading control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl heading;
+        
+        /// <summary>
         /// form2 control.
         /// </summary>
         /// <remarks>
@@ -31,13 +40,13 @@ namespace DigiLocker3 {
         protected global::System.Web.UI.WebControls.TextBox PNo_TextBox;
         
         /// <summary>
-        /// PAssword_TextBox control.
+        /// Password_TextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PAssword_TextBox;
+        protected global::System.Web.UI.WebControls.TextBox Password_TextBox;
         
         /// <summary>
         /// LoginButton control.

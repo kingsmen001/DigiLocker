@@ -176,6 +176,7 @@ namespace DigiLocker3
                             Response.Write(ex);
                     }
                     con.Close();
+                    showData();
                 }
             }
             else
@@ -295,6 +296,7 @@ namespace DigiLocker3
                 else
                     Response.Write(ex);
             }
+            showData();
         }
 
         protected void createTable()
@@ -368,7 +370,7 @@ namespace DigiLocker3
             {
                 foreach (string term in term_label.Split('_'))
                 {
-                    col_List = col_List + ", " + term + "_total int DEFAULT 0, " + term + "_percentage decimal(4,2) DEFAULT 0, " + term + "_seniority_gained decimal(4,2) DEFAULT 0, " + term + "_seniority_lost decimal(4,2) DEFAULT 0, " + term + "_seniority_total decimal(4,2) DEFAULT 0 ";
+                    col_List = col_List + ", " + term + "_total int DEFAULT 0, " + term + "_percentage decimal(4,2) DEFAULT 0, " + term + "_seniority_gained decimal(4,2) DEFAULT 0, " + term + "_seniority_lost decimal(4,2) DEFAULT 0, " + term + "_seniority_total decimal(4,2) DEFAULT 0 " ;
                 }
                 col_List = col_List + ", total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0 ";
             }
@@ -381,9 +383,9 @@ namespace DigiLocker3
             }
             foreach (string term in term_label.Split('_'))
             {
-                col_List = col_List + ", " + term + "_Failed int DEFAULT 0 ";
+                col_List = col_List + ", " + term + "_Failed int DEFAULT 0, " + term + "_Qualified varchar(15) default 'NO'";
             }
-            col_List = col_List + ", Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0 ";
+            col_List = col_List + ", Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO'";
             //Response.Write(col_List);
             table_name = coursename.Replace(" ","_") + "_" + courseno + "_" + entry_type;
             query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";

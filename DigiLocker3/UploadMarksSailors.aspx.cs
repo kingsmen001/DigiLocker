@@ -198,6 +198,7 @@ namespace DigiLocker3
                     query = "update " + table_name + " set " + subject + "= " + g1.Cells[4].Text + " where Personal_No = '" + g1.Cells[1].Text + "'";
                     //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                     cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
                 }
                 else if(markspresent < (55.0 * max_marks) / 100.0)
                 {
@@ -205,14 +206,22 @@ namespace DigiLocker3
                     query = "update " + table_name + " set " + subject + "= " + g1.Cells[4].Text + " where Personal_No = '" + g1.Cells[1].Text + "'";
                     //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                     cmd = new SqlCommand(query, con);
-                }
+                    cmd.ExecuteNonQuery();
+                    if (marks >= (55.0 * max_marks) / 100.0)
+                    {
+                        query = "update " + table_name + " set " + term + "_Failed = ( WHEN " + term + "_failed = 1 THEN " + term + "_failed - 1 END)";
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    }
                 else
                 {
                     Response.Write("<script language='javascript'>alert('Marks Already Entered for" + g1.Cells[1].Text + "');</script>");
                 }
                 
                 //Response.Write(Marks+"      ");
-                cmd.ExecuteNonQuery();
+                //cmd.ExecuteNonQuery();
 
                 i++;
             }
