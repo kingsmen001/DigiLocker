@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GroupDocs.Signature, Version=18.6.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\GroupDocs.Signature.18.6.0\lib\GroupDocs.Signature.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -255,6 +259,7 @@
     <Content Include="Home.aspx" />
     <Content Include="ManageUsers.aspx" />
     <Content Include="SeniorityDetails.aspx" />
+    <Content Include="UpdateMarks.aspx" />
     <Content Include="ViewResult1.aspx" />
     <Content Include="ViewTrainees1.aspx" />
     <Content Include="WebFormResultUpload.aspx" />
@@ -604,6 +609,13 @@
     </Compile>
     <Compile Include="Test.aspx.designer.cs">
       <DependentUpon>Test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateMarks.aspx.cs">
+      <DependentUpon>UpdateMarks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdateMarks.aspx.designer.cs">
+      <DependentUpon>UpdateMarks.aspx</DependentUpon>
     </Compile>
     <Compile Include="upload.aspx.cs">
       <DependentUpon>upload.aspx</DependentUpon>

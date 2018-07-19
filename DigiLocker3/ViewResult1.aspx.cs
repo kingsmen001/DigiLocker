@@ -541,25 +541,12 @@ namespace DigiLocker3
             string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
             com = new SqlCommand(query, con);
             SqlDataReader dr = com.ExecuteReader();
-            //string term_label = "";
             while (dr.Read())
             {
                 termLabel.Add(dr.GetString(0));
             }
             dr.Close();
-            //List<string> termLabel = new List<string>();
-            //com = new SqlCommand("select TERM_LABEL from " + name + " where TYPE_NAME = '" + ddlEntryType.Items[0].Value + "'", con); // table name 
-            //using (SqlDataReader dr = com.ExecuteReader())
-            //{
-            //    while (dr.Read())
-            //    {
-            //        List<string> term_Label = dr[0].ToString().Split('_').ToList();
-            //        foreach (string lbl in term_Label)
-            //        {
-            //            termLabel.Add(lbl);
-            //        }
-            //    }
-            //}
+            
             lbTerm.DataSource = termLabel.Distinct().ToList();
             lbTerm.DataBind();
             lbTerm.Items.Insert(0, new ListItem("All", "0"));
