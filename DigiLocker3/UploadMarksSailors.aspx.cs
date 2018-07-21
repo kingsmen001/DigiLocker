@@ -266,7 +266,7 @@ namespace DigiLocker3
                     }
 
                     query = "";
-                    query = "update " + table_name + " set " + subject + "= " + g1.Cells[6].Text + ", " + subject + "_theory = " + g1.Cells[3].Text + ", " + subject + "_IA = " + g1.Cells[4].Text + ", " +subject + "_Practical = " + g1.Cells[5].Text + ", where Personal_No = '" + g1.Cells[2].Text + "'";
+                    query = "update " + table_name + " set " + subject + "= " + g1.Cells[6].Text + ", " + subject + "_theory = " + g1.Cells[3].Text + ", " + subject + "_IA = " + g1.Cells[4].Text + ", " +subject + "_Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "'";
                     //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
@@ -277,7 +277,7 @@ namespace DigiLocker3
                     query = "";
                     if (markspresent < (55.0 * max_marks) / 100.0)
                     {
-                        query = "update " + table_name + " set " + subject + "= " + g1.Cells[6].Text + ", " + subject + "_theory = " + g1.Cells[3].Text + ", " + subject + "_IA = " + g1.Cells[4].Text + ", " + subject + "_Practical = " + g1.Cells[5].Text + ", where Personal_No = '" + g1.Cells[2].Text + "'";
+                        query = "update " + table_name + " set " + subject + "= " + g1.Cells[6].Text + ", " + subject + "_theory = " + g1.Cells[3].Text + ", " + subject + "_IA = " + g1.Cells[4].Text + ", " + subject + "_Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "'";
                         //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                         cmd = new SqlCommand(query, con);
                         cmd.ExecuteNonQuery();
