@@ -107,22 +107,23 @@ namespace DigiLocker3
                 ddlTerm.DataSource = term_Label.Split('_');
                 ddlTerm.DataBind();
 
-                table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.Items[0].Text.Replace(" ", "_") + "_SUBJECTS";
-                string query = "Select ID, Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
-                //Response.Write(query);
-                SqlCommand cmd = new SqlCommand(query, con);
-                SqlDataAdapter adpt = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                adpt.Fill(dt);
+                //table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.Items[0].Text.Replace(" ", "_") + "_SUBJECTS";
+                //string query = "Select ID, Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
+                ////Response.Write(query);
+                //SqlCommand cmd = new SqlCommand(query, con);
+                //SqlDataAdapter adpt = new SqlDataAdapter(cmd);
+                //DataTable dt = new DataTable();
+                //adpt.Fill(dt);
 
-                //if (dt.Rows.Count > 0)
-                //{
-                exlfile.Visible = false;
-                single.Visible = true;
-                GridView3.DataSource = dt;
-                GridView3.DataBind();
-                flag = 1;
-                SubmitButton.Text = "Add";
+                ////if (dt.Rows.Count > 0)
+                ////{
+                //exlfile.Visible = false;
+                //single.Visible = true;
+                //GridView3.DataSource = dt;
+                //GridView3.DataBind();
+                //flag = 1;
+                //SubmitButton.Text = "Add";
+                
                 //}
                 //else
                 //{
@@ -134,6 +135,7 @@ namespace DigiLocker3
 
 
                 con.Close();
+                ShowData();
             }
             else
             {
@@ -172,8 +174,10 @@ namespace DigiLocker3
                 try
                 {
                     string table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
-                    string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Term) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + ddlTerm.SelectedValue + "')";
+                    string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Theory, IA, Practical, Term) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + txtTheory.Text + "','" + txtIA.Text + "','" + txtPractical.Text + "','" + ddlTerm.SelectedValue + "')";
                     SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
+                    cmd = new SqlCommand("Update " + table_name + " set Max_Marks = Theory + IA + Practical", con);
                     cmd.ExecuteNonQuery();
                 }
                 catch (SqlException ex)
@@ -303,7 +307,7 @@ namespace DigiLocker3
         protected void lblEntryTypeIndexChanged(object sender, EventArgs e)
         {
             if (coursename == null)
-                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
 
             con.Open();
 
@@ -332,7 +336,7 @@ namespace DigiLocker3
             ddlTerm.DataBind();
 
             table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
-            string query = "Select Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
+            string query = "Select Subject_name, Max_Marks, Theory, IA, Practical from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
             //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
@@ -378,9 +382,26 @@ namespace DigiLocker3
             lbEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
             lbEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             lbEntryType.DataBind();
+            string term_Label = "";
+            com = new SqlCommand("select TERM_LABEL from " + name + " where TYPE_NAME = '" + lbEntryType.SelectedValue.Replace(" ","_") + "'", con); // table name 
+            using (SqlDataReader dr = com.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    term_Label = dr[0].ToString();
+                }
+            }
+
+            //Response.Write(selectedItem + "   ");
+            //insert command
+
+
+
+            ddlTerm.DataSource = term_Label.Split('_');
+            ddlTerm.DataBind();
 
             string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + lbEntryType.Items[0].Text.Replace(" ", "_") + "_SUBJECTS";
-            string query = "Select Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
+            string query = "Select Subject_name, Max_Marks, Theory, IA, Practical from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "'";
             //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
@@ -399,7 +420,7 @@ namespace DigiLocker3
         protected void ddlTermIndexChanged(object sender, EventArgs e)
         {
             if (coursename == null)
-                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             con.Open();
 
             string table_name = coursename + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
@@ -439,7 +460,7 @@ namespace DigiLocker3
         protected void txtCourseName_TextChanged(object sender, EventArgs e)
         {
             if (coursename == null)
-                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             if (!System.Text.RegularExpressions.Regex.IsMatch(txtSubject.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtSubject.Text[0] != ' ' & txtSubject.Text[0] != '\t')
             {
                 con.Open();
@@ -469,10 +490,10 @@ namespace DigiLocker3
         protected void ShowData()
         {
             if (coursename == null)
-                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             con.Open();
             table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
-            string query = "Select ID, Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.SelectedValue + "'";
+            string query = "Select ID, Subject_name, Theory, IA, Practical, Max_Marks from " + table_name + " where term = '" + ddlTerm.SelectedValue + "'";
             //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
@@ -514,15 +535,20 @@ namespace DigiLocker3
         protected void GridView1_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
         {
             if (coursename == null)
-                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             //Finding the controls from Gridview for the row which is going to update
             Label id = GridView3.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
             TextBox name = GridView3.Rows[e.RowIndex].FindControl("txt_Name") as TextBox;
-            TextBox marks = GridView3.Rows[e.RowIndex].FindControl("txt_City") as TextBox;
+            //TextBox marks = GridView3.Rows[e.RowIndex].FindControl("txt_City") as TextBox;
+            TextBox Theory = GridView3.Rows[e.RowIndex].FindControl("txt_Theory") as TextBox;
+            TextBox IA = GridView3.Rows[e.RowIndex].FindControl("txt_IA") as TextBox;
+            TextBox Practical = GridView3.Rows[e.RowIndex].FindControl("txt_Pra") as TextBox;
             con.Open();
             //updating the record  
             table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
-            SqlCommand cmd = new SqlCommand("Update " + table_name + " set SUBJECT_NAME ='" + name.Text + "', MAX_MARKS='" + marks.Text + "' where ID=" + Convert.ToInt32(id.Text), con);
+            SqlCommand cmd = new SqlCommand("Update " + table_name + " set SUBJECT_NAME ='" + name.Text + "', Theory = '" + Theory.Text + "', IA = '" + IA.Text + "', Practical = '" + Practical.Text + "' where ID=" + Convert.ToInt32(id.Text), con);
+            cmd.ExecuteNonQuery();
+            cmd = new SqlCommand("Update " + table_name + " set Max_Marks = Theory + IA + Practical", con);
             cmd.ExecuteNonQuery();
             con.Close();
             //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
@@ -540,7 +566,7 @@ namespace DigiLocker3
         protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             if (coursename == null)
-                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             Label id = GridView3.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
             con.Open();
             table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";

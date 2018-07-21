@@ -257,7 +257,7 @@
                                             </asp:GridView>--%>
                                             </div>
                                             <div class="form-group col-md-2">
-                                                     <asp:Button runat="server" ID="Button1" Cssclass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" />
+                                                     <asp:Button runat="server" ID="Button1" Cssclass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" Visible="false" EnableViewState =" false" />
                                                 </div>
                                         </div>
                                         <div class="form-group" runat="server" id="single" visible="false" enableviewstate="false">

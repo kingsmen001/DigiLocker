@@ -121,6 +121,33 @@ namespace DigiLocker3 {
         protected global::System.Web.UI.WebControls.TextBox txtSubject;
         
         /// <summary>
+        /// txtTheory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTheory;
+        
+        /// <summary>
+        /// txtIA control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtIA;
+        
+        /// <summary>
+        /// txtPractical control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPractical;
+        
+        /// <summary>
         /// txtMarks control.
         /// </summary>
         /// <remarks>

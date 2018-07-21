@@ -38,9 +38,9 @@ namespace DigiLocker3
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            if(string.IsNullOrWhiteSpace(txtCourseName.Text))
+            if (string.IsNullOrWhiteSpace(txtCourseName.Text))
             {
-                
+
                 Response.Write("<script language='javascript'>alert('Enter Course Name');</script>");
             }
             //else if (!FileUpload1.HasFile)
@@ -70,53 +70,60 @@ namespace DigiLocker3
                     int i = 0;
                     foreach (GridViewRow r in excelgrd.Rows)
                     {
+
                         string entryname = (r.FindControl("txtMaxMarks") as TextBox).Text;
-                        string term = (r.FindControl("txtMinMarks") as TextBox).Text.Replace(",","_");
+                        string term = (r.FindControl("txtMinMarks") as TextBox).Text.Replace(",", "_");
                         string duration = (r.FindControl("txtSeniority") as TextBox).Text;
-                        table_name = courseTypeName + "_ENTRY_TYPE";
-                        query = "insert into " + table_name + " (TYPE_NAME, TERM_LABEL, Duration) values ( '" + entryname + "' , '" + term + "' , '" + duration + "' )";
-                        cmd = new SqlCommand(query, con);
-                        cmd.ExecuteNonQuery();
-                        typename = entryname;
-                        typename = typename.Replace(" ", "_");
-                        table_name = courseTypeName + "_" + typename + "_SUBJECTS";
-                        cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( ID int IDENTITY PRIMARY KEY, SUBJECT_NAME VARCHAR(50) UNIQUE, MAX_MARKS int, TERM varchar(10) );", con);
-                        cmd.ExecuteNonQuery();
+                        if (string.IsNullOrWhiteSpace(entryname) || string.IsNullOrWhiteSpace(term) || string.IsNullOrWhiteSpace(duration))
+                        {
+
+                        }
+                        else {
+                            table_name = courseTypeName + "_ENTRY_TYPE";
+                            query = "insert into " + table_name + " (TYPE_NAME, TERM_LABEL, Duration) values ( '" + entryname + "' , '" + term + "' , '" + duration + "' )";
+                            cmd = new SqlCommand(query, con);
+                            cmd.ExecuteNonQuery();
+                            typename = entryname;
+                            typename = typename.Replace(" ", "_");
+                            table_name = courseTypeName + "_" + typename + "_SUBJECTS";
+                            cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( ID int IDENTITY PRIMARY KEY, SUBJECT_NAME VARCHAR(50) UNIQUE, MAX_MARKS int, THEORY int, IA int, PRACTICAL int, TERM varchar(10) );", con);
+                            cmd.ExecuteNonQuery();
+                        }
                     }
 
 
-                        if (CheckBox1.Checked)
-                {
-                    Response.Redirect("SeniorityDetails.aspx?coursename=" + courseTypeName.Replace("_"," "));
+                    if (CheckBox1.Checked)
+                    {
+                        Response.Redirect("SeniorityDetails.aspx?coursename=" + courseTypeName.Replace("_", " "));
+                    }
+                    else
+                    {
+                        Response.Redirect("AddSubjectsSailors.aspx?coursename=" + courseTypeName.Replace("_", " "));
+                    }
                 }
-                else
+                catch (SqlException ex)
                 {
-                    Response.Redirect("AddSubjectsSailors.aspx?coursename=" + courseTypeName.Replace("_"," "));
-                }
-            }
-            catch (SqlException ex)
-            {
-                if (ex.Number == 2627 || ex.Number == 2601)
-                {
-                    string script = "alert(\" Course Name Already Exists \");";
-                    ScriptManager.RegisterStartupScript(this, GetType(),
-                                          "ServerControlScript", script, true);
-                    reset();
-                }
-                else
+                    if (ex.Number == 2627 || ex.Number == 2601)
+                    {
+                        string script = "alert(\" Course Name Already Exists \");";
+                        ScriptManager.RegisterStartupScript(this, GetType(),
+                                              "ServerControlScript", script, true);
+                        reset();
+                    }
+                    else
                         Response.Write(ex.ToString());
-            }
-            con.Close();
-            //string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
-            //string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-            //string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
+                }
+                con.Close();
+                //string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
+                //string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
+                //string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
 
-            //string FilePath = Server.MapPath(FolderPath + FileName);
-            //FileUpload1.SaveAs(FilePath);
-            //Import_To_Grid(FilePath, Extension);
-            //ConfirmButton.Visible = true;
-            //ConfirmButton.EnableViewState = true;
-        }
+                //string FilePath = Server.MapPath(FolderPath + FileName);
+                //FileUpload1.SaveAs(FilePath);
+                //Import_To_Grid(FilePath, Extension);
+                //ConfirmButton.Visible = true;
+                //ConfirmButton.EnableViewState = true;
+            }
         }
 
         private void Import_To_Grid(string FilePath, string Extension)
@@ -207,7 +214,7 @@ namespace DigiLocker3
             //        cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "( ID int IDENTITY PRIMARY KEY, SUBJECT_NAME VARCHAR(50) UNIQUE, MAX_MARKS int, TERM varchar(10)  );", con);
             //        cmd.ExecuteNonQuery();
             //       // Response.Write(query + "       ");
-                    
+
 
             //    }
             //    if (CheckBox1.Checked)
@@ -231,7 +238,7 @@ namespace DigiLocker3
             //    else throw;
             //}
             //con.Close();
-            
+
 
         }
 
@@ -239,7 +246,7 @@ namespace DigiLocker3
         {
             if (!System.Text.RegularExpressions.Regex.IsMatch(txtCourseName.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtCourseName.Text[0] != ' ' & txtCourseName.Text[0] != '\t')
             {
-                
+
                 con.Open();
 
                 SqlCommand com = new SqlCommand("select Count(TYPE_NAME) from Sailor_Course_type where TYPE_NAME = '" + txtCourseName.Text + "'", con); // table name 

@@ -10,7 +10,7 @@
 namespace DigiLocker3 {
     
     
-    public partial class ViewResult1 {
+    public partial class orderofmerit {
         
         /// <summary>
         /// form1 control.
@@ -40,13 +40,13 @@ namespace DigiLocker3 {
         protected global::System.Web.UI.WebControls.DropDownList ddlCourseNo;
         
         /// <summary>
-        /// ddlEntryType control.
+        /// lbEntryType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEntryType;
+        protected global::System.Web.UI.WebControls.ListBox lbEntryType;
         
         /// <summary>
         /// lbTerm control.
@@ -83,14 +83,5 @@ namespace DigiLocker3 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Button1;
-        
-        /// <summary>
-        /// Button2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button2;
     }
 }

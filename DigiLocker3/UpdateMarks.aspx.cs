@@ -364,7 +364,7 @@ namespace DigiLocker3
 
                         if (marks >= (55.0 * max_marks) / 100.0)
                         {
-                            query = "update " + table_name + " set " + term + "_Failed = ( WHEN " + term + "_failed > 0 THEN " + term + "_failed - 1 END) where Personal_No = '" + Personal_No + "'";
+                            query = "update " + table_name + " set " + term + "_Failed = CASE WHEN " + term + "_failed > 0 THEN " + term + "_failed - 1 END where Personal_No = '" + Personal_No + "'";
                             cmd = new SqlCommand(query, con);
                             cmd.ExecuteNonQuery();
                         }

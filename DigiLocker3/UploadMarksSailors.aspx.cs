@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -43,15 +44,16 @@ namespace DigiLocker3
                 string table_name = course_name.Replace(" ", "_") + "_ENTRY_TYPE";
                 List<string> termLabel = new List<string>();
                 //string term_Label = "";
-                com = new SqlCommand("select TERM_LABEL from " + table_name , con); // table name 
+                com = new SqlCommand("select TERM_LABEL from " + table_name, con); // table name 
                 using (SqlDataReader dr = com.ExecuteReader())
                 {
                     while (dr.Read())
                     {
                         List<string> term_Label = dr[0].ToString().Split('_').ToList();
-                        foreach (string lbl in term_Label) {
+                        foreach (string lbl in term_Label)
+                        {
                             termLabel.Add(lbl);
-                                }
+                        }
                     }
                 }
                 ddlTerm.DataSource = termLabel.Distinct().ToList();
@@ -70,13 +72,13 @@ namespace DigiLocker3
                 string term = ddlTerm.SelectedValue;
                 string query = "";
                 string type_name = "";
-                com = new SqlCommand("select TYPE_NAME from " + ddlCourseType.SelectedValue.Replace(" ","_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE", con); // table name 
+                com = new SqlCommand("select TYPE_NAME from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE", con); // table name 
                 using (SqlDataReader dr = com.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        type_name = dr[0].ToString().Replace(" ","_");
-                        table_name = course_name.Replace(" ","_") +"_" + ddlCourseNo.SelectedValue + "_" + type_name + "_" + "SUBJECTS";
+                        type_name = dr[0].ToString().Replace(" ", "_");
+                        table_name = course_name.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + type_name + "_" + "SUBJECTS";
                         query = query + "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + term + "' UNION ";
                     }
                 }
@@ -97,6 +99,10 @@ namespace DigiLocker3
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
+            con.Open();
+            string query = "delete from tblPersons";
+            SqlCommand com = new SqlCommand(query, con);
+            com.ExecuteNonQuery();
             if (FileUpload1.HasFile)
             {
                 string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
@@ -105,7 +111,40 @@ namespace DigiLocker3
 
                 string FilePath = Server.MapPath(FolderPath + FileName);
                 FileUpload1.SaveAs(FilePath);
-                Import_To_Grid(FilePath, Extension);
+                //Import_To_Grid(FilePath, Extension);
+                FileInfo newFile = new FileInfo(FilePath);
+                ExcelPackage pck = new ExcelPackage(newFile);
+                var theWorkbook = pck.Workbook;
+                var theSheet = theWorkbook.Worksheets[1];
+                int num = Convert.ToInt32(theSheet.Cells[9, 2].Value.ToString());
+                num = num + 12;
+                for (int row =12; row < num; row++)
+                {
+                    string entry_type = "app_power";
+                    string name = theSheet.Cells[row, 3].Value.ToString();
+                    string rank = theSheet.Cells[row, 4].Value.ToString();
+                    string number = theSheet.Cells[row, 5].Value.ToString();
+                    string theory = theSheet.Cells[row, 6].Value.ToString();
+                    string ia = theSheet.Cells[row, 7].Value.ToString();
+                    string practical = theSheet.Cells[row, 8].Value.ToString();
+                    string marks = theSheet.Cells[row, 9].Value.ToString();
+                    query = "insert into tblPersons(Personal_No, Name, Rank, Theory, IA, Practical, Marks) values( '" + number + "', '" + name + "', '" + rank + "', '" + theory + "', '" + ia + "', '" + practical + "', '" + marks + "')";
+                    com = new SqlCommand(query, con);
+                    com.ExecuteNonQuery();
+                }
+                //GridView1.DataSource = WorksheetToDataTable(theSheet);
+                //GridView1.DataBind();
+                //var data = theSheet.Cells["A1:P34"].Value;
+                //var Summary = workbook1.Worksheets[1];
+                query = "Select Name, Rank, Personal_No, Theory, IA, Practical, Marks from tblPersons";
+
+                com = new SqlCommand(query, con);
+                SqlDataAdapter adpt = new SqlDataAdapter(com);
+                DataTable dt = new DataTable();
+                adpt.Fill(dt);
+
+                GridView1.DataSource = dt;
+                GridView1.DataBind();
                 ConfirmButton.Visible = true;
                 ConfirmButton.EnableViewState = true;
             }
@@ -113,8 +152,28 @@ namespace DigiLocker3
             {
                 Response.Write("<script language='javascript'>alert('Please Select a File');</script>");
             }
+            con.Close();
         }
 
+        private DataTable WorksheetToDataTable(ExcelWorksheet oSheet)
+        {
+            //int totalRows = oSheet.Dimension.End.Row;
+            //int totalCols = oSheet.Dimension.End.Column;
+            DataTable dt = new DataTable(oSheet.Name);
+            DataRow dr = null;
+            for (int i = 12; i <= 48; i++)
+            {
+                if (i > 12) dr = dt.Rows.Add();
+                for (int j = 3; j <= 9; j++)
+                {
+                    if (i == 12)
+                        dt.Columns.Add(oSheet.Cells[i, j].Value.ToString());
+                    else
+                        dr[j - 3] = oSheet.Cells[i, j].Value.ToString();
+                }
+            }
+            return dt;
+        }
         private void Import_To_Grid(string FilePath, string Extension)
         {
             string conStr = "";
@@ -159,23 +218,35 @@ namespace DigiLocker3
         {
             con.Open();
             int i = 0;
-            string course_type = ddlCourseType.SelectedValue.Replace(" ","_");
+            string course_type = ddlCourseType.SelectedValue.Replace(" ", "_");
             string course_no = ddlCourseNo.SelectedValue;
-            string entry_type = ddlEntryType.SelectedValue.Replace(" ","_");
-            string subject = ddlSubject.SelectedItem.Text.Replace(" ","_");
+            string entry_type = ddlEntryType.SelectedValue.Replace(" ", "_");
+            string subject = ddlSubject.SelectedItem.Text.Replace(" ", "_");
             string term = ddlTerm.SelectedValue;
             int max_marks = Convert.ToInt32(ddlSubject.SelectedValue);
             SqlCommand cmd;
             string query;
+            string marks_entered = "\n";
             string table_name;
             int markspresent = -1;
             foreach (GridViewRow g1 in GridView1.Rows)
             {
-                table_name = course_type + "_" + course_no + "_" + g1.Cells[0].Text.Replace(" ", "_");
-                int marks = Convert.ToInt32(g1.Cells[4].Text);
-                query = "select " + subject + " from " + table_name + " where Personal_No = '" + g1.Cells[1].Text + "'";
+                string personal_no = g1.Cells[2].Text;
+                table_name = course_type + "_" + course_no;
+                query = "select entry_name from " + table_name + " where Personal_No = '" + personal_no + "'";
                 cmd = new SqlCommand(query, con);
                 SqlDataReader dr = cmd.ExecuteReader();
+                string entry = "";
+                while (dr.Read())
+                {
+                    entry = dr.GetString(0);
+                }
+                dr.Close();
+                table_name = course_type + "_" + course_no + "_" + entry.Replace(" ", "_");
+                int marks = Convert.ToInt32(g1.Cells[6].Text);
+                query = "select " + subject + " from " + table_name + " where Personal_No = '" + g1.Cells[1].Text + "'";
+                cmd = new SqlCommand(query, con);
+                dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
                     markspresent = dr.GetInt32(0);
@@ -183,7 +254,7 @@ namespace DigiLocker3
                 dr.Close();
                 if (markspresent == 0)
                 {
-                    if (marks < (55.0 * max_marks)/100.0)
+                    if (marks < (50.0 * max_marks) / 100.0)
                     {
 
                         if (markspresent == 0)
@@ -195,38 +266,43 @@ namespace DigiLocker3
                     }
 
                     query = "";
-                    query = "update " + table_name + " set " + subject + "= " + g1.Cells[4].Text + " where Personal_No = '" + g1.Cells[1].Text + "'";
+                    query = "update " + table_name + " set " + subject + "= " + g1.Cells[6].Text + ", " + subject + "_theory = " + g1.Cells[3].Text + ", " + subject + "_IA = " + g1.Cells[4].Text + ", " +subject + "_Practical = " + g1.Cells[5].Text + ", where Personal_No = '" + g1.Cells[2].Text + "'";
                     //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
                 }
-                else if(markspresent < (55.0 * max_marks) / 100.0)
-                {
-                    query = "";
-                    query = "update " + table_name + " set " + subject + "= " + g1.Cells[4].Text + " where Personal_No = '" + g1.Cells[1].Text + "'";
-                    //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
-                    cmd = new SqlCommand(query, con);
-                    cmd.ExecuteNonQuery();
-                    if (marks >= (55.0 * max_marks) / 100.0)
-                    {
-                        query = "update " + table_name + " set " + term + "_Failed = ( WHEN " + term + "_failed > 0 THEN " + term + "_failed - 1 END) where Personal_No = '" + g1.Cells[1].Text + "'";
-                        cmd = new SqlCommand(query, con);
-                        cmd.ExecuteNonQuery();
-                    }
 
-                    }
                 else
                 {
-                    Response.Write("<script language='javascript'>alert('Marks Already Entered for" + g1.Cells[1].Text + "');</script>");
+                    query = "";
+                    if (markspresent < (55.0 * max_marks) / 100.0)
+                    {
+                        query = "update " + table_name + " set " + subject + "= " + g1.Cells[6].Text + ", " + subject + "_theory = " + g1.Cells[3].Text + ", " + subject + "_IA = " + g1.Cells[4].Text + ", " + subject + "_Practical = " + g1.Cells[5].Text + ", where Personal_No = '" + g1.Cells[2].Text + "'";
+                        //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                        if (Convert.ToInt32(g1.Cells[4].Text) > (55.0 * max_marks) / 100.0)
+                        {
+                            query = "update " + table_name + " set " + term + "_Failed = CASE WHEN " + term + "_failed > 0 THEN " + term + "_failed - 1 END where Personal_No = '" + g1.Cells[1].Text + "'";
+                            cmd = new SqlCommand(query, con);
+                            //cmd.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        marks_entered = marks_entered + g1.Cells[1].Text + "\n";
+                    }
+
                 }
-                
+
+
                 //Response.Write(Marks+"      ");
                 //cmd.ExecuteNonQuery();
 
                 i++;
             }
             con.Close();
-            Response.Write("<script language='javascript'>alert('Marks Added Successfully');</script>");
+            Response.Write("<script language='javascript'>alert('Marks Added Successfully. For these trainees marks were already present. Change marks using Update Marks.');</script>");
             reset();
         }
 
@@ -243,7 +319,7 @@ namespace DigiLocker3
 
         protected void OnRowDataBound(object sender, GridViewRowEventArgs e)
         {
-            
+
         }
 
 
@@ -275,14 +351,14 @@ namespace DigiLocker3
 
             string query = "";
             string type_name = "";
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue +  "_ENTRY_TYPE";
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
             com = new SqlCommand("select TYPE_NAME from " + table_name, con); // table name 
             using (SqlDataReader dr = com.ExecuteReader())
             {
                 while (dr.Read())
                 {
                     type_name = dr[0].ToString().Replace(" ", "_");
-                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") +"_" + ddlCourseNo.SelectedValue + "_" + type_name + "_" + "SUBJECTS";
+                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + type_name + "_" + "SUBJECTS";
                     query = query + "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + ddlTerm.Items[0].Text + "' UNION ";
                 }
             }
@@ -304,7 +380,7 @@ namespace DigiLocker3
         protected void ddlCourseNoIndexChanged(object sender, EventArgs e)
         {
             String name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
-            SqlCommand com = new SqlCommand("select * from" + name, con); // table name 
+            SqlCommand com = new SqlCommand("select * from " + name, con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
             da.Fill(ds);  // fill dataset

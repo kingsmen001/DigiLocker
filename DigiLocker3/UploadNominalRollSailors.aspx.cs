@@ -48,12 +48,12 @@ namespace DigiLocker3
                 //ddlEntryType.SelectedIndex = 0;
                 //ddlCourseNo.SelectedIndex = 0;
 
-                SqlCommand com = new SqlCommand("select *from SAILOR_COURSE_TYPE", con); // table name 
+                SqlCommand com = new SqlCommand("select DISTINCT COURSE_NAME from SAILOR_COURSE", con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();
                 da.Fill(ds);  // fill dataset
-                ddlCourseType.DataTextField = ds.Tables[0].Columns["TYPE_NAME"].ToString(); // text field name of table dispalyed in dropdown
-                ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
+                ddlCourseType.DataTextField = ds.Tables[0].Columns["COURSE_NAME"].ToString(); // text field name of table dispalyed in dropdown
+                ddlCourseType.DataValueField = ds.Tables[0].Columns["COURSE_NAME"].ToString();             // to retrive specific  textfield name 
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
 
@@ -151,6 +151,9 @@ namespace DigiLocker3
 
 
                         SqlCommand cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + txtNo.Text + "','" + txtName.Text + "','" + txtRank.Text + "')", con);
+                        cmd.ExecuteNonQuery();
+                        table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_");
+                        cmd = new SqlCommand("insert into " + table_name + "(Personal_No, entry_Name) values ('" + txtNo.Text + "','" + ddlEntryType.SelectedValue + "')", con);
                         cmd.ExecuteNonQuery();
                         i++;
 
@@ -259,8 +262,11 @@ namespace DigiLocker3
                 table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
                 foreach (GridViewRow g1 in GridView1.Rows)
                 {
-
+                    table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
                     SqlCommand cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "','" + g1.Cells[3].Text + "')", con, tran);
+                    cmd.ExecuteNonQuery();
+                    table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_");
+                    cmd = new SqlCommand("insert into " + table_name + "(Personal_No, entry_Name) values ('" + g1.Cells[1].Text + "','" + ddlEntryType.SelectedValue + "')", con, tran);
                     cmd.ExecuteNonQuery();
                     i++;
                 }
@@ -341,7 +347,7 @@ namespace DigiLocker3
             string col_List = "";
             foreach (string col_nam in column_List)
             {
-                col_List = col_List + ", " + col_nam + " int DEFAULT 0";
+                col_List = col_List + ", " + col_nam + " int DEFAULT 0, " + col_nam + "_Theory int DEFAULT 0, " + col_nam + "_IA int DEFAULT 0, " + col_nam + "_Practical int DEFAULT 0";
 
             }
             //table_name = course_type +  + "_SENIORITY_CRITERIA";

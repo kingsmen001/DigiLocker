@@ -25,7 +25,7 @@ namespace DigiLocker3
             {
                 if (Request.QueryString["coursename"] != null)
                 {
-                    heading.InnerHtml = Request.QueryString["coursename"] + " (Add Subjects)";
+                    heading.InnerHtml = Request.QueryString["coursename"] + " (Add Seniority Details)";
                 }
                     ddlEntryType.SelectedIndex = 0;
                 ddlTerm.SelectedIndex = 0;
@@ -80,25 +80,30 @@ namespace DigiLocker3
                 string maxMarks = (r.FindControl("txtMaxMarks") as TextBox).Text;
                 string minMarks = (r.FindControl("txtMinMarks") as TextBox).Text;
                 string seniority = (r.FindControl("txtSeniority") as TextBox).Text;
-
-                try
+                if (string.IsNullOrWhiteSpace(maxMarks) || string.IsNullOrWhiteSpace(minMarks) || string.IsNullOrWhiteSpace(seniority))
                 {
-                    
-                    string query = "insert into " + table_name + "(lower_lmt, upper_lmt, seniority) values(" + minMarks + ", " + maxMarks + ", " + seniority + ")";
-                    cmd = new SqlCommand(query, con);
-                    cmd.ExecuteNonQuery();
-
 
                 }
-                catch (Exception e1)
-                {
-                    string error = e1.ToString();
-                    Response.Write(error);
-                }
-                finally
-                {
-                   
+                else {
+                    try
+                    {
 
+                        string query = "insert into " + table_name + "(lower_lmt, upper_lmt, seniority) values(" + minMarks + ", " + maxMarks + ", " + seniority + ")";
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                    catch (Exception e1)
+                    {
+                        string error = e1.ToString();
+                        Response.Write(error);
+                    }
+                    finally
+                    {
+
+
+                    }
                 }
 
 

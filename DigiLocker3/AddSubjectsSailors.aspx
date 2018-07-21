@@ -183,9 +183,9 @@
                         <form id="form1" runat="server">
                             <div class="panel-body">
 
-                                <div class="row" style="width:80%">
-                                    <div class="col-lg-6" style="width:80%">
-                                        <div class="form-row" style="width:80%">
+                                <div class="row" style="width:100%">
+                                    <div class="col-lg-6" style="width:100%">
+                                        <div class="form-row" style="width:100%">
                                             <div class="form-group col-lg-4" id="divType" runat ="server">
                                                 <label runat="server" id="lblType">Select Course Type</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseTypeIndexChanged">
@@ -208,7 +208,7 @@
                                         <div class="form-group">
                                             <label>Existing Subjects</label>
                                             <div class="form-group" style="height: auto; max-height: 350px; width: 100%; overflow: auto;">
-                                                <asp:GridView ID="GridView3" CssClass="table table-striped table-bordered table-hover columnscss" runat="server" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1_RowCancelingEdit"
+                                                <asp:GridView ID="GridView3" CssClass="table table-striped table-bordered table-hover columnscss" runat="server" DataKeyNames="Max_Marks" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1_RowCancelingEdit"
                                                     OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowDeleting="GridView1_RowDeleting" ShowHeaderWhenEmpty="True" EmptyDataText="No records Found">
                                                     <Columns>
 
@@ -225,13 +225,36 @@
                                                                 <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("Subject_Name") %>'></asp:TextBox>
                                                             </EditItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Max Marks">
+                                                        
+                                                         <asp:TemplateField HeaderText="Theory">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_Theory" runat="server" Text='<%#Eval("Theory") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:TextBox ID="txt_Theory" runat="server" Text='<%#Eval("Theory") %>'></asp:TextBox>
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                         <asp:TemplateField HeaderText="IA">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_IA" runat="server" Text='<%#Eval("IA") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:TextBox ID="txt_IA" runat="server" Text='<%#Eval("IA") %>'></asp:TextBox>
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Practical">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lbl_Pra" runat="server" Text='<%#Eval("Practical") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <asp:TextBox ID="txt_Pra" runat="server" Text='<%#Eval("Practical") %>'></asp:TextBox>
+                                                            </EditItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Total">
                                                             <ItemTemplate>
                                                                 <asp:Label ID="lbl_City" runat="server" Text='<%#Eval("Max_Marks") %>'></asp:Label>
                                                             </ItemTemplate>
-                                                            <EditItemTemplate>
-                                                                <asp:TextBox ID="txt_City" runat="server" Text='<%#Eval("Max_Marks") %>'></asp:TextBox>
-                                                            </EditItemTemplate>
+                                                            
                                                         </asp:TemplateField>
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
@@ -253,11 +276,23 @@
 
                                             <div class="form-row">
 
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-2">
                                                     <%--<label for="lbl_equip_code">Subject Name</label>--%>
                                                     <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtSubject" placeholder="Subject Name" AutoPostBack="true" OnTextChanged="txtCourseName_TextChanged" />
                                                 </div>
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-2">
+                                                    <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
+                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtTheory" placeholder="Theory Marks" />
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
+                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtIA" placeholder="IA Marks" />
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
+                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtPractical" placeholder="Practical Marks" />
+                                                </div>
+                                                <div class="form-group col-md-2">
                                                     <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
                                                     <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtMarks" placeholder="Maximum Marks" />
                                                 </div>

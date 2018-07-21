@@ -227,8 +227,14 @@
                                             <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss " ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
                                             </asp:GridView>
                                         </div>
-                                        <div class="form-group col-md-2">
-                                            <asp:Button runat="server" ID="Button1" CssClass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" />
+                                        <div class="form-row">
+                                            <div class="form-group col-md-2">
+                                                <asp:Button runat="server" ID="Button1" CssClass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" />
+
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <asp:Button runat="server" ID="Button2" CssClass="form-control btn btn-default" Text="Generate Certificates" OnClick="Generate_Clicked" />
+                                            </div>
                                         </div>
                                     </form>
                                 </div>

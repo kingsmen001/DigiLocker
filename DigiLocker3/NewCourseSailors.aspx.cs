@@ -116,6 +116,9 @@ namespace DigiLocker3
                     query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_ENTRY_TYPE ( TYPE_NAME VARCHAR(50))";
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
+                    query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + " (Personal_No VARCHAR(50), ENTRY_NAME VARCHAR(50))";
+                    cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
                     //Response.Write("Record Uploaded Successfully!!!thank you");
                     Response.Redirect("UploadNominalRollSailors.aspx?coursename=" + name + "&courseno=" + Course_Number_TextBox.Text);
                     string script = "alert(\" Course Enrolled Succefullly \");";
@@ -153,7 +156,16 @@ namespace DigiLocker3
 
         protected void OnSelectedIndexChanged(object sender, EventArgs e)
         {
-
+            //string coursename = ddlCourseType.SelectedValue;
+            //string query = 
+            //    query = "select COUNT(*) from " + coursename + "_Subjects";
+            //SqlCommand cmd = new SqlCommand(query, con);
+            //Int32 count = (Int32)cmd.ExecuteScalar();
+            //if(count==0)
+            //{
+            //    Response.Redirect("AddSubjectsSailors.aspx");
+            //    Response.Write("<script language='javascript'>alert('Please Add Subjects');</script>");
+            //}
         }
     }
 }
