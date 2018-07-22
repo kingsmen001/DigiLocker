@@ -461,7 +461,7 @@ namespace DigiLocker3
         {
             if (coursename == null)
                 coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
-            if (!System.Text.RegularExpressions.Regex.IsMatch(txtSubject.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtSubject.Text[0] != ' ' & txtSubject.Text[0] != '\t')
+            if (!string.IsNullOrWhiteSpace(txtSubject.Text) & !System.Text.RegularExpressions.Regex.IsMatch(txtSubject.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
             {
                 con.Open();
                 string table_name = coursename + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
@@ -470,7 +470,7 @@ namespace DigiLocker3
                 int count = (int)com.ExecuteScalar();
                 if (count == 1)
                 {
-                    string script = "alert(\" Course Name Already Exists \");";
+                    string script = "alert(\" Subject Name Already Exists \");";
                     ScriptManager.RegisterStartupScript(this, GetType(),
                                           "ServerControlScript", script, true);
                     txtSubject.Text = "";

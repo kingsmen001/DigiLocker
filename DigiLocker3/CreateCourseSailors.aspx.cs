@@ -15,6 +15,12 @@ namespace DigiLocker3
     public partial class CreateCourse : System.Web.UI.Page
     {
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
+        public enum MessageType { Success, Error, Info, Warning };
+
+        protected void ShowMessage(string Message, MessageType type)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "ShowMessage('" + Message + "','" + type + "');", true);
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -253,9 +259,11 @@ namespace DigiLocker3
                 int count = (int)com.ExecuteScalar();
                 if (count == 1)
                 {
-                    string script = "alert(\" Course Name Already Exists \");";
-                    ScriptManager.RegisterStartupScript(this, GetType(),
-                                          "ServerControlScript", script, true);
+                    //string script = "alert(\" Course Name Already Exists \");";
+                    //ScriptManager.RegisterStartupScript(this, GetType(),
+                    //                      "ServerControlScript", script, true);
+                    lblMessage.Text = "I am called";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "showModal();", true);
                     txtCourseName.Text = "";
                 }
                 con.Close();

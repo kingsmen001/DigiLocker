@@ -37,25 +37,39 @@
     <![endif]-->
 
     <style>
-.button {
-    background-color: #007bff; /* Green */
-    border: none;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
+        .button {
+            background-color: #007bff; /* Green */
+            border: none;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
 
-.button1 {border-radius: 2px;}
-.button2 {border-radius: 4px;}
-.button3 {border-radius: 8px;}
-.button4 {border-radius: 10px;}
-.button5 {border-radius: 50%;}
-</style>
+        .button1 {
+            border-radius: 2px;
+        }
+
+        .button2 {
+            border-radius: 4px;
+        }
+
+        .button3 {
+            border-radius: 8px;
+        }
+
+        .button4 {
+            border-radius: 10px;
+        }
+
+        .button5 {
+            border-radius: 50%;
+        }
+    </style>
 
 </head>
 
@@ -89,10 +103,10 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>--%>
-                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    <%--</ul>--%>
-                    <!-- /.dropdown-user -->
+                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                </li>
+                <%--</ul>--%>
+                <!-- /.dropdown-user -->
                 <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
@@ -105,10 +119,10 @@
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
                             </div>
                             <!-- /input-group -->
                         </li>
@@ -176,8 +190,8 @@
                                 <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
-                                
-                                
+
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -197,62 +211,48 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-default" >
+                    <div class="panel panel-default">
                         <div class="panel-heading">
                             List of Available Courses
                         </div>
                         <div class="panel-body">
-                            <div class="row" style = "width:100%">
-                                
-			                    <div class="col-lg-8" style = "width:100%">
-                                    <form id="form1" runat="server" >
+                            <div class="row" style="width: 100%">
+
+                                <div class="col-lg-8" style="width: 100%">
+                                    <form id="form1" runat="server">
                                         <div class="col-lg-6">
                                             <label>Sailor Courses</label>
                                             <%--<ul style="list-style-type:none">--%>
-                                         <table style ="width:200px" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                    <tr>
-                                        <%--<th>Sr.No.</th>
-                                        <th>Course Name</th>--%>
-                                        
-                                     </tr>
-                                </thead>
-                                <tbody>
-                                      <%=getCourseDetails()%>
-                                  <%--</ul>--%>
-                                </tbody>
-                                
-                            </table>
+                                            <table style="width: 200px" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                                <thead>
+                                                    <tr>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%=getCourseDetails()%>
+                                                    <%--</ul>--%>
+                                                </tbody>
+
+                                            </table>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <%--<label>Courses Enrolled</label>
-                                         <table style ="width:400px" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                    <tr>
-                                        <th>Sr.No.</th>
-                                        <th>Course Name</th>
-                                        
-                                     </tr>
-                                </thead>
-                                <tbody>
-                                      <%=getEnrolledCourseDetails()%>
-                                  
-                                </tbody>
-                                
-                            </table>--%>
-                                        </div>
-                                        </form>
-                                   
-                                    
+
+                                    </form>
+
+
                                 </div>
-                                
+
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
-                            <!-- /.row (nested) -->
-                            <div style="align-self:center">
-                            <a href ="CreateCourseSailors.aspx"><label class="button button3 btn btn-primary">Create Course</label></a>
-                                    <a href ="NewCourseSailors.aspx"><label class="button button3  btn btn-primary">Enrol Course</label></a>
+                            <div class="col-lg-6">
+
+                                <!-- /.row (nested) -->
+                                <div style="align-self: center">
+
+                                    <a href="NewCourseSailors.aspx">
+                                        <label class="button button3  btn btn-primary">Enrol Course</label></a>
                                 </div>
+                                <a href="CreateCourseSailors.aspx">Create New Course</a>
+                            </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>

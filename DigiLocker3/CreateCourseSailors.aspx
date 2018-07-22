@@ -22,6 +22,7 @@
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
     <link href="../dist/css/style.css" rel="stylesheet">
+    <link href="../css/tooltip.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
@@ -35,6 +36,18 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <script type="text/javascript">
+        function showModal() {
+            $("#myModal").modal('show');
+        }
+
+        $(function () {
+            $("#btnShow").click(function () {
+                showModal();
+            });
+        });
+    </script>
 
 </head>
 
@@ -51,7 +64,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-               <a class="navbar-brand" href="Home.aspx">Result Section</a>
+                <a class="navbar-brand" href="Home.aspx">Result Section</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -68,10 +81,10 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>--%>
-                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    <%--</ul>--%>
-                    <!-- /.dropdown-user -->
+                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                </li>
+                <%--</ul>--%>
+                <!-- /.dropdown-user -->
                 <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
@@ -84,10 +97,10 @@
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
                             </div>
                             <!-- /input-group -->
                         </li>
@@ -155,13 +168,13 @@
                                 <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
-                                
-                                
+
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                         
-                        
+
+
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -169,6 +182,7 @@
             <!-- /.navbar-static-side -->
         </nav>
         <div id="page-wrapper">
+
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">Create Course</h1>
@@ -178,73 +192,88 @@
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-default" >
+                    <div class="panel panel-default">
                         <div class="panel-heading">
                             Enter details here
                         </div>
                         <div class="panel-body">
-                            <div class="row" style = "width:100%">
-                                
-			
-                                <div class="col-lg-6" style = "width:100%">
-                                    <form id="form1" runat="server" >
-                                        
+                            <div class="row" style="width: 100%">
+
+
+                                <div class="col-lg-6" style="width: 100%">
+                                    <form id="form1" runat="server">
+                                        <div class="modal fade" id="myModal" role="dialog">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Modal Header</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <asp:Label ID="lblMessage" runat="server"></asp:Label>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <%--<asp:Button ID="Button2" runat="server" Text="Click Me" OnClick="Button2_Click" />--%>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
-                                            <div class ="form-row">
-                                                 <div class="col-md-4">
+                                            <div class="form-row">
+                                                <div class="col-md-4">
                                                     <label>Enter Course Name</label>
-                                                    <asp:TextBox runat="server" CssClass="form-control" id="txtCourseName" type="text" aria-describedby="nameHelp" placeholder="Course Name" AutoPostBack="true" OnTextChanged="txtCourseName_TextChanged"/>
+                                                    <asp:TextBox runat="server" CssClass="form-control" ID="txtCourseName" type="text" aria-describedby="nameHelp" placeholder="Course Name" AutoPostBack="true" OnTextChanged="txtCourseName_TextChanged" />
+                                                </div>
+                                                <div class=" help-tip" style="position: relative; margin-left: 7px; margin-top: 10px; z-index: 500">
+                                                    <p>Course Number Should consist only of Alphabets, Numbers, Space and Underscore.</p>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <%--<label>Existing Courses</label>--%>
-                                                    <asp:DropDownList runat="server" CssClass="form-control" id="ddlCourseType" Visible="false" EnableViewState="false">
-                                                        </asp:DropDownList>
+                                                    <asp:DropDownList runat="server" CssClass="form-control" ID="ddlCourseType" Visible="false" EnableViewState="false">
+                                                    </asp:DropDownList>
                                                 </div>
                                             </div>
                                         </div>
                                         <br />
                                         <div class="form-group">
-                                            <div class ="form-row">
+                                            <div class="form-row">
                                                 <div class="col-md-4">
                                                     <%--<label>Entry Type Excel File</label>--%>
-                                                    <%--<asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server"  />--%>                                                
+                                                    <%--<asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server"  />--%>
                                                 </div>
-                                               </div>
                                             </div>
+                                        </div>
 
                                         <div class="col-md-4">
-                                                    
-                                                    <asp:CheckBox ID="CheckBox1" runat="server"   />
-                                            <label>Seniority Applicable</label>
-                                                </div>
-                                        <br />
-                                        
-                                                
-                                               
-                                        <br /><br />
-                                            
-                                    
-                                    <div class="form-group" style="height:auto; max-height:500px; width:100%; overflow:auto;">
-                                        <%--<asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" >
-                                            
-                                        </asp:GridView>--%>
 
-                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="excelgrd" runat="server" AutoGenerateColumns="false" ShowFooter="true" PageSize="50">
+                                            <asp:CheckBox ID="CheckBox1" runat="server" />
+                                            <label>Seniority Applicable</label>
+                                        </div>
+                                        <br />
+
+
+
+                                        <br />
+                                        <br />
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-4" style="height: auto; max-height: 500px; width: 97%; overflow: auto;">
+                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="excelgrd" runat="server" AutoGenerateColumns="false" ShowFooter="true" PageSize="50">
                                                     <Columns>
 
                                                         <asp:TemplateField HeaderText="Entry Name">
                                                             <ItemTemplate>
-                                                                <asp:TextBox ID="txtMaxMarks" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
+                                                                <asp:TextBox ID="txtMaxMarks" runat="server" OnTextChanged="OntextChanged" placeholder="No Special Characters."></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="Term Label">
                                                             <ItemTemplate>
-                                                                <asp:TextBox ID="txtMinMarks" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
+                                                                <asp:TextBox ID="txtMinMarks" runat="server" OnTextChanged="OntextChanged" placeholder="A1,A2,B1,B2"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="Duration(in Weeks)">
                                                             <ItemTemplate>
-                                                                <asp:TextBox ID="txtSeniority" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
+                                                                <asp:TextBox ID="txtSeniority" runat="server" OnTextChanged="OntextChanged" placeholder="52"></asp:TextBox>
                                                             </ItemTemplate>
                                                             <FooterStyle HorizontalAlign="Right" />
                                                             <FooterTemplate>
@@ -253,36 +282,40 @@
                                                         </asp:TemplateField>
                                                     </Columns>
                                                 </asp:GridView>
-                                    </div>
-                                        <div class="col-md-4">  
-                                                    <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" AutoPostback = "false" />
-                                        
-                                                    <asp:Button runat="server" type="reset" class="btn btn-default" text="Reset" onclick="ResetButton_Click"/>
-                                                    </div>  
-                                        <asp:Button runat="server" id="ConfirmButton" class="btn btn-default" text="Confirm" onclick="ConfirmButton_Click" visible="False"  EnableViewState="false" />
-                                        
-                                        </form>
+                                            </div>
+                                            <div class=" help-tip" style="position: relative; margin-left: 7px; margin-top: 10px; z-index: 500">
+                                                <p>Entry Name not to contain any special characters other than underscore. Mention name of terms separated by commas with no space in between such as A1,A2,B1 or A,B,C or Ph1,Ph2</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" AutoPostback="false" />
+
+                                            <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" />
+                                        </div>
+                                        <asp:Button runat="server" ID="ConfirmButton" class="btn btn-default" Text="Confirm" OnClick="ConfirmButton_Click" Visible="False" EnableViewState="false" />
+
+                                    </form>
                                 </div>
-                              </div> 
                             </div>
-                            <!-- /.row (nested) -->
                         </div>
-                        <!-- /.panel-body -->
+                        <!-- /.row (nested) -->
                     </div>
-                    <!-- /.panel -->
+                    <!-- /.panel-body -->
                 </div>
-                <!-- /.col-lg-12 -->
+                <!-- /.panel -->
             </div>
-            <!-- /.row -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
 
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
-    
+
     <!-- Bootstrap Core JavaScript -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 

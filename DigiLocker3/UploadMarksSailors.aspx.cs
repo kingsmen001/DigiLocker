@@ -105,6 +105,7 @@ namespace DigiLocker3
             com.ExecuteNonQuery();
             if (FileUpload1.HasFile)
             {
+                Session["FileUpload1"] = FileUpload1;
                 string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
                 string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
                 string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
@@ -302,6 +303,20 @@ namespace DigiLocker3
                 i++;
             }
             con.Close();
+            FileUpload1 = (FileUpload)Session["FileUpload1"];
+            string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
+            string path = "~/Results/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_").ToUpper() + "/" + ddlTerm.SelectedValue.Replace(" ", "_").ToUpper();
+            
+            Directory.CreateDirectory(Server.MapPath(path));
+            string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
+            string FilePath = Server.MapPath(FolderPath + FileName);
+            FileInfo newFile = new FileInfo(FilePath);
+            ExcelPackage pck = new ExcelPackage(newFile);
+            var theWorkbook = pck.Workbook;
+            var theSheet = theWorkbook.Worksheets[1];
+            ExcelWorkbook workbook = new ExcelWorkbook();
+            FilePath = Server.MapPath("~/Results/" + ddlCourseType.SelectedValue.Replace(" ","_").ToUpper() + "/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_").ToUpper() + "/" + ddlTerm.SelectedValue.Replace(" ","_").ToUpper() + "/" + FileName);
+            FileUpload1.SaveAs(FilePath);
             Response.Write("<script language='javascript'>alert('Marks Added Successfully. For these trainees marks were already present. Change marks using Update Marks.');</script>");
             reset();
         }
