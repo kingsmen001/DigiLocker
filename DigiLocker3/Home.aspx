@@ -127,7 +127,7 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>View Courses</a>
+                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
@@ -188,6 +188,9 @@
                                     <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
                                 </li>
                                 <li>
+                                    <a href="UpdateMarks.aspx"><i class="fa fa-edit fa-fw"></i>Update Marks</a>
+                                </li>
+                                <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
 
@@ -204,7 +207,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Course Management System </h1>
+                    <h1 class="page-header">Result Management System </h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

@@ -16,8 +16,8 @@ namespace DigiLocker3
     public partial class UploadNominalRoll : System.Web.UI.Page
     {
 
-        string coursename ;
-        string courseno ;
+        string coursename;
+        string courseno;
         string table_name = "";
         int flag;
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
@@ -38,13 +38,13 @@ namespace DigiLocker3
                 courseno = Request.QueryString["courseno"];
             }
 
-            
+
             if (!this.IsPostBack)
             {
                 flag = 0;
 
                 con.Open();
-                
+
                 //ddlEntryType.SelectedIndex = 0;
                 //ddlCourseNo.SelectedIndex = 0;
 
@@ -73,8 +73,8 @@ namespace DigiLocker3
                 }
 
                 if (coursename == null)
-                    coursename = ddlCourseType.SelectedValue.Replace(" ", "_") ;
-                com = new SqlCommand("select * from " + coursename.Replace(" ","_") + "_ENTRY_TYPE", con); // table name 
+                    coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
+                com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE", con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -83,7 +83,22 @@ namespace DigiLocker3
                 ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlEntryType.DataBind();
 
-                
+                if (coursename == null)
+                    coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
+                com = new SqlCommand("select TERM_LABEL from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
+                List<string> termLabel = new List<string>();
+                using (SqlDataReader dr = com.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        termLabel = dr[0].ToString().Split('_').ToList();
+
+                    }
+                }
+                ddlTerm.DataSource = termLabel.Distinct().ToList();
+                ddlTerm.DataBind();
+
+
                 table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
                 string query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_no, Name, Rank from " + table_name;
                 //Response.Write(query);
@@ -103,7 +118,7 @@ namespace DigiLocker3
                     txtRank.Enabled = true;
                     txtNo.Enabled = true;
                     FileUpload1.Enabled = false;
-                    
+
 
                 }
                 else
@@ -318,26 +333,48 @@ namespace DigiLocker3
             //string course_no = ddlCourseNo.SelectedValue;
             string entry_type = ddlEntryType.SelectedValue.Replace(" ", "_");
             entry_type = entry_type.Replace(" ", "_");
-            table_name = coursename.Replace(" ","_") + "_" + courseno + "_" + entry_type;
+            table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type;
             con.Open();
-            string query = "If not exists(select name from sysobjects where name = '" + coursename.Replace(" ","_") + "_" + courseno + "_" + entry_type + "_SUBJECTS') Select * into " + coursename.Replace(" ","_") + "_" + courseno + "_" + entry_type + "_SUBJECTS from " +coursename.Replace(" ","_") + "_" +entry_type + "_SUBJECTS";
+            string query = "If not exists(select name from sysobjects where name = '" + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS') Select * into " + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS from " + coursename.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS where TERM = '" + ddlTerm.SelectedValue + "'";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
-            
-            query = "IF NOT EXISTS(SELECT TYPE_NAME FROM " + coursename.Replace(" ","_") + "_" + courseno + "_ENTRY_TYPE WHERE TYPE_NAME='" + entry_type.Replace("_", " ") + "')insert into " + coursename.Replace(" ","_") + "_" + courseno + "_ENTRY_TYPE (TYPE_NAME) values('" + entry_type.Replace("_"," ") + "')";
+
+            //query = "IF NOT EXISTS(SELECT TYPE_NAME FROM " + coursename.Replace(" ","_") + "_" + courseno + "_ENTRY_TYPE WHERE TYPE_NAME='" + entry_type.Replace("_", " ") + "')insert into " + coursename.Replace(" ","_") + "_" + courseno + "_ENTRY_TYPE (TYPE_NAME) values('" + entry_type.Replace("_"," ") + "')";
+            //cmd = new SqlCommand(query, con);
+            //cmd.ExecuteNonQuery();
+            table_name = "SAILOR_COURSE_TYPE";
+            SqlCommand com = new SqlCommand("select seniority from " + table_name + " where TYPE_NAME = '" + coursename + "'", con);
+            SqlDataReader dr = com.ExecuteReader();
+            string seniority = "";
+            while (dr.Read())
+            {
+                seniority = dr.GetValue(0).ToString();
+                //seniority = dr.GetValue(1).ToString();
+            }
+            dr.Close();
+            table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type;
+            if (seniority.Equals("1"))
+            {
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0, Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO')";
+            }
+            else
+            {
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO')";
+            }
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
-            SqlCommand com = new SqlCommand("select Subject_Name, Term from " + coursename.Replace(" ","_") +"_" + courseno.Replace(" ","_") + "_" + entry_type + "_SUBJECTS", con);
-            SqlDataReader dr = com.ExecuteReader();
+            com = new SqlCommand("select Subject_Name, Term from " + coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS  where TERM = '" + ddlTerm.SelectedValue + "'", con);
+            dr = com.ExecuteReader();
             List<string> column_List = new List<string>();
 
             string col_name;
+            string col_listA = "";
             while (dr.Read())
             {
                 col_name = dr.GetValue(0).ToString().Replace(" ", "_");
                 //Response.Write(col_name + i);
 
-
+                col_listA = col_listA + "'" + col_name + "', ";
                 column_List.Add(col_name);
 
 
@@ -351,52 +388,49 @@ namespace DigiLocker3
 
             }
             //table_name = course_type +  + "_SENIORITY_CRITERIA";
-            table_name = coursename.Replace(" ","_") + "_ENTRY_TYPE";
+            table_name = coursename.Replace(" ", "_") + "_ENTRY_TYPE";
             com = new SqlCommand("select Term_Label from " + table_name + " where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con);
             dr = com.ExecuteReader();
             string term_label = "";
-            string seniority = "";
+
             while (dr.Read())
             {
                 term_label = dr.GetValue(0).ToString();
                 //seniority = dr.GetValue(1).ToString();
             }
             dr.Close();
-            table_name = "SAILOR_COURSE_TYPE";
-            com = new SqlCommand("select seniority from " + table_name + " where TYPE_NAME = '" + coursename + "'", con);
-            dr = com.ExecuteReader();
-            while (dr.Read())
-            {
-                seniority = dr.GetValue(0).ToString();
-                //seniority = dr.GetValue(1).ToString();
-            }
-            dr.Close();
+
 
             if (seniority.Equals("1"))
             {
-                foreach (string term in term_label.Split('_'))
-                {
-                    col_List = col_List + ", " + term + "_total int DEFAULT 0, " + term + "_percentage decimal(4,2) DEFAULT 0, " + term + "_seniority_gained decimal(4,2) DEFAULT 0, " + term + "_seniority_lost decimal(4,2) DEFAULT 0, " + term + "_seniority_total decimal(4,2) DEFAULT 0 " ;
-                }
-                col_List = col_List + ", total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0 ";
+                string term = ddlTerm.SelectedValue;
+                col_List = col_List + ", " + term + "_total int DEFAULT 0, " + term + "_percentage decimal(4,2) DEFAULT 0, " + term + "_seniority_gained decimal(4,2) DEFAULT 0, " + term + "_seniority_lost decimal(4,2) DEFAULT 0, " + term + "_seniority_total decimal(4,2) DEFAULT 0 ";
+
+                //col_List = col_List + ", total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0 ";
             }
             else
             {
-                foreach (string term in term_label.Split('_'))
-                {
-                    col_List = col_List + ", " + term + "_total int DEFAULT 0, " + term + "_percentage decimal(4,2) DEFAULT 0 ";
-                }
+                string term = ddlTerm.SelectedValue;
+                col_List = col_List + ", " + term + "_total int DEFAULT 0, " + term + "_percentage decimal(4,2) DEFAULT 0 ";
+
             }
-            foreach (string term in term_label.Split('_'))
-            {
-                col_List = col_List + ", " + term + "_Failed int DEFAULT 0, " + term + "_Qualified varchar(15) default 'NO'";
-            }
-            col_List = col_List + ", Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO'";
+            string term1 = ddlTerm.SelectedValue;
+            col_List = col_List + ", " + term1 + "_Failed int DEFAULT 0, " + term1 + "_Qualified varchar(15) default 'NO'";
+
+            //col_List = col_List + ", Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO'";
             //Response.Write(col_List);
-            table_name = coursename.Replace(" ","_") + "_" + courseno + "_" + entry_type;
-            query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
+            col_listA = col_listA.TrimEnd(',');
+            table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type;
+            query = "select count(*) Names from sys.columns where OBJECT_ID = OBJECT_ID('" + table_name + "') and Name in ('" + col_listA + "))";
+            //query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
             cmd = new SqlCommand(query, con);
+            int col = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+            if (col == 0)
+            {
+                query = "Alter Table " + table_name + "add " + col_List;
+            }
             //Response.Write(query);
+            cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
             column_List.Clear();
             con.Close();
@@ -526,14 +560,74 @@ namespace DigiLocker3
             ddlEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
             ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             ddlEntryType.DataBind();
+
+
+            if (coursename == null)
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
+            com = new SqlCommand("select TERM_LABEL from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
+            List<string> termLabel = new List<string>();
+            using (SqlDataReader dr = com.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    termLabel = dr[0].ToString().Split('_').ToList();
+
+                }
+                dr.Close();
+            }
+            ddlTerm.DataSource = termLabel.Distinct().ToList();
+            ddlTerm.DataBind();
+
             con.Close();
             showData();
         }
 
-        protected void OnSelectedIndexChanged(object sender, EventArgs e)
+        protected void ddlEntryTypeChanged(object sender, EventArgs e)
+        {
+            con.Open();
+            if (coursename == null)
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
+            SqlCommand com = new SqlCommand("select TERM_LABEL from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
+            List<string> termLabel = new List<string>();
+            using (SqlDataReader dr = com.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    termLabel = dr[0].ToString().Split('_').ToList();
+
+                }
+                dr.Close();
+            }
+            ddlTerm.DataSource = termLabel.Distinct().ToList();
+            ddlTerm.DataBind();
+
+            con.Close();
+            showData();
+        }
+
+        protected void ddlCourseNumberChanged(object sender, EventArgs e)
         {
             showData();
 
+        }
+        protected void ddlTermChanged(object sender, EventArgs e)
+        {
+            showData();
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+            string query = "select count(*) from " + table_name;
+            SqlCommand cmd = new SqlCommand(query, con);
+            int rows = Convert.ToInt32(cmd.ExecuteScalar());
+            if(rows>0)
+            {
+                AddButton.Visible = true;
+                AddButton.EnableViewState = true;
+            }
+        }
+        protected void AddButton_Click(object sender, EventArgs e)
+        {
+            createTable();
+            AddButton.Visible = false;
+            AddButton.EnableViewState = false;
         }
         protected void input_CheckedChanged(Object sender, EventArgs e)
         {

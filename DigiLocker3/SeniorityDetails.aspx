@@ -93,7 +93,7 @@
                         </li>
                         
                         <li>
-                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>View Courses</a>
+                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
@@ -152,6 +152,9 @@
                                 </li>
                                 <li>
                                     <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+                                </li>
+                                <li>
+                                    <a href="UpdateMarks.aspx"><i class="fa fa-edit fa-fw"></i>Update Marks</a>
                                 </li>
                                 <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>

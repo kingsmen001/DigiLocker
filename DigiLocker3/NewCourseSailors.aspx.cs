@@ -17,8 +17,8 @@ namespace DigiLocker3
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
-           
-            if (Request.QueryString["coursename"]!=null)
+
+            if (Request.QueryString["coursename"] != null)
             {
                 heading.InnerHtml = Request.QueryString["coursename"];
                 ddlCourseType.Visible = false;
@@ -26,7 +26,7 @@ namespace DigiLocker3
                 labeltype.Visible = false;
                 labeltype.EnableViewState = false;
                 name = Request.QueryString["coursename"];
-                
+
             }
 
 
@@ -64,22 +64,50 @@ namespace DigiLocker3
                 ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
+
+                List<string> termList = new List<string>();
+                string query = "select Type_Name from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
+                com = new SqlCommand(query, con);
+                da = new SqlDataAdapter(com);
+                ds = new DataSet();
+                da.Fill(ds);
+                GridView1.DataSource = ds;
+                GridView1.DataBind();
+
                 con.Close();
-                
+
+
             }
         }
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(Course_Number_TextBox.Text))
+            int flag = 0; 
+            foreach (GridViewRow g1 in GridView1.Rows)
+            {
+                CheckBox chkBox = (CheckBox)g1.Cells[0].FindControl("ChkBox1");
+                if (string.IsNullOrWhiteSpace(g1.Cells[2].Text) & chkBox.Checked)
+                {
+                    flag = 1;
+                    break;
+                }
+            }
+                if (string.IsNullOrWhiteSpace(Course_Number_TextBox.Text))
             {
                 string script = "alert(\" Enter Course Number \");";
                 ScriptManager.RegisterStartupScript(this, GetType(),
                                       "ServerControlScript", script, true);
                 Course_Number_TextBox.Text = "";
             }
-            else if(!System.Text.RegularExpressions.Regex.IsMatch(Course_Number_TextBox.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & Course_Number_TextBox.Text[0] != ' ' & Course_Number_TextBox.Text[0] != '\t')
-            {
+            else if(flag ==1)
+                {
+                string script = "alert(\" Enter Course Number for each Selected Entry \");";
+                ScriptManager.RegisterStartupScript(this, GetType(),
+                                      "ServerControlScript", script, true);
                 
+            }
+            else if (!System.Text.RegularExpressions.Regex.IsMatch(Course_Number_TextBox.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & Course_Number_TextBox.Text[0] != ' ' & Course_Number_TextBox.Text[0] != '\t')
+            {
+
                 try
                 {
                     //string filename = Path.GetFileName(FileUploadControl.FileName);
@@ -87,7 +115,7 @@ namespace DigiLocker3
 
                     con.Open();
                     //string course = this.DropDownList1.SelectedIndex; GetItemText(this.DropDownList1.SelectedItem);
-                    if(name == null)
+                    if (name == null)
                     {
                         name = ddlCourseType.SelectedValue;
                     }
@@ -113,9 +141,19 @@ namespace DigiLocker3
                     //    cmd = new SqlCommand(query, con);
                     //    cmd.ExecuteNonQuery();
                     //}
-                    query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_ENTRY_TYPE ( TYPE_NAME VARCHAR(50))";
+                    query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_ENTRY_TYPE ( TYPE_NAME VARCHAR(50), NUMBER VARCHAR(50), ENROLLEDIN VARCHAR(50) DEFAULT 'BLANK')";
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
+                    foreach (GridViewRow g1 in GridView1.Rows)
+                    {
+                        CheckBox chkBox = (CheckBox)g1.Cells[0].FindControl("ChkBox1");
+                        if(!string.IsNullOrWhiteSpace(g1.Cells[2].Text) & chkBox.Checked)
+                        {
+                            query = "insert into " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_ENTRY_TYPE values( '" + g1.Cells[1].Text + "', '" + g1.Cells[2].Text + "')";
+                            cmd = new SqlCommand(query, con);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
                     query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + " (Personal_No VARCHAR(50), ENTRY_NAME VARCHAR(50))";
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
@@ -138,8 +176,8 @@ namespace DigiLocker3
                     }
                     else Response.Write(ex);
                 }
-                }
-                else{
+            }
+            else {
                 string script = "alert(\" Only AlphaNumeric Characters are Allowed. Name Cannot start with Space \");";
                 ScriptManager.RegisterStartupScript(this, GetType(),
                                       "ServerControlScript", script, true);
@@ -156,16 +194,16 @@ namespace DigiLocker3
 
         protected void OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            //string coursename = ddlCourseType.SelectedValue;
-            //string query = 
-            //    query = "select COUNT(*) from " + coursename + "_Subjects";
-            //SqlCommand cmd = new SqlCommand(query, con);
-            //Int32 count = (Int32)cmd.ExecuteScalar();
-            //if(count==0)
-            //{
-            //    Response.Redirect("AddSubjectsSailors.aspx");
-            //    Response.Write("<script language='javascript'>alert('Please Add Subjects');</script>");
-            //}
+            con.Open();
+            string query = "select Type_Name from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
+            SqlCommand com = new SqlCommand(query, con);
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            GridView1.DataSource = ds;
+            GridView1.DataBind();
+
+            con.Close();
         }
     }
 }

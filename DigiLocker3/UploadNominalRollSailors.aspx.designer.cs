@@ -76,6 +76,24 @@ namespace DigiLocker3 {
         protected global::System.Web.UI.WebControls.DropDownList ddlEntryType;
         
         /// <summary>
+        /// label1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl label1;
+        
+        /// <summary>
+        /// ddlTerm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTerm;
+        
+        /// <summary>
         /// rbtnmulti control.
         /// </summary>
         /// <remarks>
@@ -155,6 +173,15 @@ namespace DigiLocker3 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridView2;
+        
+        /// <summary>
+        /// AddButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddButton;
         
         /// <summary>
         /// GridView1 control.

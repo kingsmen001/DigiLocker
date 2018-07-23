@@ -67,10 +67,10 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>--%>
-                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    <%--</ul>--%>
-                    <!-- /.dropdown-user -->
+                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                </li>
+                <%--</ul>--%>
+                <!-- /.dropdown-user -->
                 <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
@@ -91,7 +91,7 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>View Courses</a>
+                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
@@ -152,6 +152,9 @@
                                     <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
                                 </li>
                                 <li>
+                                    <a href="UpdateMarks.aspx"><i class="fa fa-edit fa-fw"></i>Update Marks</a>
+                                </li>
+                                <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
 
@@ -194,23 +197,31 @@
 
                                             <div class="form-group col-md-4">
                                                 <label id="labelnumber" runat="server">Select Course Number</label>
-                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" AutoPostBack="true" runat="server" OnSelectedIndexChanged="OnSelectedIndexChanged">
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlCourseNumberChanged">
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Select Entry Type</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" AutoPostBack="true" runat="server" OnSelectedIndexChanged="OnSelectedIndexChanged">
-                                            </asp:DropDownList>
+                                        <div class="form-row" style="width: 100%">
+                                            <div class="form-group col-md-4">
+                                                <label>Select Entry Type</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlEntryTypeChanged">
+                                                </asp:DropDownList>
+                                            </div>
+
+                                            <div class="form-group col-md-4">
+                                                <label id="label1" runat="server">Select Term</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlTerm" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlTermChanged">
+                                                </asp:DropDownList>
+                                            </div>
                                         </div>
-                                        <asp:RadioButton ID="rbtnmulti" GroupName="InputMethod" runat="server" Text="Multiple Input" AutoPostBack="true" OnCheckedChanged="input_CheckedChanged"/>
+                                        <asp:RadioButton ID="rbtnmulti" GroupName="InputMethod" runat="server" Text="Multiple Input" AutoPostBack="true" OnCheckedChanged="input_CheckedChanged" />
 
                                         <div class="form-group">
                                             <label>Nominal Roll Excel File</label>
                                             <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
                                         </div>
 
-                                        <asp:RadioButton ID="rbtnind" GroupName="InputMethod" runat="server" Text="Individual Input" AutoPostBack="true" OnCheckedChanged="input_CheckedChanged"/>
+                                        <asp:RadioButton ID="rbtnind" GroupName="InputMethod" runat="server" Text="Individual Input" AutoPostBack="true" OnCheckedChanged="input_CheckedChanged" />
                                         <div class="form-group" runat="server" id="single">
                                             <div class="form-row">
                                                 <div class="form-group col-md-4">
@@ -243,7 +254,7 @@
                                         <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView2" runat="server" ScrollBars="Both" AllowPaging="False">
                                         </asp:GridView>
                                     </div>
-
+                                    <asp:Button runat="server" ID="AddButton" class="btn btn-default" Text="Enrole Last Term Trainees" OnClick="AddButton_Click" Visible="false" EnableViewState="false" />
                                     <!-- /.col-lg-6 (nested) -->
                                 </div>
                                 <!-- /.row (nested) -->

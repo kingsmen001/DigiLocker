@@ -21,6 +21,7 @@
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
     <link href="../dist/css/style.css" rel="stylesheet">
+    <link href="../css/tooltip.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
@@ -68,10 +69,10 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>--%>
-                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    <%--</ul>--%>
-                    <!-- /.dropdown-user -->
+                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                </li>
+                <%--</ul>--%>
+                <!-- /.dropdown-user -->
                 <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
@@ -91,8 +92,8 @@
                             </div>
                             <!-- /input-group -->
                         </li>
-                        <li>
-                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>View Courses</a>
+                       <li>
+                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
@@ -151,6 +152,9 @@
                                 </li>
                                 <li>
                                     <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+                                </li>
+                                <li>
+                                    <a href="UpdateMarks.aspx"><i class="fa fa-edit fa-fw"></i>Update Marks</a>
                                 </li>
                                 <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
@@ -222,10 +226,16 @@
                                         </div>
 
 
-
-                                        <div class="form-group">
-                                            <label>Marks Excel File</label>
-                                            <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
+                                        <div class="form-row" style="margin-left:4px">
+                                            <div class="form-group">
+                                                <label>Marks Excel File</label>
+                                                <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
+                                            </div>
+                                            <div class=" help-tip" style="position: relative; margin-left: 20px; margin-top: 10px; z-index: 500">
+                                                <p style="width:600px">Excel File should be in this format.
+                                                    <img src="excel.jpg" width="550"/>
+                                                </p>
+                                            </div>
                                         </div>
 
                                         <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />

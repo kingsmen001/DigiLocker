@@ -314,10 +314,10 @@ namespace DigiLocker3
             ExcelPackage pck = new ExcelPackage(newFile);
             var theWorkbook = pck.Workbook;
             var theSheet = theWorkbook.Worksheets[1];
-            ExcelWorkbook workbook = new ExcelWorkbook();
+            
             FilePath = Server.MapPath("~/Results/" + ddlCourseType.SelectedValue.Replace(" ","_").ToUpper() + "/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_").ToUpper() + "/" + ddlTerm.SelectedValue.Replace(" ","_").ToUpper() + "/" + FileName);
             FileUpload1.SaveAs(FilePath);
-            Response.Write("<script language='javascript'>alert('Marks Added Successfully. For these trainees marks were already present. Change marks using Update Marks.');</script>");
+            Response.Write("<script language='javascript'>alert('Marks Added Successfully.');</script>");
             reset();
         }
 

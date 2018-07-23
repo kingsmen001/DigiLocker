@@ -22,7 +22,7 @@
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
     <link href="../dist/css/style.css" rel="stylesheet">
-
+    <link href="../css/tooltip.css" rel="stylesheet">
     <!-- Morris Charts CSS -->
     <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
 
@@ -68,13 +68,14 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>--%>
-                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    <%--</ul>--%>
-                    <!-- /.dropdown-user -->
+                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                </li>
+                <%--</ul>--%>
+                <!-- /.dropdown-user -->
                 <%--</li>--%>
                 <!-- /.dropdown -->
-            </ul>ss
+            </ul>
+            ss
             <!-- /.navbar-top-links -->
 
             <div class="navbar-default sidebar" role="navigation">
@@ -84,15 +85,15 @@
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
                             </div>
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>View Courses</a>
+                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
@@ -153,10 +154,13 @@
                                     <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
                                 </li>
                                 <li>
+                                    <a href="UpdateMarks.aspx"><i class="fa fa-edit fa-fw"></i>Update Marks</a>
+                                </li>
+                                <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
-                                
-                                
+
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -169,7 +173,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header" id ="heading" runat="server">Add Course</h1>
+                    <h1 class="page-header" id="heading" runat="server">Add Course</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -181,42 +185,70 @@
                             Enter Details here
                         </div>
                         <div class="panel-body">
-                            <div class="row" style = "width:50%">
-                                
-			
-                                <div class="col-lg-6" style = "width:100%">
-                                    <form id="form1" runat="server" >
+                            <div class="row" style="width: 50%">
+
+
+                                <div class="col-lg-6" style="width: 100%">
+                                    <form id="form1" runat="server">
                                         <div class="form-group">
-                                            <div class ="form-row">
-                                                 <div class="col-md-6">
+                                            <div class="form-row">
+                                                <div class="col-md-6">
                                                     <label id="labeltype" runat="server">Course Type</label>
-                                                    <asp:DropDownList class="form-control" ID="ddlCourseType" runat="server" OnSelectedIndexChanged = "OnSelectedIndexChanged">
+                                                    <asp:DropDownList class="form-control" ID="ddlCourseType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="OnSelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <%--label>Existing Courses</label>--%>
-                                                    <asp:DropDownList runat="server" CssClass="form-control" id="DropDownList1" Visible="false" EnableViewState="false">
+                                                    <asp:DropDownList runat="server" CssClass="form-control" ID="DropDownList1" Visible="false" EnableViewState="false" AutoPostBack="true" OnSelectedIndexChanged="OnSelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </div>
-                                             </div>
-                                         </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group ">
-                                            <div class ="form-row">
-                                                 <div class="col-md-6">
+                                            <div class="form-row">
+                                                <div class="col-md-6">
                                                     <label>Course Number</label>
-                                                    <asp:TextBox  ID="Course_Number_TextBox" CssClass="form-control" runat="server" ></asp:TextBox>
-                                                 </div>
-                                             </div>
-                                          </div>
-                                        
-                                                                            
+                                                    <asp:TextBox ID="Course_Number_TextBox" CssClass="form-control" runat="server"></asp:TextBox>
+                                                </div>
+                                                <div class=" help-tip" style="position: relative; margin-left: 7px; margin-top: 10px; z-index: 500">
+                                                    <p>Enter Course Number for the complete course such as 21 for MEAT21 20 for MEAT20.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6" style="height: auto; max-height: 500px; width: auto; overflow: auto;">
+                                                    <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" AutoGenerateColumns="False">
+                                                        <Columns>
+                                                            <asp:TemplateField HeaderText="">
+                                                                <ItemTemplate>
+                                                                    <asp:CheckBox ID="ChkBox1" runat="server" ></asp:CheckBox>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:BoundField HeaderText="Entry" DataField="Type_Name" />
+
+                                                            <asp:TemplateField HeaderText="Number">
+                                                                <ItemTemplate>
+                                                                    <asp:TextBox ID="TextBox1" runat="server" placeholder='70.123'></asp:TextBox>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                        </Columns>
+                                                    </asp:GridView>
+                                                </div>
+                                                <div class=" help-tip" style="position: relative; margin-left: 7px; margin-top: 10px; z-index: 500">
+                                                    <p>Enter Course Number for each entry such as 70.163, 70.904, 70.912.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                         <%--<div class="form-group">
                                             <label>Nominal Roll Excel File</label>
                                             <asp:FileUpload style="width:auto" ID="FileUploadControl" class="form-control" runat="server" />
                                         </div>--%>
-                                        
-                                        <asp:Button runat="server" id="SubmitButton" class="btn btn-default" text="Submit" onclick="SubmitButton_Click" />
-                                        
+
+                                        <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
+
                                         <button type="reset" class="btn btn-default">Reset</button>
                                     </form>
                                 </div>
