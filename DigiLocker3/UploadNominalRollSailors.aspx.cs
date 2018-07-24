@@ -69,7 +69,7 @@ namespace DigiLocker3
                 if (coursename == null & courseno == null)
                 {
                     coursename = ddlCourseType.Items[0].Text;
-                    courseno = ddlCourseNo.Items[0].Text;
+                    courseno = ddlCourseNo.Items[0].Text.Replace(".", string.Empty);
                 }
 
                 if (coursename == null)
@@ -145,7 +145,7 @@ namespace DigiLocker3
             if (coursename == null & courseno == null)
             {
                 coursename = ddlCourseType.SelectedValue;
-                courseno = ddlCourseNo.SelectedValue;
+                courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
             }
             if (rbtnind.Checked)
             {
@@ -169,6 +169,13 @@ namespace DigiLocker3
                         cmd.ExecuteNonQuery();
                         table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_");
                         cmd = new SqlCommand("insert into " + table_name + "(Personal_No, entry_Name) values ('" + txtNo.Text + "','" + ddlEntryType.SelectedValue + "')", con);
+                        cmd.ExecuteNonQuery();
+                        string query = "update " + table_name + " set Term = concat( term , '" + ddlTerm.SelectedValue + "' where Personal_No = '" + txtNo.Text + "'";
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                        table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + "ENTRY_TYPE";
+                        query = "update " + table_name + " Enrolledin = CASE WHEN Enrolledin = NULL Then '" + ddlTerm.SelectedValue + "' WHEN ENROLLEDIN LIKE '%" + ddlTerm.SelectedValue + "%' Then Enrolledin ELSE CONCAT(ENROLLEDIN, " + "'_" + ddlTerm.SelectedValue + "') END where Type_Name = '" + ddlEntryType.SelectedValue + "'";
+                        cmd = new SqlCommand(query, con);
                         cmd.ExecuteNonQuery();
                         i++;
 
@@ -263,7 +270,7 @@ namespace DigiLocker3
             if (coursename == null & courseno == null)
             {
                 coursename = ddlCourseType.SelectedValue;
-                courseno = ddlCourseNo.SelectedValue;
+                courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
             }
             string table_name = "";
             createTable();
@@ -283,11 +290,19 @@ namespace DigiLocker3
                     table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_");
                     cmd = new SqlCommand("insert into " + table_name + "(Personal_No, entry_Name) values ('" + g1.Cells[1].Text + "','" + ddlEntryType.SelectedValue + "')", con, tran);
                     cmd.ExecuteNonQuery();
+                    string query = "update " + table_name + " set Term = concat( term , '" + ddlTerm.SelectedValue + "') where Personal_No = '" + g1.Cells[1].Text + "'";
+                    cmd = new SqlCommand(query, con, tran);
+                    cmd.ExecuteNonQuery();
+                   
                     i++;
                 }
                 tran.Commit();
 
-                con.Close();
+                table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_entry_type";
+                
+                string query1 = "update " + table_name + " set Enrolledin = CASE WHEN Enrolledin = NULL Then '" + ddlTerm.SelectedValue + "' WHEN ENROLLEDIN LIKE '%" + ddlTerm.SelectedValue + "%' Then Enrolledin ELSE CONCAT(ENROLLEDIN, " + "'_" + ddlTerm.SelectedValue + "') END where Type_Name = '" + ddlEntryType.SelectedValue + "'";
+                SqlCommand cmd1 = new SqlCommand(query1, con);
+                cmd1.ExecuteNonQuery();
                 reset();
                 Response.Write("<script language='javascript'>alert('Trainees Added');</script>");
 
@@ -317,6 +332,7 @@ namespace DigiLocker3
                 else
                     Response.Write(ex);
             }
+            con.Close();
             showData();
         }
 
@@ -325,7 +341,7 @@ namespace DigiLocker3
             if (coursename == null & courseno == null)
             {
                 coursename = ddlCourseType.SelectedValue;
-                courseno = ddlCourseNo.SelectedValue;
+                courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
             }
             string table_name = "";
             //string course_type = ddlCourseType.SelectedValue.Replace(" ", "_");
@@ -337,6 +353,9 @@ namespace DigiLocker3
             con.Open();
             string query = "If not exists(select name from sysobjects where name = '" + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS') Select * into " + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS from " + coursename.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS where TERM = '" + ddlTerm.SelectedValue + "'";
             SqlCommand cmd = new SqlCommand(query, con);
+            cmd.ExecuteNonQuery();
+            query = "insert into " + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS (SUBJECT_NAME, MAX_MARKS, Theory, IA, Practical) select SUBJECT_NAME, MAX_MARKS, Theory, IA, Practical from " + coursename.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS where not exists (select SUBJECT_NAME from " + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS where SUBJECT_NAME in (select SUBJECT_NAME from " + coursename.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS where term = '" + ddlTerm.SelectedValue + "')) and term = '" + ddlTerm.SelectedValue + "'";
+            cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
 
             //query = "IF NOT EXISTS(SELECT TYPE_NAME FROM " + coursename.Replace(" ","_") + "_" + courseno + "_ENTRY_TYPE WHERE TYPE_NAME='" + entry_type.Replace("_", " ") + "')insert into " + coursename.Replace(" ","_") + "_" + courseno + "_ENTRY_TYPE (TYPE_NAME) values('" + entry_type.Replace("_"," ") + "')";
@@ -355,11 +374,11 @@ namespace DigiLocker3
             table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type;
             if (seniority.Equals("1"))
             {
-                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0, Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO')";
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0, Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO', Remarks Varchar(50))";
             }
             else
             {
-                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO')";
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO' Remarks Varchar(50) DEFAULT ' ')";
             }
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
@@ -415,19 +434,20 @@ namespace DigiLocker3
 
             }
             string term1 = ddlTerm.SelectedValue;
-            col_List = col_List + ", " + term1 + "_Failed int DEFAULT 0, " + term1 + "_Qualified varchar(15) default 'NO'";
+            col_List = col_List + ", " + term1 + "_Failed int DEFAULT 0, " + term1 + "_Qualified varchar(15) default 'NO' " ;
 
             //col_List = col_List + ", Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO'";
             //Response.Write(col_List);
-            col_listA = col_listA.TrimEnd(',');
+            col_listA = col_listA.Remove(col_listA.Length - 2);
             table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type;
-            query = "select count(*) Names from sys.columns where OBJECT_ID = OBJECT_ID('" + table_name + "') and Name in ('" + col_listA + "))";
+            query = "select count(*) Names from sys.columns where OBJECT_ID = OBJECT_ID('" + table_name + "') and Name in (" + col_listA + ")";
             //query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
             cmd = new SqlCommand(query, con);
             int col = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+            col_List = col_List.Substring(1);
             if (col == 0)
             {
-                query = "Alter Table " + table_name + "add " + col_List;
+                query = "Alter Table " + table_name + " add " + col_List;
             }
             //Response.Write(query);
             cmd = new SqlCommand(query, con);
@@ -452,36 +472,102 @@ namespace DigiLocker3
             if (coursename == null & courseno == null)
             {
                 coursename = ddlCourseType.SelectedValue;
-                courseno = ddlCourseNo.SelectedValue;
+                courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
             }
             con.Open();
-            table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
-            //Response.Write(table_name);
-            string query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_no, Name, Rank from " + table_name;
-            //Response.Write(query);
+            
+            string table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_");
+            string query = "select count(*) from " + table_name + " where ENTRY_NAME = '" + ddlEntryType.SelectedValue + "' and term like '%" + ddlTerm.SelectedValue + "%'";
             SqlCommand cmd = new SqlCommand(query, con);
-            SqlDataAdapter adpt = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            adpt.Fill(dt);
-
-            if (dt.Rows.Count > 0)
+            int rows = Convert.ToInt32(cmd.ExecuteScalar());
+            query = "select count(*) from " + table_name + " where ENTRY_NAME = '" + ddlEntryType.SelectedValue + "'";
+            cmd = new SqlCommand(query, con);
+            if (rows > 0)
             {
+                table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+                string query1 = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_no, Name, Rank from " + table_name;
+                //Response.Write(query);
+                cmd = new SqlCommand(query1, con);
+                SqlDataAdapter adt = new SqlDataAdapter(cmd);
+                DataTable dtb = new DataTable();
+                adt.Fill(dtb);
                 rbtnind.Checked = true;
                 rbtnmulti.Checked = false;
-                GridView2.DataSource = dt;
+                GridView2.DataSource = dtb;
                 GridView2.DataBind();
                 flag = 1;
-
+                AddButton.Visible = false;
+                AddButton.EnableViewState = false;
+                Button2.Visible = false;
+                Button2.EnableViewState = false;
+                heading1.InnerText = "Enrolled Trainees";
+            }
+            else if(Convert.ToInt32(cmd.ExecuteScalar())>0)
+            {
+                table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+                string query1 = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_no, Name, Rank from " + table_name;
+                //Response.Write(query);
+                cmd = new SqlCommand(query1, con);
+                SqlDataAdapter adt = new SqlDataAdapter(cmd);
+                DataTable dtb = new DataTable();
+                adt.Fill(dtb);
+                rbtnind.Checked = true;
+                rbtnmulti.Checked = false;
+                GridView2.DataSource = dtb;
+                GridView2.DataBind();
+                flag = 1;
+                AddButton.Visible = true;
+                AddButton.EnableViewState = true;
+                Button2.Visible = true;
+                Button2.EnableViewState = true;
+                heading1.InnerText = "Trainees Enrolled in Previous Term";
             }
             else
             {
+                table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+                string query1 = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_no, Name, Rank from " + table_name;
+                //Response.Write(query);
+                cmd = new SqlCommand(query1, con);
+                SqlDataAdapter adt = new SqlDataAdapter(cmd);
+                DataTable dtb = new DataTable();
+                adt.Fill(dtb);
                 rbtnind.Checked = false;
                 rbtnmulti.Checked = true;
-                GridView2.DataSource = dt;
+                GridView2.DataSource = dtb;
                 GridView2.DataBind();
+                AddButton.Visible = false;
+                AddButton.EnableViewState = false;
+                Button2.Visible = false;
+                Button2.EnableViewState = false;
                 flag = 0;
-
             }
+            //table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+            ////Response.Write(table_name);
+            //query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_no, Name, Rank from " + table_name;
+            ////Response.Write(query);
+            //cmd = new SqlCommand(query, con);
+            //SqlDataAdapter adpt = new SqlDataAdapter(cmd);
+            //DataTable dt = new DataTable();
+            //adpt.Fill(dt);
+
+            //if (dt.Rows.Count > 0)
+            //{
+            //    rbtnind.Checked = true;
+            //    rbtnmulti.Checked = false;
+            //    GridView2.DataSource = dt;
+            //    GridView2.DataBind();
+            //    flag = 1;
+
+            //}
+            //else
+            //{
+            //    rbtnind.Checked = false;
+            //    rbtnmulti.Checked = true;
+            //    GridView2.DataSource = dt;
+            //    GridView2.DataBind();
+            //    flag = 0;
+
+            //}
             if (rbtnmulti.Checked)
             {
                 FileUpload1.Enabled = true;
@@ -613,21 +699,15 @@ namespace DigiLocker3
         protected void ddlTermChanged(object sender, EventArgs e)
         {
             showData();
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
-            string query = "select count(*) from " + table_name;
-            SqlCommand cmd = new SqlCommand(query, con);
-            int rows = Convert.ToInt32(cmd.ExecuteScalar());
-            if(rows>0)
-            {
-                AddButton.Visible = true;
-                AddButton.EnableViewState = true;
-            }
+            
         }
         protected void AddButton_Click(object sender, EventArgs e)
         {
             createTable();
             AddButton.Visible = false;
             AddButton.EnableViewState = false;
+            Button2.Visible = false;
+            Button2.EnableViewState = false;
         }
         protected void input_CheckedChanged(Object sender, EventArgs e)
         {

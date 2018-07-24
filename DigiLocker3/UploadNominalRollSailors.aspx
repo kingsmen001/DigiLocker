@@ -213,77 +213,87 @@
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlTerm" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlTermChanged">
                                                 </asp:DropDownList>
                                             </div>
-                                        </div>
-                                        <asp:RadioButton ID="rbtnmulti" GroupName="InputMethod" runat="server" Text="Multiple Input" AutoPostBack="true" OnCheckedChanged="input_CheckedChanged" />
 
-                                        <div class="form-group">
-                                            <label>Nominal Roll Excel File</label>
-                                            <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
+                                           
                                         </div>
+                                        <div class="form-row" style="margin-left:4px">
+                                            
+                                            <asp:Button runat="server" ID="Button2" class="btn btn-default" Text="Enrole Last Term Trainees" OnClick="AddButton_Click" Visible="false" EnableViewState="false" />
+                                        </div>
+                                        <br />
+                                    <asp:RadioButton ID="rbtnmulti" GroupName="InputMethod" runat="server" Text="Multiple Input" AutoPostBack="true" OnCheckedChanged="input_CheckedChanged" />
 
-                                        <asp:RadioButton ID="rbtnind" GroupName="InputMethod" runat="server" Text="Individual Input" AutoPostBack="true" OnCheckedChanged="input_CheckedChanged" />
-                                        <div class="form-group" runat="server" id="single">
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label>Personal No.</label>
-                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtNo" placeholder="Personal no." AutoPostBack="true" />
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label>Name</label>
-                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtName" placeholder="Name" />
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label>Rank</label>
-                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtRank" placeholder="Rank" />
-                                                </div>
+                                    <div class="form-group">
+                                        <label>Nominal Roll Excel File</label>
+                                        <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
+                                    </div>
+
+                                    <asp:RadioButton ID="rbtnind" GroupName="InputMethod" runat="server" Text="Individual Input" AutoPostBack="true" OnCheckedChanged="input_CheckedChanged" />
+                                    <div class="form-group" runat="server" id="single">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-4">
+                                                <label>Personal No.</label>
+                                                <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtNo" placeholder="Personal no." AutoPostBack="true" />
                                             </div>
-
+                                            <div class="form-group col-md-6">
+                                                <label>Name</label>
+                                                <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtName" placeholder="Name" />
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Rank</label>
+                                                <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtRank" placeholder="Rank" />
+                                            </div>
                                         </div>
 
-                                        <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
-
-                                        <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" />
-                                        <br />
-                                        <br />
-
-
                                     </div>
-                                    <!-- /.col-lg-6 (nested) -->
-                                    <div class="col-lg-6">
-                                        <label>Enrolled Trainees</label>
-                                        <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView2" runat="server" ScrollBars="Both" AllowPaging="False">
-                                        </asp:GridView>
-                                    </div>
+
+                                    <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
+
+                                    <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" />
+                                    <br />
+                                    <br />
+
+
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                <div class="col-lg-6">
+
+                                    <br />
+                                    <label id="heading1" runat="server"></label>
+                                    <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView2" runat="server" ScrollBars="Both" AllowPaging="False">
+                                    </asp:GridView>
                                     <asp:Button runat="server" ID="AddButton" class="btn btn-default" Text="Enrole Last Term Trainees" OnClick="AddButton_Click" Visible="false" EnableViewState="false" />
-                                    <!-- /.col-lg-6 (nested) -->
                                 </div>
-                                <!-- /.row (nested) -->
-                            </div>
-                            <div class="panel-body">
 
-                                <div class="row" style="width: 100%">
-                                    <div class="col-lg-6" style="width: 100%">
-                                        <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
-
-                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
-                                            </asp:GridView>
-                                        </div>
-                                        <asp:Button runat="server" ID="ConfirmButton" class="btn btn-default" Text="Confirm" OnClick="ConfirmButton_Click" Visible="False" EnableViewState="false" />
-                                    </div>
-                                    <!-- /.col-lg-6 (nested) -->
-                                </div>
-                                <!-- /.row (nested) -->
+                                <!-- /.col-lg-6 (nested) -->
                             </div>
-                        </form>
-                        <!-- /.panel-body -->
+                            <!-- /.row (nested) -->
                     </div>
-                    <!-- /.panel -->
+                    <div class="panel-body">
+
+                        <div class="row" style="width: 100%">
+                            <div class="col-lg-6" style="width: 100%">
+                                <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
+
+                                    <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
+                                    </asp:GridView>
+                                </div>
+                                <asp:Button runat="server" ID="ConfirmButton" class="btn btn-default" Text="Confirm" OnClick="ConfirmButton_Click" Visible="False" EnableViewState="false" />
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                        </div>
+                        <!-- /.row (nested) -->
+                    </div>
+                    </form>
+                        <!-- /.panel-body -->
                 </div>
-                <!-- /.col-lg-12 -->
+                <!-- /.panel -->
             </div>
-            <!-- /.row -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->

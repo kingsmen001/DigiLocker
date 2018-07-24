@@ -85,27 +85,29 @@ namespace DigiLocker3
             foreach (GridViewRow g1 in GridView1.Rows)
             {
                 CheckBox chkBox = (CheckBox)g1.Cells[0].FindControl("ChkBox1");
-                if (string.IsNullOrWhiteSpace(g1.Cells[2].Text) & chkBox.Checked)
+                TextBox txtBox = (TextBox)g1.Cells[2].FindControl("TextBox1");
+                if (string.IsNullOrWhiteSpace(txtBox.Text) & chkBox.Checked)
                 {
+                   
                     flag = 1;
                     break;
                 }
             }
-                if (string.IsNullOrWhiteSpace(Course_Number_TextBox.Text))
+            if (string.IsNullOrWhiteSpace(Course_Number_TextBox.Text))
             {
                 string script = "alert(\" Enter Course Number \");";
                 ScriptManager.RegisterStartupScript(this, GetType(),
                                       "ServerControlScript", script, true);
                 Course_Number_TextBox.Text = "";
             }
-            else if(flag ==1)
-                {
+            else if(flag == 1)
+           {
                 string script = "alert(\" Enter Course Number for each Selected Entry \");";
                 ScriptManager.RegisterStartupScript(this, GetType(),
                                       "ServerControlScript", script, true);
                 
             }
-            else if (!System.Text.RegularExpressions.Regex.IsMatch(Course_Number_TextBox.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & Course_Number_TextBox.Text[0] != ' ' & Course_Number_TextBox.Text[0] != '\t')
+            else if (!System.Text.RegularExpressions.Regex.IsMatch(Course_Number_TextBox.Text, "[^a-zA-Z.0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & Course_Number_TextBox.Text[0] != ' ' & Course_Number_TextBox.Text[0] != '\t')
             {
 
                 try
@@ -141,20 +143,21 @@ namespace DigiLocker3
                     //    cmd = new SqlCommand(query, con);
                     //    cmd.ExecuteNonQuery();
                     //}
-                    query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_ENTRY_TYPE ( TYPE_NAME VARCHAR(50), NUMBER VARCHAR(50), ENROLLEDIN VARCHAR(50) DEFAULT 'BLANK')";
+                    query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text.Replace(".",string.Empty) + "_ENTRY_TYPE ( TYPE_NAME VARCHAR(50), NUMBER VARCHAR(50), ENROLLEDIN VARCHAR(50) DEFAULT NULL)";
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
                     foreach (GridViewRow g1 in GridView1.Rows)
                     {
                         CheckBox chkBox = (CheckBox)g1.Cells[0].FindControl("ChkBox1");
-                        if(!string.IsNullOrWhiteSpace(g1.Cells[2].Text) & chkBox.Checked)
+                        TextBox txtBox = (TextBox)g1.Cells[2].FindControl("TextBox1");
+                        if (!string.IsNullOrWhiteSpace(txtBox.Text) & chkBox.Checked)
                         {
-                            query = "insert into " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_ENTRY_TYPE values( '" + g1.Cells[1].Text + "', '" + g1.Cells[2].Text + "')";
+                            query = "insert into " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_ENTRY_TYPE(TYPE_NAME, NUMBER)  values( '" + g1.Cells[1].Text + "', '" + txtBox.Text + "')";
                             cmd = new SqlCommand(query, con);
                             cmd.ExecuteNonQuery();
                         }
                     }
-                    query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + " (Personal_No VARCHAR(50), ENTRY_NAME VARCHAR(50))";
+                    query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + " (Personal_No VARCHAR(50), ENTRY_NAME VARCHAR(50), TERM VARCHAR(50) DEFAULT ' ')";
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
                     //Response.Write("Record Uploaded Successfully!!!thank you");

@@ -60,7 +60,7 @@ namespace DigiLocker3
                 ddlTerm.DataSource = termLabel.Distinct().ToList();
                 ddlTerm.DataBind();
 
-                table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
+                table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".",string.Empty) + "_ENTRY_TYPE";
                 com = new SqlCommand("select * from " + table_name, con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
@@ -70,7 +70,7 @@ namespace DigiLocker3
                 ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlEntryType.DataBind();
 
-                table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+                table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
                 string query = "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + ddlTerm.SelectedValue + "'";
 
                 com = new SqlCommand(query, con); // table name 
@@ -172,7 +172,7 @@ namespace DigiLocker3
             con.Open();
             int i = 0;
             string course_type = ddlCourseType.SelectedValue.Replace(" ", "_");
-            string course_no = ddlCourseNo.SelectedValue;
+            string course_no = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
             string entry_type = ddlEntryType.SelectedValue.Replace(" ", "_");
             string subject = ddlSubject.SelectedItem.Text.Replace(" ", "_");
             string term = ddlTerm.SelectedValue;
@@ -257,7 +257,7 @@ namespace DigiLocker3
         {
 
             con.Open();
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
             string query;
             string term = ddlTerm.SelectedValue;
             if (ddlSubject.SelectedItem.Text.Equals("Seniority"))
@@ -296,7 +296,7 @@ namespace DigiLocker3
             string Name = Convert.ToString(GridView1.DataKeys[e.RowIndex].Values[1]);
             string Rank = Convert.ToString(GridView1.DataKeys[e.RowIndex].Values[2]);
             string course_type = ddlCourseType.SelectedValue.Replace(" ", "_");
-            string course_no = ddlCourseNo.SelectedValue;
+            string course_no = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
             string entry_type = ddlEntryType.SelectedValue.Replace(" ", "_");
             string subject = ddlSubject.SelectedItem.Text.Replace(" ", "_");
             string term = ddlTerm.SelectedValue;
@@ -408,7 +408,7 @@ namespace DigiLocker3
             ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             ddlCourseNo.DataBind();
 
-            name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
+            name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
             com = new SqlCommand("select * from " + name, con); // table name 
             da = new SqlDataAdapter(com);
             ds = new DataSet();
@@ -419,7 +419,7 @@ namespace DigiLocker3
             ddlEntryType.DataBind();
 
             List<string> termLabel = new List<string>();
-            string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
+            string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
             com = new SqlCommand(query, con);
             SqlDataReader dr = com.ExecuteReader();
             while (dr.Read())
@@ -434,7 +434,7 @@ namespace DigiLocker3
 
 
             string term = ddlTerm.SelectedValue;
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
             query = "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + term + "'";
 
             com = new SqlCommand(query, con); // table name 
@@ -466,7 +466,7 @@ namespace DigiLocker3
         protected void ddlCourseNoIndexChanged(object sender, EventArgs e)
         {
             con.Open();
-            String name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_ENTRY_TYPE";
+            String name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
             SqlCommand com = new SqlCommand("select * from" + name, con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
@@ -479,7 +479,7 @@ namespace DigiLocker3
 
 
             List<string> termLabel = new List<string>();
-            string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
+            string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
             com = new SqlCommand(query, con);
             SqlDataReader dr = com.ExecuteReader();
             while (dr.Read())
@@ -494,7 +494,7 @@ namespace DigiLocker3
 
 
             string term = ddlTerm.SelectedValue;
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
             query = "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + term + "'";
 
             com = new SqlCommand(query, con); // table name 
@@ -527,7 +527,7 @@ namespace DigiLocker3
         {
             con.Open();
             string term = ddlTerm.SelectedValue;
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
             string query = "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + term + "'";
 
             SqlCommand com = new SqlCommand(query, con); // table name 
@@ -561,7 +561,7 @@ namespace DigiLocker3
             con.Open();
 
             List<string> termLabel = new List<string>();
-            string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
+            string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
             SqlCommand com = new SqlCommand(query, con);
             SqlDataReader dr = com.ExecuteReader();
             while (dr.Read())
@@ -574,7 +574,7 @@ namespace DigiLocker3
             ddlTerm.DataBind();
 
             string term = ddlTerm.SelectedValue;
-            String table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+            String table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
             query = "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + term + "'";
 
             com = new SqlCommand(query, con); // table name 
