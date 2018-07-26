@@ -197,28 +197,28 @@
                                                 </asp:DropDownList>
                                             </div>
 
-                                            <div class="form-group col-md-2">
+                                            <div id="div2" runat="server" class="form-group col-md-2">
                                                 <label>Select Course Number</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseNoIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div id="div3" runat="server"  class="form-group">
                                                 <label>Select Entry Type</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
-
-                                        <div class="form-row">
-                                            <div class="form-group col-md-2">
+                                        
+                                        <div class="form-row" >
+                                            <div class="form-group col-md-2" id="div4" runat="server">
                                                 <label>Select Term</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlTerm" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTermIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
 
 
-                                            <div class="form-group col-md-2">
+                                            <div class="form-group col-md-2" id="div5" runat="server">
                                                 <label>Select Subject</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlSubject" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlSubjectIndexChanged">
                                                 </asp:DropDownList>
@@ -229,7 +229,7 @@
                                         </div>
 
                                         
-                                        <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
+                                        <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;" id="div6" runat="server">
                                             <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" OnRowEditing="OnRowEditing" OnRowCancelingEdit="OnRowCancelingEdit" OnRowUpdating="OnRowUpdating" AutoGenerateEditButton="true">
                                             </asp:GridView>
                                         </div>

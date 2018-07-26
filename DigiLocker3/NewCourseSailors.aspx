@@ -171,11 +171,17 @@
             <!-- /.navbar-static-side -->
         </nav>
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header" id="heading" runat="server">Add Course</h1>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-lg-12 page-header" style="width: 100%; margin-top:0">
+                        <h1 class="" id="heading" runat="server" style="width: 50%; float:left; vertical-align:baseline;">Add Course</h1>
+                        <img class="" src="logo39.jpg" alt="alternate text" style="width: 100px; height: 100px; float: right" />
+                    </div>
+                    <div class="col-lg-12">
+                        
+                    </div>
+                    <!-- /.col-lg-12 -->
                 </div>
-                <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
             <div class="row">
@@ -204,11 +210,12 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div id="div1" runat="server">
                                         <div class="form-group ">
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <label>Course Number</label>
-                                                    <asp:TextBox ID="Course_Number_TextBox" CssClass="form-control" runat="server"></asp:TextBox>
+                                                    <asp:TextBox ID="Course_Number_TextBox" CssClass="form-control" runat="server" AutoPostBack="true" OnTextChanged="Text1Changed"></asp:TextBox>
                                                 </div>
                                                 <div class=" help-tip" style="position: relative; margin-left: 7px; margin-top: 10px; z-index: 500">
                                                     <p>Enter Course Number for the complete course such as 21 for MEAT21 20 for MEAT20.</p>
@@ -222,14 +229,14 @@
                                                         <Columns>
                                                             <asp:TemplateField HeaderText="">
                                                                 <ItemTemplate>
-                                                                    <asp:CheckBox ID="ChkBox1" runat="server" ></asp:CheckBox>
+                                                                    <asp:CheckBox ID="ChkBox1" runat="server"></asp:CheckBox>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                             <asp:BoundField HeaderText="Entry" DataField="Type_Name" />
 
                                                             <asp:TemplateField HeaderText="Number">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="TextBox1" runat="server" placeholder='70.123'></asp:TextBox>
+                                                                    <asp:TextBox ID="TextBox1" runat="server" placeholder='70.123' AutoPostBack="true" OnTextChanged="TextChanged"></asp:TextBox>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                         </Columns>
@@ -250,6 +257,7 @@
                                         <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
 
                                         <button type="reset" class="btn btn-default">Reset</button>
+                                            </div>
                                     </form>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->

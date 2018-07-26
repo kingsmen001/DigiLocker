@@ -51,7 +51,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-               <a class="navbar-brand" href="Home.aspx">Result Section</a>
+                <a class="navbar-brand" href="Home.aspx">Result Section</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -68,10 +68,10 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>--%>
-                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    <%--</ul>--%>
-                    <!-- /.dropdown-user -->
+                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                </li>
+                <%--</ul>--%>
+                <!-- /.dropdown-user -->
                 <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
@@ -186,131 +186,133 @@
                         <form id="form1" runat="server">
                             <div class="panel-body">
 
-                                <div class="row" style="width:100%">
-                                    <div class="col-lg-6" style="width:100%">
-                                        <div class="form-row" style="width:100%">
-                                            <div class="form-group col-lg-4" id="divType" runat ="server">
+                                <div class="row" style="width: 100%">
+                                    <div class="col-lg-6" style="width: 100%">
+                                        <div class="form-row" style="width: 100%">
+                                            <div class="form-group col-lg-4" id="divType" runat="server">
                                                 <label runat="server" id="lblType">Select Course Type</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseTypeIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
-                                            <div class="form-group col-lg-4">
+                                            <div id="div3" runat="server" class="form-group col-lg-4">
                                                 <label>Select Entry Type</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="lbEntryType" runat="server" AutoPostBack="True" OnSelectedIndexChanged="lblEntryTypeIndexChanged"></asp:DropDownList>
                                             </div>
-                                            <div class="form-group col-lg-4">
+                                            <div id="div2" runat="server" class="form-group col-lg-4">
                                                 <label>Select Term</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlTerm" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTermIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
-                                        <div class="form-group" runat="server" id="exlfile">
-                                            <label>Subject Detail Excel File</label>
-                                            <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Existing Subjects</label>
-                                            <div class="form-group" style="height: auto; max-height: 350px; width: 100%; overflow: auto;">
-                                                <asp:GridView ID="GridView3" CssClass="table table-striped table-bordered table-hover columnscss" runat="server" DataKeyNames="Max_Marks" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1_RowCancelingEdit"
-                                                    OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowDeleting="GridView1_RowDeleting" ShowHeaderWhenEmpty="True" EmptyDataText="No records Found">
-                                                    <Columns>
+                                        <div id="div1" runat="server">
+                                            <div class="form-group" runat="server" id="exlfile">
+                                                <label>Subject Detail Excel File</label>
+                                                <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Existing Subjects</label>
+                                                <div class="form-group" style="height: auto; max-height: 350px; width: 100%; overflow: auto;">
+                                                    <asp:GridView ID="GridView3" CssClass="table table-striped table-bordered table-hover columnscss" runat="server" DataKeyNames="Max_Marks" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1_RowCancelingEdit"
+                                                        OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowDeleting="GridView1_RowDeleting" ShowHeaderWhenEmpty="True" EmptyDataText="No records Found">
+                                                        <Columns>
 
-                                                        <asp:TemplateField HeaderText="ID" Visible="false">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lbl_ID" runat="server" Text='<%#Eval("ID") %>'></asp:Label>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Subject Name">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lbl_Name" runat="server" Text='<%#Eval("Subject_Name") %>'></asp:Label>
-                                                            </ItemTemplate>
-                                                            <EditItemTemplate>
-                                                                <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("Subject_Name") %>'></asp:TextBox>
-                                                            </EditItemTemplate>
-                                                        </asp:TemplateField>
-                                                        
-                                                         <asp:TemplateField HeaderText="Theory">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lbl_Theory" runat="server" Text='<%#Eval("Theory") %>'></asp:Label>
-                                                            </ItemTemplate>
-                                                            <EditItemTemplate>
-                                                                <asp:TextBox ID="txt_Theory" runat="server" Text='<%#Eval("Theory") %>'></asp:TextBox>
-                                                            </EditItemTemplate>
-                                                        </asp:TemplateField>
-                                                         <asp:TemplateField HeaderText="IA">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lbl_IA" runat="server" Text='<%#Eval("IA") %>'></asp:Label>
-                                                            </ItemTemplate>
-                                                            <EditItemTemplate>
-                                                                <asp:TextBox ID="txt_IA" runat="server" Text='<%#Eval("IA") %>'></asp:TextBox>
-                                                            </EditItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Practical">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lbl_Pra" runat="server" Text='<%#Eval("Practical") %>'></asp:Label>
-                                                            </ItemTemplate>
-                                                            <EditItemTemplate>
-                                                                <asp:TextBox ID="txt_Pra" runat="server" Text='<%#Eval("Practical") %>'></asp:TextBox>
-                                                            </EditItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Total">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lbl_City" runat="server" Text='<%#Eval("Max_Marks") %>'></asp:Label>
-                                                            </ItemTemplate>
-                                                            
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField>
-                                                            <ItemTemplate>
-                                                                <asp:Button ID="btn_Edit" runat="server" Text="Edit" CommandName="Edit" />
-                                                                <asp:Button ID="btn_Delete" runat="server" Text="Delete" CommandName="Delete" />
-                                                            </ItemTemplate>
-                                                            <EditItemTemplate>
-                                                                <asp:Button ID="btn_Update" runat="server" Text="Update" CommandName="Update" />
-                                                                <asp:Button ID="btn_Cancel" runat="server" Text="Cancel" CommandName="Cancel" />
-                                                            </EditItemTemplate>
-                                                        </asp:TemplateField>
-                                                    </Columns>
-                                                </asp:GridView>
-                                                <%--<asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView2" runat="server" ScrollBars="Both" AllowPaging="False" >
+                                                            <asp:TemplateField HeaderText="ID" Visible="false">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="lbl_ID" runat="server" Text='<%#Eval("ID") %>'></asp:Label>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="Subject Name">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="lbl_Name" runat="server" Text='<%#Eval("Subject_Name") %>'></asp:Label>
+                                                                </ItemTemplate>
+                                                                <EditItemTemplate>
+                                                                    <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("Subject_Name") %>'></asp:TextBox>
+                                                                </EditItemTemplate>
+                                                            </asp:TemplateField>
+
+                                                            <asp:TemplateField HeaderText="Theory">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="lbl_Theory" runat="server" Text='<%#Eval("Theory") %>'></asp:Label>
+                                                                </ItemTemplate>
+                                                                <EditItemTemplate>
+                                                                    <asp:TextBox ID="txt_Theory" runat="server" Text='<%#Eval("Theory") %>'></asp:TextBox>
+                                                                </EditItemTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="IA">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="lbl_IA" runat="server" Text='<%#Eval("IA") %>'></asp:Label>
+                                                                </ItemTemplate>
+                                                                <EditItemTemplate>
+                                                                    <asp:TextBox ID="txt_IA" runat="server" Text='<%#Eval("IA") %>'></asp:TextBox>
+                                                                </EditItemTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="Practical">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="lbl_Pra" runat="server" Text='<%#Eval("Practical") %>'></asp:Label>
+                                                                </ItemTemplate>
+                                                                <EditItemTemplate>
+                                                                    <asp:TextBox ID="txt_Pra" runat="server" Text='<%#Eval("Practical") %>'></asp:TextBox>
+                                                                </EditItemTemplate>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="Total">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="lbl_City" runat="server" Text='<%#Eval("Max_Marks") %>'></asp:Label>
+                                                                </ItemTemplate>
+
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField>
+                                                                <ItemTemplate>
+                                                                    <asp:Button ID="btn_Edit" runat="server" Text="Edit" CommandName="Edit" />
+                                                                    <asp:Button ID="btn_Delete" runat="server" Text="Delete" CommandName="Delete" />
+                                                                </ItemTemplate>
+                                                                <EditItemTemplate>
+                                                                    <asp:Button ID="btn_Update" runat="server" Text="Update" CommandName="Update" />
+                                                                    <asp:Button ID="btn_Cancel" runat="server" Text="Cancel" CommandName="Cancel" />
+                                                                </EditItemTemplate>
+                                                            </asp:TemplateField>
+                                                        </Columns>
+                                                    </asp:GridView>
+                                                    <%--<asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView2" runat="server" ScrollBars="Both" AllowPaging="False" >
                                             </asp:GridView>--%>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" runat="server" id="single">
-
-                                            <div class="form-row">
-
-                                                <div class="form-group col-md-2">
-                                                    <%--<label for="lbl_equip_code">Subject Name</label>--%>
-                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtSubject" placeholder="Subject Name" AutoPostBack="true" OnTextChanged="txtCourseName_TextChanged" />
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
-                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtTheory" placeholder="Theory Marks" />
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
-                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtIA" placeholder="IA Marks" />
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
-                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtPractical" placeholder="Practical Marks" />
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
-                                                    <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtMarks" placeholder="Maximum Marks" />
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                     <asp:Button runat="server" ID="SubmitButton" Cssclass="form-control btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
                                                 </div>
                                             </div>
+                                            <div class="form-group" runat="server" id="single">
 
+                                                <div class="form-row">
+
+                                                    <div class="form-group col-md-2">
+                                                        <%--<label for="lbl_equip_code">Subject Name</label>--%>
+                                                        <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtSubject" placeholder="Subject Name" AutoPostBack="true" OnTextChanged="txtCourseName_TextChanged" />
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
+                                                        <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtTheory" placeholder="Theory Marks" />
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
+                                                        <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtIA" placeholder="IA Marks" />
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
+                                                        <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtPractical" placeholder="Practical Marks" />
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <%--<label for="lbl_equip_desc">Maximum Marks</label>--%>
+                                                        <asp:TextBox runat="server" type="text" CssClass="form-control" ID="txtMarks" placeholder="Maximum Marks" />
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <asp:Button runat="server" ID="SubmitButton" CssClass="form-control btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+
+                                            <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" Visible="false" EnableViewState="false" />
+                                            <br />
+                                            <br />
                                         </div>
-
-
-
-                                        <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" Visible="false" EnableViewState="false" />
-                                        <br />
-                                        <br />
 
                                     </div>
                                 </div>
@@ -339,13 +341,13 @@
                         </form>
                         <!-- /.panel-body -->
                     </div>
-                <!-- /.panel -->
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
             </div>
-            <!-- /.col-lg-12 -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-    </div>
-    <!-- /#page-wrapper -->
+        <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->

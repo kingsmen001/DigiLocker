@@ -86,7 +86,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="Home.aspx">Result Section</a>
+                <a class="navbar-brand" href="Home.aspx" style="color:white;">Result Section</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -103,7 +103,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>--%>
-                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                <li style="font-size:15px; background-color:white;"><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-sign-in fa-fw"></i>Login</a>
                 </li>
                 <%--</ul>--%>
                 <!-- /.dropdown-user -->
@@ -116,13 +116,14 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
+                            <div style="display: table-cell; vertical-align: middle; text-align: center">
+                                <img class="" src="Valsura.png" alt="alternate text" style="width: 200px; height: 200px; align-items: center; margin-left: 10px" />
+                                <%--<input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button">
                                         <i class="fa fa-search"></i>
                                     </button>
-                                </span>
+                                </span>--%>
                             </div>
                             <!-- /input-group -->
                         </li>
@@ -223,6 +224,41 @@
 
                                 <div class="col-lg-8" style="width: 100%">
                                     <form id="form1" runat="server">
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        <h4 class="modal-title" id="myModalLabel">Login</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <div class="form-group">
+                                                            <label for="email">Personal Number</label>
+                                                            <div class="input-group pb-modalreglog-input-group">
+                                                                <asp:TextBox CssClass="form-control" ID="PNo_TextBox" runat="server" placeholder="09102K"></asp:TextBox>
+                                                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="password">Password</label>
+                                                            <div class="input-group pb-modalreglog-input-group">
+                                                                <asp:TextBox CssClass="form-control" ID="Password_TextBox" type="password" runat="server" placeholder="Password"></asp:TextBox>
+                                                                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <asp:Button runat="server" CssClass="btn btn-primary" ID="LoginButton" Text="Login"  />
+                                                        <%--<button type="button" class="btn btn-primary">Log in</button>--%>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-lg-6">
                                             <label>Sailor Courses</label>
                                             <%--<ul style="list-style-type:none">--%>
@@ -265,7 +301,7 @@
             </div>
             <!-- /.row -->
         </div>
-        <!-- /#page-wrapper -->
+    <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->

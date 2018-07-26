@@ -92,7 +92,7 @@
                             </div>
                             <!-- /input-group -->
                         </li>
-                       <li>
+                        <li>
                             <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>
                         <li>
@@ -197,78 +197,88 @@
                                                 </asp:DropDownList>
                                             </div>
 
-                                            <div class="form-group col-md-2">
+                                            <div id="div1" runat="server" class="form-group col-md-2">
                                                 <label>Select Course Number</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseNoIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
+                                        <div id="div2" runat="server">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-2" id ="div6" runat="server">
+                                                    <label>Select Term</label>
+                                                    <asp:DropDownList class="form-control" Style="width: auto" ID="ddlTerm" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTermIndexChanged">
+                                                    </asp:DropDownList>
+                                                </div>
 
-                                        <div class="form-row">
-                                            <div class="form-group col-md-2">
-                                                <label>Select Term</label>
-                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlTerm" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTermIndexChanged">
-                                                </asp:DropDownList>
+                                                <div class="form-group col-md-2" id ="div5" runat="server">
+                                                    <label>Select Class</label>
+                                                    <asp:DropDownList class="form-control" Style="width: auto" ID="ddlClass" runat="server" AutoPostBack="true">
+                                                    </asp:DropDownList>
+                                                </div>
+
+
+                                                <div class="form-group col-md-2" id ="div4" runat="server">
+                                                    <label>Select Subject</label>
+                                                    <asp:DropDownList class="form-control" Style="width: auto" ID="ddlSubject" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlSubjectIndexChanged">
+                                                    </asp:DropDownList>
+                                                </div>
                                             </div>
 
-
-                                            <div class="form-group col-md-2">
-                                                <label>Select Subject</label>
-                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlSubject" runat="server" AutoPostBack="false">
-                                                </asp:DropDownList>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <%--<label>Select Entry Type</label>--%>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged" EnableViewState="False" Visible="False">
-                                            </asp:DropDownList>
-                                        </div>
-
-
-                                        <div class="form-row" style="margin-left:4px">
                                             <div class="form-group">
-                                                <label>Marks Excel File</label>
-                                                <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
+                                                <%--<label>Select Entry Type</label>--%>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged" EnableViewState="False" Visible="False">
+                                                </asp:DropDownList>
                                             </div>
-                                            <div class=" help-tip" style="position: relative; margin-left: 20px; margin-top: 10px; z-index: 500">
-                                                <p style="width:600px">Excel File should be in this format.
-                                                    <img src="excel.jpg" width="550"/>
-                                                </p>
+
+                                            <div id="div3" runat="server">
+                                                <div class="form-row" style="margin-left: 4px">
+                                                    <div class="form-group">
+                                                        <label>Marks Excel File</label>
+                                                        <asp:FileUpload Style="width: auto" ID="FileUpload1" class="form-control" runat="server" />
+                                                    </div>
+
+                                                    <div class=" help-tip" style="position: relative; margin-left: 20px; margin-top: 10px; z-index: 500">
+                                                        <p style="width: 600px">
+                                                            Excel File should be in this format.
+                                                    <img src="excel.jpg" width="550" />
+                                                        </p>
+                                                    </div>
+                                                    <div style="margin-top: 30px; margin-left: -15px">(View File Format)</div>
+                                                </div>
+
+                                                <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
+
+                                                <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" />
+                                                <br />
+                                                <br />
+
                                             </div>
+                                            <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
+                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
+                                                </asp:GridView>
+                                            </div>
+                                            <asp:Button runat="server" ID="ConfirmButton" class="btn btn-default" Text="Confirm" OnClick="ConfirmButton_Click" Visible="False" EnableViewState="false" />
                                         </div>
-
-                                        <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
-
-                                        <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" />
-                                        <br />
-                                        <br />
-
-
-                                        <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
-                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
-                                            </asp:GridView>
-                                        </div>
-                                        <asp:Button runat="server" ID="ConfirmButton" class="btn btn-default" Text="Confirm" OnClick="ConfirmButton_Click" Visible="False" EnableViewState="false" />
-                                    </form>
-                                </div>
-                                <!-- /.col-lg-6 (nested) -->
-                                <div class="col-lg-6">
-                                </div>
-                                <!-- /.row (nested) -->
+                                </form>
                             </div>
-                            <!-- /.panel-body -->
+                            <!-- /.col-lg-6 (nested) -->
+                            <div class="col-lg-6">
+                            </div>
+                            <!-- /.row (nested) -->
                         </div>
-                        <!-- /.panel -->
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.col-lg-12 -->
+                    <!-- /.panel -->
                 </div>
-                <!-- /.row -->
+                <!-- /.col-lg-12 -->
             </div>
-            <!-- /#page-wrapper -->
-
+            <!-- /.row -->
         </div>
-        <!-- /#wrapper -->
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
 
         <!-- jQuery -->
         <script src="../vendor/jquery/jquery.min.js"></script>

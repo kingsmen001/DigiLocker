@@ -195,12 +195,13 @@
                                                 </asp:DropDownList>
                                             </div>
 
-                                            <div class="form-group col-md-4">
+                                            <div id="div4" runat="server" class="form-group col-md-4">
                                                 <label id="labelnumber" runat="server">Select Course Number</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlCourseNumberChanged">
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
+                                        <div id="div1" runat="server">
                                         <div class="form-row" style="width: 100%">
                                             <div class="form-group col-md-4">
                                                 <label>Select Entry Type</label>
@@ -221,6 +222,7 @@
                                             <asp:Button runat="server" ID="Button2" class="btn btn-default" Text="Enrole Last Term Trainees" OnClick="AddButton_Click" Visible="false" EnableViewState="false" />
                                         </div>
                                         <br />
+                                            <div id="div5" runat="server">
                                     <asp:RadioButton ID="rbtnmulti" GroupName="InputMethod" runat="server" Text="Multiple Input" AutoPostBack="true" OnCheckedChanged="input_CheckedChanged" />
 
                                     <div class="form-group">
@@ -252,11 +254,13 @@
                                     <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" />
                                     <br />
                                     <br />
+                                            </div>
+                                        </div>
 
 
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
-                                <div class="col-lg-6">
+                                <div id="div3" runat="server" class="col-lg-6">
 
                                     <br />
                                     <label id="heading1" runat="server"></label>
@@ -267,11 +271,12 @@
 
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
+                            </div>
                             <!-- /.row (nested) -->
-                    </div>
+                    
                     <div class="panel-body">
 
-                        <div class="row" style="width: 100%">
+                        <div id="div2" runat="server" class="row" style="width: 100%">
                             <div class="col-lg-6" style="width: 100%">
                                 <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
 
@@ -287,6 +292,7 @@
                     </form>
                         <!-- /.panel-body -->
                 </div>
+
                 <!-- /.panel -->
             </div>
             <!-- /.col-lg-12 -->

@@ -202,41 +202,43 @@
                                                 </asp:DropDownList>
                                             </div>
 
-                                            <div class="form-group col-md-2">
+                                            <div id="div1" runat="server" class="form-group col-md-2">
                                                 <label>Select Course Number</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseNoIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Select Entry Type</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged">
-                                            </asp:DropDownList>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Select Term</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="lbTerm" runat="server" AutoPostBack="True" OnSelectedIndexChanged="SubmitButton_Click">
-                                                <asp:ListItem Selected="true"></asp:ListItem>
-                                            </asp:DropDownList>
-                                        </div>
-
-                                        <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" Visible="False" EnableViewState="false" />
-
-                                        <br />
-                                        <br />
-
-
-                                        <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
-                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss " ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
-                                            </asp:GridView>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-2">
-                                                <asp:Button runat="server" ID="Button1" CssClass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" />
-
+                                        <div id="div2" runat="server">
+                                            <div class="form-group">
+                                                <label>Select Entry Type</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged">
+                                                </asp:DropDownList>
                                             </div>
-                                            <div class="form-group col-md-2">
-                                                <asp:Button runat="server" ID="Button2" CssClass="form-control btn btn-default" Text="Generate Certificates" OnClick="Generate_Clicked" />
+                                            <div class="form-group">
+                                                <label>Select Term</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="lbTerm" runat="server" AutoPostBack="True" OnSelectedIndexChanged="SubmitButton_Click">
+                                                    <asp:ListItem Selected="true"></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+
+                                            <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" Visible="False" EnableViewState="false" />
+
+                                            <br />
+                                            <br />
+
+
+                                            <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
+                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss " ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
+                                                </asp:GridView>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-2">
+                                                    <asp:Button runat="server" ID="Button1" CssClass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" />
+
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <asp:Button runat="server" ID="Button2" CssClass="form-control btn btn-default" Text="Generate Certificates" OnClick="Generate_Clicked" />
+                                                </div>
                                             </div>
                                         </div>
                                     </form>

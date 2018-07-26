@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.IO;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace DigiLocker3
 {
@@ -28,21 +29,14 @@ namespace DigiLocker3
                 name = Request.QueryString["coursename"];
 
             }
+            else
+            {
+                name = ddlCourseType.SelectedValue;
+            }
 
 
             if (!this.IsPostBack)
             {
-                if (Request.QueryString["coursename"] != null)
-                {
-                    heading.InnerHtml = Request.QueryString["coursename"];
-                    ddlCourseType.Visible = false;
-                    ddlCourseType.EnableViewState = false;
-                    labeltype.Visible = false;
-                    labeltype.EnableViewState = false;
-                    name = Request.QueryString["coursename"];
-
-                }
-
                 con.Open();
                 SqlCommand com = new SqlCommand("select CONCAT(COURSE_NAME, ' ', COURSE_NO) AS TYPE_NAME from SAILOR_COURSE", con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
@@ -64,15 +58,37 @@ namespace DigiLocker3
                 ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
+                ddlCourseType.Items.Insert(0, new ListItem("Select", "0"));
 
-                List<string> termList = new List<string>();
-                string query = "select Type_Name from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
-                com = new SqlCommand(query, con);
-                da = new SqlDataAdapter(com);
-                ds = new DataSet();
-                da.Fill(ds);
-                GridView1.DataSource = ds;
-                GridView1.DataBind();
+                if (Request.QueryString["coursename"] != null)
+                {
+                    heading.InnerHtml = Request.QueryString["coursename"];
+                    ddlCourseType.Visible = false;
+                    ddlCourseType.EnableViewState = false;
+                    labeltype.Visible = false;
+                    labeltype.EnableViewState = false;
+                    name = Request.QueryString["coursename"];
+
+                }
+                else
+                {
+                    name = ddlCourseType.SelectedValue;
+                }
+                if (ddlCourseType.SelectedItem.Text.Equals("Select"))
+                {
+                    div1.Visible = false;
+                }
+                else {
+                    div1.Visible = true;
+                    List<string> termList = new List<string>();
+                    string query = "select Type_Name from " + name.Replace(" ", "_") + "_ENTRY_TYPE";
+                    com = new SqlCommand(query, con);
+                    da = new SqlDataAdapter(com);
+                    ds = new DataSet();
+                    da.Fill(ds);
+                    GridView1.DataSource = ds;
+                    GridView1.DataBind();
+                }
 
                 con.Close();
 
@@ -195,18 +211,48 @@ namespace DigiLocker3
 
         }
 
+        protected void TextChanged(object sender, EventArgs e)
+        {
+            GridViewRow row = ((GridViewRow)((TextBox)sender).NamingContainer);
+            TextBox Pri = (TextBox)row.FindControl("TextBox1");
+            Regex regex = new Regex("^\\d\\d[.]\\d\\d\\d\\d*$");
+            if (!regex.IsMatch(Pri.Text))
+            {
+                Response.Write("<script language=javascript>alert('Invalid Format for Course Number');</script>");
+            }
+        }
+
+        protected void Text1Changed(object sender, EventArgs e)
+        {
+            
+            Regex regex1 = new Regex("^\\d\\d[.]\\d\\d\\d\\d*$");
+            Regex regex2 = new Regex("^\\d\\d*$");
+            if (!regex1.IsMatch(Course_Number_TextBox.Text) & !regex2.IsMatch(Course_Number_TextBox.Text) )
+            {
+                Response.Write("<script language=javascript>alert('Invalid Format for Course Number');</script>");
+            }
+        }
+
         protected void OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            con.Open();
-            string query = "select Type_Name from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
-            SqlCommand com = new SqlCommand(query, con);
-            SqlDataAdapter da = new SqlDataAdapter(com);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            GridView1.DataSource = ds;
-            GridView1.DataBind();
+            ddlCourseType.Items.Remove(ddlCourseType.Items.FindByValue("0"));
+            if (ddlCourseType.SelectedItem.Text.Equals("Select"))
+            {
+                div1.Visible = false;
+            }
+            else {
+                div1.Visible = true;
+                con.Open();
+                string query = "select Type_Name from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
+                SqlCommand com = new SqlCommand(query, con);
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                GridView1.DataSource = ds;
+                GridView1.DataBind();
 
-            con.Close();
+                con.Close();
+            }
         }
     }
 }
