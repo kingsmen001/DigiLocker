@@ -81,17 +81,7 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
+                        
                         <li>
                             <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>
@@ -215,7 +205,7 @@
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <label>Course Number</label>
-                                                    <asp:TextBox ID="Course_Number_TextBox" CssClass="form-control" runat="server" AutoPostBack="true" OnTextChanged="Text1Changed"></asp:TextBox>
+                                                    <asp:TextBox ID="Course_Number_TextBox" CssClass="form-control" runat="server" AutoPostBack="true" OnTextChanged="Text1Changed" ></asp:TextBox>
                                                 </div>
                                                 <div class=" help-tip" style="position: relative; margin-left: 7px; margin-top: 10px; z-index: 500">
                                                     <p>Enter Course Number for the complete course such as 21 for MEAT21 20 for MEAT20.</p>
@@ -229,14 +219,14 @@
                                                         <Columns>
                                                             <asp:TemplateField HeaderText="">
                                                                 <ItemTemplate>
-                                                                    <asp:CheckBox ID="ChkBox1" runat="server"></asp:CheckBox>
+                                                                    <asp:CheckBox ID="ChkBox1" runat="server" AutoPostBack="true" OnCheckedChanged="CheckBoxChanged"></asp:CheckBox>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                             <asp:BoundField HeaderText="Entry" DataField="Type_Name" />
 
                                                             <asp:TemplateField HeaderText="Number">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="TextBox1" runat="server" placeholder='70.123' AutoPostBack="true" OnTextChanged="TextChanged"></asp:TextBox>
+                                                                    <asp:TextBox ID="TextBox1" runat="server" placeholder='70.123' AutoPostBack="true" OnTextChanged="TextChanged" Enabled="false"></asp:TextBox>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                         </Columns>

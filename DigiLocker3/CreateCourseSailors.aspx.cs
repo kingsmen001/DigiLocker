@@ -44,15 +44,27 @@ namespace DigiLocker3
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
+            int flag = 0;
+            foreach (GridViewRow r in excelgrd.Rows)
+            {
+
+                string entryname = (r.FindControl("txtMaxMarks") as TextBox).Text;
+                string term = (r.FindControl("txtMinMarks") as TextBox).Text.Replace(",", "_");
+                string duration = (r.FindControl("txtSeniority") as TextBox).Text;
+                if (!string.IsNullOrWhiteSpace(entryname) & !string.IsNullOrWhiteSpace(term) & !string.IsNullOrWhiteSpace(duration))
+                {
+                    flag = 1;
+                }
+            }
             if (string.IsNullOrWhiteSpace(txtCourseName.Text))
             {
 
                 Response.Write("<script language='javascript'>alert('Enter Course Name');</script>");
             }
-            //else if (!FileUpload1.HasFile)
-            //{
-            //    Response.Write("<script language='javascript'>alert('Select Course Detail File');</script>");
-            //}
+            else if (flag==0)
+            {
+                Response.Write("<script language='javascript'>alert('There should be atleast one entry type');</script>");
+            }
             else
             {
                 con.Open();
@@ -259,9 +271,9 @@ namespace DigiLocker3
                 int count = (int)com.ExecuteScalar();
                 if (count == 1)
                 {
-                    //string script = "alert(\" Course Name Already Exists \");";
-                    //ScriptManager.RegisterStartupScript(this, GetType(),
-                    //                      "ServerControlScript", script, true);
+                    string script = "alert(\" Course Name Already Exists \");";
+                    ScriptManager.RegisterStartupScript(this, GetType(),
+                                          "ServerControlScript", script, true);
                     lblMessage.Text = "I am called";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "showModal();", true);
                     txtCourseName.Text = "";

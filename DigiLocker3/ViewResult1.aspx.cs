@@ -679,6 +679,9 @@ namespace DigiLocker3
         {
         }
 
+        protected void ddlClassChanged(object sender, EventArgs e)
+        {
+        }
 
         protected void ddlEntryTypeIndexChanged(object sender, EventArgs e)
         {

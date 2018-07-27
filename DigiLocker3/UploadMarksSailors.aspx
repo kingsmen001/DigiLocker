@@ -220,7 +220,7 @@
 
                                                 <div class="form-group col-md-2" id ="div4" runat="server">
                                                     <label>Select Subject</label>
-                                                    <asp:DropDownList class="form-control" Style="width: auto" ID="ddlSubject" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlSubjectIndexChanged">
+                                                    <asp:DropDownList class="form-control" Style="width: auto" ID="ddlSubject1" runat="server" OnSelectedIndexChanged="ddlSubjectIndexChanged">
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>

@@ -220,6 +220,11 @@
                                                     <asp:ListItem Selected="true"></asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
+                                            <div class="form-group">
+                                                <label>Select Class</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlClass" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlClassChanged" Visible="false" EnableViewState="false">
+                                                </asp:DropDownList>
+                                            </div>
 
                                             <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" Visible="False" EnableViewState="false" />
 

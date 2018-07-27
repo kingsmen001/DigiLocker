@@ -39,6 +39,8 @@ namespace DigiLocker3
 
             if (!this.IsPostBack)
             {
+                divgridspl.Visible = false;
+                divspl.Visible = false;
                 flag = 0;
                 con.Open();
                 ddlCourseType.SelectedIndex = 0;
@@ -129,27 +131,27 @@ namespace DigiLocker3
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            //if (flag == 0)
-            //{
-            //    if (FileUpload1.HasFile)
-            //    {
-            //        string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
-            //        string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-            //        string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
+            /*if (flag == 0)
+            {
+                if (FileUpload1.HasFile)
+                {
+                    string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
+                    string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
+                    string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
 
-            //        string FilePath = Server.MapPath(FolderPath + FileName);
-            //        FileUpload1.SaveAs(FilePath);
-            //        Import_To_Grid(FilePath, Extension);
-            //        ConfirmButton.Visible = true;
-            //        ConfirmButton.EnableViewState = true;
-            //    }
-            //    else
-            //    {
-            //        Response.Write("<script language='javascript'>alert('Please Select a File');</script>");
-            //    }
-            //}
-            //else
-            //{
+                    string FilePath = Server.MapPath(FolderPath + FileName);
+                    FileUpload1.SaveAs(FilePath);
+                    Import_To_Grid(FilePath, Extension);
+                    ConfirmButton.Visible = true;
+                    ConfirmButton.EnableViewState = true;
+                }
+                else
+                {
+                    Response.Write("<script language='javascript'>alert('Please Select a File');</script>");
+                }
+            }
+            else
+            {*/
             if (coursename == null)
                 coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
             if (!string.IsNullOrWhiteSpace(txtMarks.Text) & !string.IsNullOrWhiteSpace(txtSubject.Text))
@@ -157,12 +159,24 @@ namespace DigiLocker3
                 con.Open();
                 try
                 {
-                    string table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
-                    string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Theory, IA, Practical, Term) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + txtTheory.Text + "','" + txtIA.Text + "','" + txtPractical.Text + "','" + ddlTerm.SelectedValue + "')";
-                    SqlCommand cmd = new SqlCommand(query, con);
-                    cmd.ExecuteNonQuery();
-                    cmd = new SqlCommand("Update " + table_name + " set Max_Marks = Theory + IA + Practical", con);
-                    cmd.ExecuteNonQuery();
+                    if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
+                    {
+                        string table_name = ddlCourseType.SelectedValue.Replace(" ","_") + "_D_TERM_SUBJECTS";
+                        string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Theory, IA, Practical, class) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + txtTheory.Text + "','" + txtIA.Text + "','" + txtPractical.Text + "','" + txtSpc.Text + "')";
+                        SqlCommand cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                        cmd = new SqlCommand("Update " + table_name + " set Max_Marks = Theory + IA + Practical", con);
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        string table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+                        string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Theory, IA, Practical, Term) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + txtTheory.Text + "','" + txtIA.Text + "','" + txtPractical.Text + "','" + ddlTerm.SelectedValue + "')";
+                        SqlCommand cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                        cmd = new SqlCommand("Update " + table_name + " set Max_Marks = Theory + IA + Practical", con);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
                 catch (SqlException ex)
                 {
@@ -176,7 +190,14 @@ namespace DigiLocker3
                     Response.Write(ex.Message);
                 }
                 con.Close();
-                ShowData();
+                if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
+                {
+                    ShowData1();
+                }
+                else
+                {
+                    ShowData();
+                }
             }
             else
             {
@@ -415,28 +436,68 @@ namespace DigiLocker3
 
         protected void ddlTermIndexChanged(object sender, EventArgs e)
         {
+            if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
+            {
+                ShowData1();
+                //meatDTerm();
+                divgrid.Visible = false;
+                divgridspl.Visible = true;
+                divspl.Visible = true;
+                div3.Visible = false;
+            }
+            else
+            {
+                if (coursename == null)
+                    coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
+                con.Open();
+
+                string table_name = coursename + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
+                string query = "Select Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.SelectedValue + "'";
+                //Response.Write(query);
+                SqlCommand cmd = new SqlCommand(query, con);
+                SqlDataAdapter adpt = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adpt.Fill(dt);
+                con.Close();
+                divgrid.Visible = true;
+                divgridspl.Visible = false;
+                divspl.Visible = false;
+                div3.Visible = true;
+                ShowData();
+            }
+
+        }
+
+        protected void meatDTerm()
+        {
+
+        }
+
+        protected void ShowData1()
+        {
             if (coursename == null)
                 coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             con.Open();
-
-            string table_name = coursename + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
-            string query = "Select Subject_name, Max_Marks from " + table_name + " where term = '" + ddlTerm.SelectedValue + "'";
+            table_name = "MEAT_POWER_D_TERM_SUBJECTS";
+            string query = "Select ID, Subject_name, Theory, IA, Practical, Max_Marks, class from " + table_name ;
             //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             adpt.Fill(dt);
+
+            
+            exlfile.Visible = false;
+            single.Visible = true;
+            GridView2.DataSource = dt;
+            GridView2.DataBind();
+            flag = 1;
+            SubmitButton.Text = "Add";
+            txtMarks.Text = "";
+            
+
+
             con.Close();
-            ShowData();
-
-            //GridView2.DataSource = dt;
-            //GridView2.DataBind();
-
-
-
-
-
-
         }
 
         protected void OnSelectedIndexChanged(object sender, EventArgs e)
@@ -570,6 +631,67 @@ namespace DigiLocker3
             cmd.ExecuteNonQuery();
             con.Close();
             ShowData();
+        }
+
+        protected void GridView3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void GridView2_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
+        {
+            //NewEditIndex property used to determine the index of the row being edited.  
+            GridView3.EditIndex = e.NewEditIndex;
+            ShowData();
+
+        }
+        protected void GridView2_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
+        {
+            if (coursename == null)
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
+            //Finding the controls from Gridview for the row which is going to update
+            Label id = GridView3.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
+            TextBox name = GridView3.Rows[e.RowIndex].FindControl("txt_Name") as TextBox;
+            //TextBox marks = GridView3.Rows[e.RowIndex].FindControl("txt_City") as TextBox;
+            TextBox Theory = GridView3.Rows[e.RowIndex].FindControl("txt_Theory") as TextBox;
+            TextBox IA = GridView3.Rows[e.RowIndex].FindControl("txt_IA") as TextBox;
+            TextBox Practical = GridView3.Rows[e.RowIndex].FindControl("txt_Pra") as TextBox;
+            con.Open();
+            //updating the record  
+            table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
+            SqlCommand cmd = new SqlCommand("Update " + table_name + " set SUBJECT_NAME ='" + name.Text + "', Theory = '" + Theory.Text + "', IA = '" + IA.Text + "', Practical = '" + Practical.Text + "' where ID=" + Convert.ToInt32(id.Text), con);
+            cmd.ExecuteNonQuery();
+            cmd = new SqlCommand("Update " + table_name + " set Max_Marks = Theory + IA + Practical", con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
+            GridView3.EditIndex = -1;
+            //Call ShowData method for displaying updated data  
+            ShowData();
+        }
+        protected void GridView2_RowCancelingEdit(object sender, System.Web.UI.WebControls.GridViewCancelEditEventArgs e)
+        {
+            //Setting the EditIndex property to -1 to cancel the Edit mode in Gridview  
+            GridView3.EditIndex = -1;
+            ShowData();
+        }
+
+        protected void GridView2_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            if (coursename == null)
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
+            Label id = GridView3.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
+            con.Open();
+            table_name = coursename.Replace(" ", "_") + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_") + "_SUBJECTS";
+            SqlCommand cmd = new SqlCommand("delete FROM " + table_name + " where ID=" + Convert.ToInt32(id.Text), con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            ShowData();
+        }
+
+        protected void GridView2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

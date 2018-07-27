@@ -286,71 +286,132 @@ namespace DigiLocker3
                 courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
             }
             string table_name = "";
-            createTable();
-            con.Open();
-            SqlTransaction tran = con.BeginTransaction();
-            //int i = 0;
-            try
+            if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
             {
-                int i = 0;
-
-                table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+                con.Open();
+                table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", "_") + "_D_TERM";
+                string query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) , Subject_Name varchar(50), Total_Max int DEFAULT 0,  Total int DEFAULT 0, Theory int DEFAULT 0, IA int DEFAULT 0, Practical int DEFAULT 0  )";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.ExecuteNonQuery();
+                table_name = coursename.Replace(" ", "_") + "_" + courseno;
+                //query = "IF NOT EXISTS(select Names from sys.columns where OBJECT_ID = OBJECT_ID('" + coursename.Replace(" ", "_") + "_" + courseno + "') and Name in (" + ddlTerm.SelectedValue + ")) Alter table " + table_name + " add " + ddlTerm.SelectedValue + " VARCHAR(50)"; 
+                query = "select count(column_name) from INFORMATION_SCHEMA.columns where table_name = '" + coursename.Replace(" ", "_") + "_" + courseno + "' and column_name = '" + ddlTerm.SelectedValue + "'";
+                //query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
+                cmd = new SqlCommand(query, con);
+                int col = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                
+                if (col == 0)
+                {
+                    query = "Alter table " + table_name + " add " + ddlTerm.SelectedValue + " VARCHAR(50)";
+                }
+                cmd = new SqlCommand(query, con);
+                cmd.ExecuteNonQuery();
                 foreach (GridViewRow g1 in GridView1.Rows)
                 {
-                    table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
-                    SqlCommand cmd = new SqlCommand("if not exists(select personal_no from " + table_name + " where personal_no = '"+g1.Cells[0].Text+"') insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con, tran);
+                    table_name = coursename.Replace(" ", "_") + "_" + courseno;
+                    cmd = new SqlCommand("if not exists(select personal_no from " + table_name + " where personal_no = '" + g1.Cells[0].Text + "') insert into " + table_name + "(Personal_No, entry_Name) values ('" + g1.Cells[0].Text + "','" + ddlEntryType.SelectedValue + "')", con);
                     cmd.ExecuteNonQuery();
-                    table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_");
-                    cmd = new SqlCommand("if not exists(select personal_no from " + table_name + " where personal_no = '"+g1.Cells[0].Text+"') insert into " + table_name + "(Personal_No, entry_Name) values ('" + g1.Cells[0].Text + "','" + ddlEntryType.SelectedValue + "')", con, tran);
-                    cmd.ExecuteNonQuery();
-                    string query = "update " + table_name + " set Term = concat( term , '" + ddlTerm.SelectedValue + "') where Personal_No = '" + g1.Cells[0].Text + "'";
-                    cmd = new SqlCommand(query, con, tran);
+                    query = "update " + table_name + " set Term = concat( term , '" + ddlTerm.SelectedValue + "') where Personal_No = '" + g1.Cells[0].Text + "'";
+                    cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
                     query = "update " + table_name + " set " + ddlTerm.SelectedValue + " = '" + g1.Cells[3].Text + "' where Personal_No = '" + g1.Cells[0].Text + "'";
-                    
-                    cmd = new SqlCommand(query, con, tran);
+
+                    cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
+                    query = "Select Subject_Name, Max_Marks from MEAT_POWER_D_TERM_SUBJECTS where Class = '" + g1.Cells[3].Text + "'";
+                    cmd = new SqlCommand(query, con);
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    IDictionary<string, int> dict = new Dictionary<string, int>();
+                    table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", "_") + "_D_TERM";
+                    while (dr.Read())
+                    {
+                        dict.Add(dr.GetString(0), dr.GetInt32(1));
+                        //seniority = dr.GetValue(1).ToString();
+                    }
+                    dr.Close();
+                    foreach (KeyValuePair<string, int> item in dict)
+                    {
+                        query = "insert into " + table_name + "(Personal_No, Subject_Name, Total_Max) values('" + g1.Cells[0].Text + "', '" + item.Key + "', '" + item.Value + "')";
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                    }
 
-                    i++;
+                    
                 }
-                tran.Commit();
 
-                table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_entry_type";
 
-                string query1 = "update " + table_name + " set Enrolledin = CASE WHEN Enrolledin = NULL Then '" + ddlTerm.SelectedValue + "' WHEN ENROLLEDIN LIKE '%" + ddlTerm.SelectedValue + "%' Then Enrolledin ELSE CONCAT(ENROLLEDIN, " + "'_" + ddlTerm.SelectedValue + "') END where Type_Name = '" + ddlEntryType.SelectedValue + "'";
-                SqlCommand cmd1 = new SqlCommand(query1, con);
-                cmd1.ExecuteNonQuery();
-                reset();
-                Response.Write("<script language='javascript'>alert('Trainees Added');</script>");
 
-                //string script = "alert(\" "+ i + " Trainees Added to " + course_type + course_no + " " +entry_type +" \");";
-                //ScriptManager.RegisterStartupScript(this, GetType(),
-                //                      "ServerControlScript", script, true)
+                con.Close();
+                showData();
+
             }
-            catch (SqlException ex)
-            {
-                if (ex.Number == 2627)
+            else {
+                createTable();
+                con.Open();
+                SqlTransaction tran = con.BeginTransaction();
+                //int i = 0;
+                try
                 {
-                    try
-                    {
-                        tran.Rollback();
-                    }
-                    catch (Exception exRollback)
-                    {
-                        Console.WriteLine(exRollback.Message);
-                    }
+                    int i = 0;
 
+                    table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+                    foreach (GridViewRow g1 in GridView1.Rows)
+                    {
+                        table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+                        SqlCommand cmd = new SqlCommand("if not exists(select personal_no from " + table_name + " where personal_no = '" + g1.Cells[0].Text + "') insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con, tran);
+                        cmd.ExecuteNonQuery();
+                        table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_");
+                        cmd = new SqlCommand("if not exists(select personal_no from " + table_name + " where personal_no = '" + g1.Cells[0].Text + "') insert into " + table_name + "(Personal_No, entry_Name) values ('" + g1.Cells[0].Text + "','" + ddlEntryType.SelectedValue + "')", con, tran);
+                        cmd.ExecuteNonQuery();
+                        string query = "update " + table_name + " set Term = concat( term , '" + ddlTerm.SelectedValue + "') where Personal_No = '" + g1.Cells[0].Text + "'";
+                        cmd = new SqlCommand(query, con, tran);
+                        cmd.ExecuteNonQuery();
+                        query = "update " + table_name + " set " + ddlTerm.SelectedValue + " = '" + g1.Cells[3].Text + "' where Personal_No = '" + g1.Cells[0].Text + "'";
 
+                        cmd = new SqlCommand(query, con, tran);
+                        cmd.ExecuteNonQuery();
+
+                        i++;
+                    }
+                    tran.Commit();
+
+                    table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_entry_type";
+
+                    string query1 = "update " + table_name + " set Enrolledin = CASE WHEN Enrolledin IS NULL Then '" + ddlTerm.SelectedValue + "' WHEN ENROLLEDIN LIKE '%" + ddlTerm.SelectedValue + "%' Then Enrolledin ELSE CONCAT(ENROLLEDIN, " + "'_" + ddlTerm.SelectedValue + "') END where Type_Name = '" + ddlEntryType.SelectedValue + "'";
+                    SqlCommand cmd1 = new SqlCommand(query1, con);
+                    cmd1.ExecuteNonQuery();
                     reset();
-                    Response.Write("<script language='javascript'>alert('Record Already Exists. Please Check');</script>");
+                    Response.Write("<script language='javascript'>alert('Trainees Added');</script>");
 
-
+                    //string script = "alert(\" "+ i + " Trainees Added to " + course_type + course_no + " " +entry_type +" \");";
+                    //ScriptManager.RegisterStartupScript(this, GetType(),
+                    //                      "ServerControlScript", script, true)
                 }
-                else
-                    Response.Write(ex);
+                catch (SqlException ex)
+                {
+                    if (ex.Number == 2627)
+                    {
+                        try
+                        {
+                            tran.Rollback();
+                        }
+                        catch (Exception exRollback)
+                        {
+                            Console.WriteLine(exRollback.Message);
+                        }
+
+
+                        reset();
+                        Response.Write("<script language='javascript'>alert('Record Already Exists. Please Check');</script>");
+
+
+                    }
+                    else
+                        Response.Write(ex);
+                }
+                con.Close();
+                showData();
             }
-            con.Close();
-            showData();
         }
 
         protected void createTable()
@@ -457,14 +518,14 @@ namespace DigiLocker3
             //Response.Write(col_List);
             col_listA = col_listA.Remove(col_listA.Length - 2);
             
-            query = "select count(*) Names from sys.columns where OBJECT_ID = OBJECT_ID('" + table_name + "') and Name in (" + col_listA + ")";
+            query = "select count(*) Names from sys.columns where OBJECT_ID = OBJECT_ID('" + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ","_") + "') and Name in (" + col_listA + ")";
             //query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
             cmd = new SqlCommand(query, con);
             int col = Convert.ToInt32(cmd.ExecuteScalar().ToString());
             col_List = col_List.Substring(1);
             if (col == 0)
             {
-                query = "Alter Table " + table_name + " add " + col_List;
+                query = "Alter Table " + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " add " + col_List;
             }
 
             //Response.Write(query);

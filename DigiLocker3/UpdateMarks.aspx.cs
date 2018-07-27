@@ -293,6 +293,7 @@ namespace DigiLocker3
 
         protected void ddlSubjectIndexChanged(object sender, EventArgs e)
         {
+            div6.Visible = true;
             updateGrid();
         }
         protected void OnRowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -502,7 +503,7 @@ namespace DigiLocker3
                 div6.Visible = false;
                 con.Open();
                 String name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
-                SqlCommand com = new SqlCommand("select * from" + name, con); // table name 
+                SqlCommand com = new SqlCommand("select * from " + name + " where EnrolledIn IS NOT NULL", con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -510,7 +511,7 @@ namespace DigiLocker3
                 ddlEntryType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
                 ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlEntryType.DataBind();
-                ddlCourseNo.Items.Insert(0, new ListItem("Select", "0"));
+                ddlEntryType.Items.Insert(0, new ListItem("Select", "0"));
 
 
 
@@ -560,83 +561,115 @@ namespace DigiLocker3
                 con.Close();
             }
 
-            }
+        }
         protected void ddlTermIndexChanged(object sender, EventArgs e)
         {
-            con.Open();
-            string term = ddlTerm.SelectedValue;
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
-            string query = "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + term + "'";
-
-            SqlCommand com = new SqlCommand(query, con); // table name 
-            SqlDataAdapter da = new SqlDataAdapter(com);
-            DataSet ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlSubject.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
-            ddlSubject.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
-            ddlSubject.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlSubject.DataBind();
-            table_name = "SAILOR_COURSE_TYPE";
-            com = new SqlCommand("select seniority from " + table_name + " where TYPE_NAME = '" + ddlCourseType.SelectedValue + "'", con);
-            SqlDataReader dk = com.ExecuteReader();
-
-            while (dk.Read())
+            ddlTerm.Items.Remove(ddlTerm.Items.FindByValue("0"));
+            if (ddlTerm.SelectedValue.Equals("0"))
             {
-                seniority = dk.GetValue(0).ToString();
-                //seniority = dr.GetValue(1).ToString();
+                div2.Visible = false;
+                div3.Visible = false;
+                div2.Visible = false;
             }
-            dk.Close();
-            if (seniority.Equals("1"))
-                ddlSubject.Items.Add(new ListItem("Seniority", "0"));
-            con.Close();
-            updateGrid();
+            else {
+                div2.Visible = true;
+                div3.Visible = true;
+                div4.Visible = true;
+                div5.Visible = true;
+                div6.Visible = true;
+
+                con.Open();
+                string term = ddlTerm.SelectedValue;
+                string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+                string query = "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + term + "'";
+
+                SqlCommand com = new SqlCommand(query, con); // table name 
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                DataSet ds = new DataSet();
+                da.Fill(ds);  // fill dataset
+                ddlSubject.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+                ddlSubject.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
+                ddlSubject.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                ddlSubject.DataBind();
+                table_name = "SAILOR_COURSE_TYPE";
+                com = new SqlCommand("select seniority from " + table_name + " where TYPE_NAME = '" + ddlCourseType.SelectedValue + "'", con);
+                SqlDataReader dk = com.ExecuteReader();
+
+                while (dk.Read())
+                {
+                    seniority = dk.GetValue(0).ToString();
+                    //seniority = dr.GetValue(1).ToString();
+                }
+                dk.Close();
+                if (seniority.Equals("1"))
+                    ddlSubject.Items.Add(new ListItem("Seniority", "0"));
+                con.Close();
+                updateGrid();
+            }
 
         }
 
 
         protected void ddlEntryTypeIndexChanged(object sender, EventArgs e)
         {
-            con.Open();
-
-            List<string> termLabel = new List<string>();
-            string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
-            SqlCommand com = new SqlCommand(query, con);
-            SqlDataReader dr = com.ExecuteReader();
-            while (dr.Read())
+            ddlEntryType.Items.Remove(ddlEntryType.Items.FindByValue("0"));
+            if (ddlEntryType.SelectedValue.Equals("0"))
             {
-                termLabel.Add(dr.GetString(0));
+                div2.Visible = false;
+                div3.Visible = false;
+                div2.Visible = false;
             }
-            dr.Close();
+            else {
+                div2.Visible = true;
+                div3.Visible = true;
+                div4.Visible = true;
+                div5.Visible = false;
+                div6.Visible = false;
+                con.Open();
 
-            ddlTerm.DataSource = termLabel.Distinct().ToList();
-            ddlTerm.DataBind();
 
-            string term = ddlTerm.SelectedValue;
-            String table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
-            query = "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + term + "'";
+                List<string> termLabel = new List<string>();
+                string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
+                SqlCommand com = new SqlCommand(query, con);
+                SqlDataReader dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    termLabel.Add(dr.GetString(0));
+                }
+                dr.Close();
 
-            com = new SqlCommand(query, con); // table name 
-            SqlDataAdapter da = new SqlDataAdapter(com);
-            DataSet ds = new DataSet();
-            da.Fill(ds);  // fill dataset
-            ddlSubject.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
-            ddlSubject.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
-            ddlSubject.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlSubject.DataBind();
-            table_name = "SAILOR_COURSE_TYPE";
-            com = new SqlCommand("select seniority from " + table_name + " where TYPE_NAME = '" + ddlCourseType.SelectedValue + "'", con);
-            SqlDataReader dk = com.ExecuteReader();
+                ddlTerm.DataSource = termLabel.Distinct().ToList();
+                ddlTerm.DataBind();
+                ddlTerm.Items.Insert(0, new ListItem("Select", "0"));
 
-            while (dk.Read())
-            {
-                seniority = dk.GetValue(0).ToString();
-                //seniority = dr.GetValue(1).ToString();
+                //string term = ddlTerm.SelectedValue;
+                //String table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + "SUBJECTS";
+                //query = "Select Subject_Name, Max_Marks from " + table_name + " where term = '" + term + "'";
+
+                //com = new SqlCommand(query, con); // table name 
+                //SqlDataAdapter da = new SqlDataAdapter(com);
+                //DataSet ds = new DataSet();
+                //da.Fill(ds);  // fill dataset
+                //ddlSubject.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+                //ddlSubject.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
+                //ddlSubject.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                //ddlSubject.DataBind();
+                //table_name = "SAILOR_COURSE_TYPE";
+                //com = new SqlCommand("select seniority from " + table_name + " where TYPE_NAME = '" + ddlCourseType.SelectedValue + "'", con);
+                //SqlDataReader dk = com.ExecuteReader();
+
+                //while (dk.Read())
+                //{
+                //    seniority = dk.GetValue(0).ToString();
+                //    //seniority = dr.GetValue(1).ToString();
+                //}
+                //dk.Close();
+                //if (seniority.Equals("1"))
+                //    ddlSubject.Items.Add(new ListItem("Seniority", "0"));
+                //con.Close();
+                //updateGrid();
+                con.Close();
             }
-            dk.Close();
-            if (seniority.Equals("1"))
-                ddlSubject.Items.Add(new ListItem("Seniority", "0"));
-            con.Close();
-            updateGrid();
         }
     }
 }
