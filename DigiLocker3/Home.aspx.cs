@@ -13,7 +13,116 @@ namespace DigiLocker3
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(Session["User_ID"] as string))
+            {
 
+                list_login.Visible = false;
+                list_pass.Visible = false;
+                list_userid.Visible = false;
+                list_logout.Visible = true;
+                enrol.Visible = true;
+                create.Visible = true;
+                if (Session["Access_Level"].ToString().Equals("1"))
+                {
+                    opnAddCourse.Visible = true;
+                    opnAddTrainees.Visible = true;
+                    opnCreateCourse.Visible = true;
+                    opnUpdateMarks.Visible = true;
+                    opnViewResult.Visible = true;
+                    opnViewTrainees.Visible = true;
+                    opnUploadMarks.Visible = true;
+                    enrol.Visible = true;
+                    create.Visible = true;
+                    opnAddCourseOfficer.Visible = true;
+                    opnAddTraineesOfficer.Visible = true;
+                    opnCreateCourseOfficer.Visible = true;
+                    opnUpdateMarksOfficer.Visible = true;
+                    opnViewResultOfficer.Visible = true;
+                    opnViewTraineesOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = true;
+                }
+                else if (Session["Access_Level"].ToString().Equals("2"))
+                {
+                    opnAddCourse.Visible = true;
+                    opnAddTrainees.Visible = true;
+                    opnCreateCourse.Visible = true;
+                    opnUpdateMarks.Visible = false;
+                    opnViewResult.Visible = true;
+                    opnViewTrainees.Visible = true;
+                    opnUploadMarks.Visible = true;
+                    enrol.Visible = true;
+                    create.Visible = true;
+                    opnAddCourseOfficer.Visible = true;
+                    opnAddTraineesOfficer.Visible = true;
+                    opnCreateCourseOfficer.Visible = true;
+                    opnUpdateMarksOfficer.Visible = false;
+                    opnViewResultOfficer.Visible = true;
+                    opnViewTraineesOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = true;
+                }
+                else if (Session["Access_Level"].ToString().Equals("3"))
+                {
+                    opnAddCourse.Visible = true;
+                    opnAddTrainees.Visible = true;
+                    opnCreateCourse.Visible = false;
+                    opnUpdateMarks.Visible = false;
+                    opnViewResult.Visible = false;
+                    opnViewTrainees.Visible = true;
+                    opnUploadMarks.Visible = false;
+                    enrol.Visible = true;
+                    create.Visible = false;
+                    opnAddCourseOfficer.Visible = true;
+                    opnAddTraineesOfficer.Visible = true;
+                    opnCreateCourseOfficer.Visible = false;
+                    opnUpdateMarksOfficer.Visible = false;
+                    opnViewResultOfficer.Visible = false;
+                    opnViewTraineesOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = false;
+                }
+                else
+                {
+                    opnAddCourse.Visible = false;
+                    opnAddTrainees.Visible = false;
+                    opnCreateCourse.Visible = false;
+                    opnUpdateMarks.Visible = false;
+                    opnViewResult.Visible = false;
+                    opnViewTrainees.Visible = true;
+                    opnUploadMarks.Visible = true;
+                    enrol.Visible = false;
+                    create.Visible = false;
+                    opnAddCourseOfficer.Visible = false;
+                    opnAddTraineesOfficer.Visible = false;
+                    opnCreateCourseOfficer.Visible = false;
+                    opnUpdateMarksOfficer.Visible = false;
+                    opnViewResultOfficer.Visible = false;
+                    opnViewTraineesOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = true;
+                }
+
+            }
+            else
+            {
+                opnAddCourseOfficer.Visible = false;
+                opnAddTraineesOfficer.Visible = false;
+                opnCreateCourseOfficer.Visible = false;
+                opnUpdateMarksOfficer.Visible = false;
+                opnViewResultOfficer.Visible = false;
+                opnViewTraineesOfficer.Visible = true;
+                opnUploadMarksOfficer.Visible = false;
+                list_login.Visible = true;
+                list_pass.Visible = true;
+                list_userid.Visible = true;
+                list_logout.Visible = false;
+                opnAddCourse.Visible = false;
+                opnAddTrainees.Visible = false;
+                opnCreateCourse.Visible = false;
+                opnUpdateMarks.Visible = false;
+                opnViewResult.Visible = false;
+                opnViewTrainees.Visible = true;
+                opnUploadMarks.Visible = false;
+                enrol.Visible = false;
+                create.Visible = false;
+            }
         }
 
         public string getCourseDetails()
@@ -64,7 +173,7 @@ namespace DigiLocker3
                         string CourseName = sqlRdr.GetString(0);
                         string CourseNo = sqlRdr.GetString(1);
                         i++;
-                        data += "<tr><td>" + i + "</td><td><a href=\"EnrolledCourseDetails.aspx?id=" + CourseName.Replace(" ", "_") + CourseNo + "\">" + CourseName +" " + CourseNo + "</a></td></tr>";
+                        data += "<tr><td>" + i + "</td><td><a href=\"EnrolledCourseDetailsSailors.aspx?id=" + CourseName.Replace(" ", "_") + CourseNo + "\">" + CourseName + " " + CourseNo + "</a></td></tr>";
                         //data += "<tr><td>" + DocID + "</td><td><a href=\"#\" runat=\"server\" onServerClick=\"MyFuncion_Click\" >" + DocName + "</a></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
                         //data += "<tr><td>" + DocID + "</td><td><asp:LinkButton id=\"myid\" runat=\"server\" OnClick=\"MyFunction_Click\" >" + DocName + "</asp:LinkButton></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
                     }
@@ -72,6 +181,50 @@ namespace DigiLocker3
             }
             return data;
         }
+        protected void LoginButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
 
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
+                con.Open();
+                string sql = "SELECT * from Users where user_no = @personalno and password = @password";
+                
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@personalno", UserId_TextBox.Text);
+                cmd.Parameters.AddWithValue("password", Password_TextBox.Text);
+                SqlDataReader sqlRdr = cmd.ExecuteReader();
+                if (sqlRdr.HasRows)
+                {
+                    while (sqlRdr.Read())
+                    {
+                        Session.Add("User_ID", sqlRdr.GetString(1));
+                        Session.Add("Access_Level", sqlRdr.GetInt32(3));
+                        Response.Redirect("Home.aspx",false);
+                        //Response.Write("<script language='javascript'>alert('" + Session["User_ID"].ToString() + "');</script>");
+                    }
+                }
+                else
+                {
+                    {
+
+                        //Response.Redirect("#");
+                        Response.Write("<script language='javascript'>alert('Wrong Username or Password');</script>");
+                    }
+                }
+                sqlRdr.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
+
+        }
+        protected void LogoutButton_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Response.Redirect("Home.aspx",false);
+        }
     }
 }

@@ -243,6 +243,7 @@
     <Content Include="Account\ResetPasswordConfirmation.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
+    <Content Include="AddSubjectOfficers.aspx" />
     <Content Include="AddSubjectsSailors.aspx" />
     <Content Include="App_Data\DigiLocker.mdf" />
     <Content Include="App_Data\DigiLocker_log.ldf">
@@ -251,7 +252,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="CourseDetails.aspx" />
+    <Content Include="CourseDetailsOfficers.aspx" />
+    <Content Include="CourseDetailsSailors.aspx" />
+    <Content Include="CreateCourseOfficers.aspx" />
     <Content Include="CreateCourseSailors.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -259,10 +262,18 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
     <Content Include="Home.aspx" />
+    <Content Include="NewCourseOfficers.aspx" />
+    <Content Include="orderofmeritOfficers.aspx" />
     <Content Include="orderofmeritSailors.aspx" />
+    <Content Include="SeniorityDetailsOfficers.aspx" />
     <Content Include="SeniorityDetailsSailors.aspx" />
+    <Content Include="UpdateMarksOfficers.aspx" />
     <Content Include="UpdateMarksSailors.aspx" />
+    <Content Include="UploadMarksOfficers.aspx" />
+    <Content Include="UploadNominalRollOfficers.aspx" />
+    <Content Include="ViewResultOfficers.aspx" />
     <Content Include="ViewResultSailors.aspx" />
+    <Content Include="ViewTraineesOfficers.aspx" />
     <Content Include="ViewTraineesSailors.aspx" />
     <Content Include="WebFormResultUpload.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -425,6 +436,13 @@
     <Compile Include="Account\VerifyPhoneNumber.aspx.designer.cs">
       <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AddSubjectOfficers.aspx.cs">
+      <DependentUpon>AddSubjectOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddSubjectOfficers.aspx.designer.cs">
+      <DependentUpon>AddSubjectOfficers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AddSubjectsSailors.aspx.cs">
       <DependentUpon>AddSubjectsSailors.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -436,12 +454,26 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="CourseDetails.aspx.cs">
-      <DependentUpon>CourseDetails.aspx</DependentUpon>
+    <Compile Include="CourseDetailsOfficers.aspx.cs">
+      <DependentUpon>CourseDetailsOfficers.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CourseDetails.aspx.designer.cs">
-      <DependentUpon>CourseDetails.aspx</DependentUpon>
+    <Compile Include="CourseDetailsOfficers.aspx.designer.cs">
+      <DependentUpon>CourseDetailsOfficers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CourseDetailsSailors.aspx.cs">
+      <DependentUpon>CourseDetailsSailors.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CourseDetailsSailors.aspx.designer.cs">
+      <DependentUpon>CourseDetailsSailors.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateCourseOfficers.aspx.cs">
+      <DependentUpon>CreateCourseOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateCourseOfficers.aspx.designer.cs">
+      <DependentUpon>CreateCourseOfficers.aspx</DependentUpon>
     </Compile>
     <Compile Include="CreateCourseSailors.aspx.cs">
       <DependentUpon>CreateCourseSailors.aspx</DependentUpon>
@@ -475,6 +507,20 @@
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="NewCourseOfficers.aspx.cs">
+      <DependentUpon>NewCourseOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NewCourseOfficers.aspx.designer.cs">
+      <DependentUpon>NewCourseOfficers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="orderofmeritOfficers.aspx.cs">
+      <DependentUpon>orderofmeritOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="orderofmeritOfficers.aspx.designer.cs">
+      <DependentUpon>orderofmeritOfficers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="orderofmeritSailors.aspx.cs">
       <DependentUpon>orderofmeritSailors.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -483,6 +529,13 @@
       <DependentUpon>orderofmeritSailors.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeniorityDetailsOfficers.aspx.cs">
+      <DependentUpon>SeniorityDetailsOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SeniorityDetailsOfficers.aspx.designer.cs">
+      <DependentUpon>SeniorityDetailsOfficers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SeniorityDetailsSailors.aspx.cs">
       <DependentUpon>SeniorityDetailsSailors.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -512,12 +565,26 @@
     <Compile Include="NewCourseSailors.aspx.designer.cs">
       <DependentUpon>NewCourseSailors.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UpdateMarksOfficers.aspx.cs">
+      <DependentUpon>UpdateMarksOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdateMarksOfficers.aspx.designer.cs">
+      <DependentUpon>UpdateMarksOfficers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UpdateMarksSailors.aspx.cs">
       <DependentUpon>UpdateMarksSailors.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UpdateMarksSailors.aspx.designer.cs">
       <DependentUpon>UpdateMarksSailors.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadMarksOfficers.aspx.cs">
+      <DependentUpon>UploadMarksOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadMarksOfficers.aspx.designer.cs">
+      <DependentUpon>UploadMarksOfficers.aspx</DependentUpon>
     </Compile>
     <Compile Include="UploadMarksSailors.aspx.cs">
       <DependentUpon>UploadMarksSailors.aspx</DependentUpon>
@@ -526,12 +593,26 @@
     <Compile Include="UploadMarksSailors.aspx.designer.cs">
       <DependentUpon>UploadMarksSailors.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UploadNominalRollOfficers.aspx.cs">
+      <DependentUpon>UploadNominalRollOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadNominalRollOfficers.aspx.designer.cs">
+      <DependentUpon>UploadNominalRollOfficers.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UploadNominalRollSailors.aspx.cs">
       <DependentUpon>UploadNominalRollSailors.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UploadNominalRollSailors.aspx.designer.cs">
       <DependentUpon>UploadNominalRollSailors.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewResultOfficers.aspx.cs">
+      <DependentUpon>ViewResultOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewResultOfficers.aspx.designer.cs">
+      <DependentUpon>ViewResultOfficers.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewResultSailors.aspx.cs">
       <DependentUpon>ViewResultSailors.aspx</DependentUpon>
@@ -546,6 +627,13 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewTraineesOfficers.aspx.cs">
+      <DependentUpon>ViewTraineesOfficers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewTraineesOfficers.aspx.designer.cs">
+      <DependentUpon>ViewTraineesOfficers.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewTraineesSailors.aspx.cs">
       <DependentUpon>ViewTraineesSailors.aspx</DependentUpon>

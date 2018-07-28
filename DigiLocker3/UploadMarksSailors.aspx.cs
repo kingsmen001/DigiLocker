@@ -18,6 +18,101 @@ namespace DigiLocker3
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(Session["User_ID"] as string))
+            {
+
+                
+                if (Session["Access_Level"].ToString().Equals("1"))
+                {
+                    opnAddCourse.Visible = true;
+                    opnAddTrainees.Visible = true;
+                    opnCreateCourse.Visible = true;
+                    opnUpdateMarks.Visible = true;
+                    opnViewResult.Visible = true;
+                    opnViewTrainees.Visible = true;
+                    opnUploadMarks.Visible = true;
+                    opnAddCourseOfficer.Visible = true;
+                    opnAddTraineesOfficer.Visible = true;
+                    opnCreateCourseOfficer.Visible = true;
+                    opnUpdateMarksOfficer.Visible = true;
+                    opnViewResultOfficer.Visible = true;
+                    opnViewTraineesOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = true;
+                }
+                else if (Session["Access_Level"].ToString().Equals("2"))
+                {
+                    opnAddCourse.Visible = true;
+                    opnAddTrainees.Visible = true;
+                    opnCreateCourse.Visible = true;
+                    opnUpdateMarks.Visible = false;
+                    opnViewResult.Visible = true;
+                    opnViewTrainees.Visible = true;
+                    opnUploadMarks.Visible = true;
+
+                    opnAddCourseOfficer.Visible = true;
+                    opnAddTraineesOfficer.Visible = true;
+                    opnCreateCourseOfficer.Visible = true;
+                    opnUpdateMarksOfficer.Visible = false;
+                    opnViewResultOfficer.Visible = true;
+                    opnViewTraineesOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = true;
+                }
+                else if (Session["Access_Level"].ToString().Equals("3"))
+                {
+                    opnAddCourse.Visible = true;
+                    opnAddTrainees.Visible = true;
+                    opnCreateCourse.Visible = false;
+                    opnUpdateMarks.Visible = false;
+                    opnViewResult.Visible = false;
+                    opnViewTrainees.Visible = true;
+                    opnUploadMarks.Visible = false;
+
+                    opnAddCourseOfficer.Visible = true;
+                    opnAddTraineesOfficer.Visible = true;
+                    opnCreateCourseOfficer.Visible = false;
+                    opnUpdateMarksOfficer.Visible = false;
+                    opnViewResultOfficer.Visible = false;
+                    opnViewTraineesOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = false;
+                }
+                else
+                {
+                    opnAddCourse.Visible = false;
+                    opnAddTrainees.Visible = false;
+                    opnCreateCourse.Visible = false;
+                    opnUpdateMarks.Visible = false;
+                    opnViewResult.Visible = false;
+                    opnViewTrainees.Visible = true;
+                    opnUploadMarks.Visible = true;
+
+                    opnAddCourseOfficer.Visible = false;
+                    opnAddTraineesOfficer.Visible = false;
+                    opnCreateCourseOfficer.Visible = false;
+                    opnUpdateMarksOfficer.Visible = false;
+                    opnViewResultOfficer.Visible = false;
+                    opnViewTraineesOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = true;
+                }
+
+            }
+            else
+            {
+                opnAddCourseOfficer.Visible = false;
+                opnAddTraineesOfficer.Visible = false;
+                opnCreateCourseOfficer.Visible = false;
+                opnUpdateMarksOfficer.Visible = false;
+                opnViewResultOfficer.Visible = false;
+                opnViewTraineesOfficer.Visible = true;
+                opnUploadMarksOfficer.Visible = false;
+
+                opnAddCourse.Visible = false;
+                opnAddTrainees.Visible = false;
+                opnCreateCourse.Visible = false;
+                opnUpdateMarks.Visible = false;
+                opnViewResult.Visible = false;
+                opnViewTrainees.Visible = true;
+                opnUploadMarks.Visible = false;
+            }
             if (!this.IsPostBack)
             {
                 con.Open();
@@ -728,6 +823,12 @@ namespace DigiLocker3
             ddlSubject1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             ddlSubject1.DataBind();
             con.Close();
+        }
+
+        protected void LogoutButton_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Response.Redirect("Home.aspx", false);
         }
     }
 }
