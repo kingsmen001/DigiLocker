@@ -250,9 +250,67 @@ namespace DigiLocker3
                         markspresent = dr.GetInt32(0);
                     }
                     dr.Close();
+                    query = "Select ENTRY_NAME from " + ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " where Personal_No = '" + g1.Cells[2].Text + "'";
+                    string entry_name ="";
+                    cmd = new SqlCommand(query, con);
+                    dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        entry_name = dr.GetString(0);
+                    }
+                    dr.Close();
                     query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + ddlSubject1.SelectedItem.Text + "'";
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
+                    int marks = Convert.ToInt32(g1.Cells[6].Text);
+                    if (markspresent == 0)
+                    {
+                        if (marks < (50.0 * max_marks) / 100.0)
+                        {
+
+                            if (markspresent == 0)
+                            {
+                                table_name = ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_name.Replace(" ","_");
+                                query = "update " + table_name + " set " + term + "_Failed = " + term + "_failed + 1" + " where Personal_No = '" + g1.Cells[2].Text + "'";
+                                cmd = new SqlCommand(query, con);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        query = "";
+                        table_name = course_type + "_" + course_no + "_D_TERM";
+                        query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + ddlSubject1.SelectedItem.Text + "'";
+                        //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    else
+                    {
+                        query = "";
+                        if (markspresent < (55.0 * max_marks) / 100.0)
+                        {
+                            table_name = course_type + "_" + course_no + "_D_TERM";
+                            query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + ddlSubject1.SelectedItem.Text + "'";
+                            //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
+                            cmd = new SqlCommand(query, con);
+                            cmd.ExecuteNonQuery();
+                            if (Convert.ToInt32(g1.Cells[6].Text) > (55.0 * max_marks) / 100.0)
+                            {
+                                table_name = ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_name.Replace(" ", "_");
+                                query = "update " + table_name + " set " + term + "_Failed = CASE WHEN " + term + "_failed > 0 THEN " + term + "_failed - 1 END where Personal_No = '" + g1.Cells[2].Text + "'";
+                                cmd = new SqlCommand(query, con);
+                                //cmd.ExecuteNonQuery();
+                            }
+                        }
+                        else
+                        {
+                            marks_entered = marks_entered + g1.Cells[2].Text + "\n";
+                            list = list + g1.Cells[2].Text + ",  ";
+                            flag = 1;
+                        }
+
+                    }
                 }
                 else {
                     string personal_no = g1.Cells[2].Text;
@@ -490,7 +548,7 @@ namespace DigiLocker3
 
                 string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
                 List<string> termLabel = new List<string>();
-                //string term_Label = "";
+                //string term_Label = ""; 
                 com = new SqlCommand("select Distinct(ENROLLEDIN) from " + table_name, con); // table name 
                 using (SqlDataReader dr = com.ExecuteReader())
                 {

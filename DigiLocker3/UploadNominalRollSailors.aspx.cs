@@ -25,7 +25,7 @@ namespace DigiLocker3
         {
             if (Request.QueryString["coursename"] != null)
             {
-                heading.InnerHtml = Request.QueryString["coursename"] + Request.QueryString["courseno"] + "(Add Trainees)";
+                heading.InnerHtml = Request.QueryString["coursename"] +" " + Request.QueryString["courseno"] + "(Add Trainees)";
                 ddlCourseType.Visible = false;
                 ddlCourseType.EnableViewState = false;
                 ddlCourseNo.Visible = false;
@@ -290,7 +290,7 @@ namespace DigiLocker3
             {
                 con.Open();
                 table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", "_") + "_D_TERM";
-                string query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) , Subject_Name varchar(50), Total_Max int DEFAULT 0,  Total int DEFAULT 0, Theory int DEFAULT 0, IA int DEFAULT 0, Practical int DEFAULT 0  )";
+                string query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) , Subject_Name varchar(50), Total_Max int DEFAULT 0 not null,  Total int DEFAULT 0 not null, Theory int DEFAULT 0 not null, IA int DEFAULT 0 not null, Practical int DEFAULT 0 not null )";
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.ExecuteNonQuery();
                 table_name = coursename.Replace(" ", "_") + "_" + courseno;
@@ -452,11 +452,11 @@ namespace DigiLocker3
             table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type;
             if (seniority.Equals("1"))
             {
-                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0, Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO', Remarks Varchar(50))";
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), total_seniority_gained decimal(4,2) DEFAULT 0 not null , total_seniority_lost decimal(4,2) DEFAULT 0 not null , total_seniority decimal(4,2) DEFAULT 0 not null , Total_Marks int DEFAULT 0 not null , TOTAL_Percentage decimal(4,2) DEFAULT 0 not null , " + "QUALIFIED varchar(15) default 'NO' not null , Remarks Varchar(50))";
             }
             else
             {
-                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO' Remarks Varchar(50) DEFAULT ' ')";
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), Total_Marks int DEFAULT 0 not null, TOTAL_Percentage decimal(4,2) DEFAULT 0 not null, " + "QUALIFIED varchar(15) default 'NO' not null, Remarks Varchar(50) DEFAULT ' ')";
             }
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
@@ -481,7 +481,7 @@ namespace DigiLocker3
             string col_List = "";
             foreach (string col_nam in column_List)
             {
-                col_List = col_List + ", " + col_nam + " int DEFAULT 0, " + col_nam + "_Theory int DEFAULT 0, " + col_nam + "_IA int DEFAULT 0, " + col_nam + "_Practical int DEFAULT 0";
+                col_List = col_List + ", " + col_nam + " int DEFAULT 0 not null, " + col_nam + "_Theory int DEFAULT 0 not null, " + col_nam + "_IA int DEFAULT 0 not null, " + col_nam + "_Practical int DEFAULT 0 not null";
 
             }
             //table_name = course_type +  + "_SENIORITY_CRITERIA";
@@ -501,18 +501,18 @@ namespace DigiLocker3
             if (seniority.Equals("1"))
             {
                 string term = ddlTerm.SelectedValue;
-                col_List = col_List + ", " + term + "_total int DEFAULT 0, " + term + "_percentage decimal(4,2) DEFAULT 0, " + term + "_seniority_gained decimal(4,2) DEFAULT 0, " + term + "_seniority_lost decimal(4,2) DEFAULT 0, " + term + "_seniority_total decimal(4,2) DEFAULT 0 ";
+                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null , " + term + "_percentage decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_gained decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_lost decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_total decimal(4,2) DEFAULT 0 not null  ";
 
                 //col_List = col_List + ", total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0 ";
             }
             else
             {
                 string term = ddlTerm.SelectedValue;
-                col_List = col_List + ", " + term + "_total int DEFAULT 0, " + term + "_percentage decimal(4,2) DEFAULT 0 ";
+                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null, " + term + "_percentage decimal(4,2) DEFAULT 0.00 not null";
 
             }
             string term1 = ddlTerm.SelectedValue;
-            col_List = col_List + ", " + term1 + "_Failed int DEFAULT 0, " + term1 + "_Qualified varchar(15) default 'NO' ";
+            col_List = col_List + ", " + term1 + "_Failed int DEFAULT 0 not null, " + term1 + "_Qualified varchar(15) default 'NO' not null ";
 
             //col_List = col_List + ", Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO'";
             //Response.Write(col_List);

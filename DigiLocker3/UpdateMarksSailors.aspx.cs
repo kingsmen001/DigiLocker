@@ -268,10 +268,23 @@ namespace DigiLocker3
             string term = ddlTerm.SelectedValue;
             if (ddlSubject.SelectedItem.Text.Equals("Seniority"))
             {
-                query = "Select Personal_No, Name, Rank, " + term + "_Seniority_Gained, " + term + "_Seniority_Lost" + " from " + table_name;
-                GridView1.DataKeyNames = new string[] { "Personal_No", "Name", "Rank", term + "_Seniority_Gained" };
+                div1.Visible = true;
+                string table_name1 = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" +  ddlTerm.SelectedValue.Replace(" ", "_") + "_SENIORITY";
+                query = "select MAX(seniority) from " + table_name1;
+                SqlCommand com = new SqlCommand(query,con);
+                SqlDataReader dr = com.ExecuteReader();
+                string  maxsen = "";
+                while(dr.Read())
+                {
+                    maxsen = dr.GetString(0);
+                }
+                dr.Close();
+                senTextBox.Text = maxsen;
+                query = "Select Personal_No, Name, Rank, " + term + "_Failed, " + term + "_Seniority_Gained, " + term + "_Seniority_Lost" + " from " + table_name;
+                GridView1.DataKeyNames = new string[] { "Personal_No", "Name", "Rank", term + "_Failed", term + "_Seniority_Gained" };
             }
             else {
+                div1.Visible = false;
                 query = "Select Personal_No, Name, Rank, " + ddlSubject.SelectedItem.Text.Replace(" ", "_") + " from " + table_name;
                 GridView1.DataKeyNames = new string[] { "Personal_No", "Name", "Rank" };
             }
@@ -311,11 +324,11 @@ namespace DigiLocker3
             string query;
             SqlCommand cmd;
             con.Open();
-            if (ddlSubject.SelectedValue.Equals("Seniority"))
+            if (ddlSubject.SelectedItem.Text.Equals("Seniority"))
             {
-                GridView1.DataKeyNames = new string[] { "Personal_No", "Name", "Rank", term + "_Seniority_Gained" };
-                string seniority_gained = Convert.ToString(GridView1.DataKeys[e.RowIndex].Values[3]);
-                float seniority_lost = Convert.ToInt32((row.Cells[5].Controls[0] as TextBox).Text);
+                GridView1.DataKeyNames = new string[] { "Personal_No", "Name", "Rank", term + "_Failed", term + "_Seniority_Gained" };
+                string seniority_gained = Convert.ToString(GridView1.DataKeys[e.RowIndex].Values[4]);
+                double seniority_lost = Convert.ToDouble((row.Cells[6].Controls[0] as TextBox).Text);
                 query = "update " + table_name + " set " + term + "_Seniority_Lost = " + seniority_lost + " where Personal_No = '" + Personal_No + "'";
                 cmd = new SqlCommand(query, con);
                 cmd.ExecuteNonQuery();
@@ -629,12 +642,12 @@ namespace DigiLocker3
 
 
                 List<string> termLabel = new List<string>();
-                string query = "Select DISTINCT(TERM) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS";
+                string query = "select Distinct(ENROLLEDIN) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'";
                 SqlCommand com = new SqlCommand(query, con);
                 SqlDataReader dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    termLabel.Add(dr.GetString(0));
+                    termLabel = dr.GetString(0).Split('_').ToList();
                 }
                 dr.Close();
 

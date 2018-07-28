@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ViewResult1.aspx.cs" Inherits="DigiLocker3.ViewResult1" EnableEventValidation="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SeniorityDetailsSailors.aspx.cs" Inherits="DigiLocker3.SeniorityDetails" %>
 
 <!DOCTYPE html>
 
@@ -35,13 +35,6 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style>
-        .HeaderFreez {
-            position: relative;
-            top: expression(this.offsetParent.scrollTop);
-            z-index: 10;
-        }
-    </style>
 
 </head>
 
@@ -75,10 +68,10 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>--%>
-                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                </li>
-                <%--</ul>--%>
-                <!-- /.dropdown-user -->
+                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        </li>
+                    <%--</ul>--%>
+                    <!-- /.dropdown-user -->
                 <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
@@ -98,6 +91,7 @@
                             </div>
                             <!-- /input-group -->
                         </li>
+                        
                         <li>
                             <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>
@@ -165,8 +159,6 @@
                                 <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
-
-
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -179,7 +171,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">View Result</h1>
+                    <h1 class="page-header" id="heading" runat="server">Add Seniority Details</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -188,68 +180,77 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Enter details here
+                            Enter Seniority Criteria details here
                         </div>
                         <div class="panel-body">
                             <div class="row" style="width: 100%">
 
+
                                 <div class="col-lg-6" style="width: 100%">
                                     <form id="form1" runat="server">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-2">
-                                                <label>Select Course Type</label>
-                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseTypeIndexChanged">
-                                                </asp:DropDownList>
-                                            </div>
 
-                                            <div id="div1" runat="server" class="form-group col-md-2">
-                                                <label>Select Course Number</label>
-                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseNoIndexChanged">
-                                                </asp:DropDownList>
-                                            </div>
+                                        <div class="form-group">
+                                            <label>Select Entry Type</label>
+                                            <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged">
+                                            </asp:DropDownList>
                                         </div>
-                                        <div id="div2" runat="server">
+
+
+                                        <div class="form-group">
+                                            <label>Select Term</label>
+                                            <asp:ListBox class="form-control" Style="width: auto; height: auto" ID="ddlTerm" runat="server" SelectionMode="Multiple" AutoPostBack="True" OnSelectedIndexChanged="ddlTermIndexChanged"></asp:ListBox>
+                                            <%--<asp:DropDownList class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlTermIndexChanged">
+                                                
+                                            </asp:DropDownList>--%>
+                                        </div>
+                                        <div id="div1" runat="server">
                                             <div class="form-group">
-                                                <label>Select Entry Type</label>
-                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged">
-                                                </asp:DropDownList>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Select Term</label>
-                                                <asp:DropDownList class="form-control" Style="width: auto" ID="lbTerm" runat="server" AutoPostBack="True" OnSelectedIndexChanged="SubmitButton_Click">
-                                                    <asp:ListItem Selected="true"></asp:ListItem>
-                                                </asp:DropDownList>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Select Class</label>
-                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlClass" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlClassChanged" Visible="false" EnableViewState="false">
-                                                </asp:DropDownList>
-                                            </div>
+                                                <%--<label>Seniority Details Excel File</label>
+                                            <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />--%>
+                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="excelgrd" runat="server" AutoGenerateColumns="false" ShowFooter="true" PageSize="50">
+                                                    <Columns>
 
-                                            <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" Visible="False" EnableViewState="false" />
-
-                                            <br />
-                                            <br />
-
-
-                                            <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
-                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss " ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
+                                                        <asp:TemplateField HeaderText="Max Marks(in %)">
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtMaxMarks" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Min Marks(in %)">
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtMinMarks" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Seniority(in Months)">
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtSeniority" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                            <FooterStyle HorizontalAlign="Right" />
+                                                            <FooterTemplate>
+                                                                <asp:Button class="btn btn-default" ID="ButtonAdd" runat="server" Text="Add New Row" OnClick="ButtonAdd_Click" />
+                                                            </FooterTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
                                                 </asp:GridView>
                                             </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-2">
-                                                    <asp:Button runat="server" ID="Button1" CssClass="form-control btn btn-default" Text="Export to Excel" OnClick="Export_Clicked" />
 
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <asp:Button runat="server" ID="Button2" CssClass="form-control btn btn-default" Text="Generate Certificates" OnClick="Generate_Clicked" />
-                                                </div>
+                                            <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
+
+                                            <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" />
+                                        </div>
+                                        <br />
+                                        <br />
+
+                                        <div id="div2" runat="server">
+                                            <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
+                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
+                                                </asp:GridView>
                                             </div>
                                         </div>
+                                        <asp:Button runat="server" ID="ConfirmButton" class="btn btn-default" Text="Add Subjects" OnClick="ConfirmButton_Click" Visible="False" EnableViewState="false" />
                                     </form>
                                 </div>
-
                                 <!-- /.col-lg-6 (nested) -->
+
                             </div>
                             <!-- /.row (nested) -->
                         </div>
@@ -277,6 +278,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
+
 
 </body>
 

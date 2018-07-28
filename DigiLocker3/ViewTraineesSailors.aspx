@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ViewTrainees1.aspx.cs" Inherits="DigiLocker3.ViewTrainees1" EnableEventValidation="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ViewTraineesSailors.aspx.cs" Inherits="DigiLocker3.ViewTrainees1" EnableEventValidation="false" %>
 
 <!DOCTYPE html>
 
@@ -35,154 +35,151 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+   
 
 </head>
 
 <body>
 
     <div id="wrapper">
+        <form id="form1" runat="server">
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default-top navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="Home.aspx">Result Section</a>
-            </div>
-            <!-- /.navbar-header -->
+            <!-- Navigation -->
+            <nav class="navbar navbar-default-top navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="Home.aspx" style="color: white">Result Section</a>
+                </div>
+                <!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
+                <ul class="nav navbar-top-links navbar-right" style="margin-top:7px; margin-right:15px">
+                    <li>
+                        <asp:TextBox ID="Course_Number_TextBox" CssClass="form-control" runat="server" AutoPostBack="true" placeholder="UserID"></asp:TextBox>
+                    </li>
+                    <li>
+                        <asp:TextBox ID="Password_TextBox" CssClass="form-control" runat="server" AutoPostBack="true" placeholder="Password" type="password"></asp:TextBox>
+                    </li>
+                    <li>
+                        <asp:Button runat="server" CssClass="btn btn-primary" ID="LoginButton" Text="Login" />
+                    </li>
+                    <li class="log" id="logout" runat="server" style="margin-top:-7px; margin-right:15px" visible="false"><a class="log" href="login.aspx"><i class="fa fa-sign-out fa-fw "></i>Logout</a>
+                    </li>
 
-                <!-- /.dropdown -->
-                <%--<li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
-                        </li>
-                        <li class="divider"></li>--%>
-                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                </li>
-                <%--</ul>--%>
-                <!-- /.dropdown-user -->
-                <%--</li>--%>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
+                </ul>
+                <!-- /.navbar-top-links -->
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <ul class="nav" id="side-menu">
+                            <li class="sidebar-search">
+                            <div style="display: table-cell; vertical-align: middle; text-align: center">
+                                <img class="" src="Valsura.png" alt="alternate text" style="width: 170px; height: 170px; align-items: center; margin-left: 25px" />
+                                <%--<input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button">
                                         <i class="fa fa-search"></i>
                                     </button>
-                                </span>
+                                </span>--%>
                             </div>
                             <!-- /input-group -->
                         </li>
-                        <li>
-                            <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Course</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i>View Result</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i>View Individual</a>
-                                </li>
+                            <li>
+                                <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-wrench fa-fw"></i>Officers<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-edit fa-fw"></i>Add Course</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-edit fa-fw"></i>View Result</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-edit fa-fw"></i>View Individual</a>
+                                    </li>
 
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i>Sailors<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-wrench fa-fw"></i>Sailors<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
 
-                                <li>
-                                    <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="CreateCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Name and Entry Details</a>
-                                        </li>
-                                        <%--<li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-edit fa-fw"></i>Create Course <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level">
+                                            <li>
+                                                <a href="CreateCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Name and Entry Details</a>
+                                            </li>
+                                            <%--<li>
                                             <a href="SeniorityDetails.aspx"><i class="fa fa-edit fa-fw"></i>Add Seniority</a>
                                         </li>--%>
 
-                                        <li>
-                                            <a href="AddSubjectsSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="NewCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Course</a>
-                                </li>
-                                <li>
-                                    <a href="UploadNominalRollSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
-                                </li>
-                                <li>
-                                    <a href="ViewTrainees1.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
-                                </li>
-                                <li>
-                                    <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
-                                </li>
-                                <li>
-                                    <a href="UpdateMarks.aspx"><i class="fa fa-edit fa-fw"></i>Update Marks</a>
-                                </li>
-                                <li>
-                                    <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                    </ul>
+                                            <li>
+                                                <a href="AddSubjectsSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Subjects</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="NewCourseSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Course</a>
+                                    </li>
+                                    <li>
+                                        <a href="UploadNominalRollSailors.aspx"><i class="fa fa-edit fa-fw"></i>Add Trainees</a>
+                                    </li>
+                                    <li>
+                                        <a href="ViewTrainees1.aspx"><i class="fa fa-edit fa-fw"></i>View Trainees</a>
+                                    </li>
+                                    <li>
+                                        <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+                                    </li>
+                                    <li>
+                                        <a href="UpdateMarks.aspx"><i class="fa fa-edit fa-fw"></i>Update Marks</a>
+                                    </li>
+                                    <li>
+                                        <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.sidebar-collapse -->
                 </div>
-                <!-- /.sidebar-collapse -->
-            </div>
-            <!-- /.navbar-static-side -->
-        </nav>
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header" id="heading" runat="server">Trainees Details</h1>
+                <!-- /.navbar-static-side -->
+            </nav>
+            <div id="page-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header" id="heading" runat="server">Trainees Details</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
                 </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            See All Trainees here
-                        </div>
-                        <form id="form1" runat="server">
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                See All Trainees here
+                            </div>
+
                             <div class="panel-body">
 
                                 <div class="row" style="width: 100%">
@@ -315,17 +312,17 @@
                                 </div>
                                 <!-- /.row (nested) -->
                             </div>
-                        </form>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /#page-wrapper -->
 
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /#page-wrapper -->
+        </form>
     </div>
     <!-- /#wrapper -->
 

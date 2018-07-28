@@ -1,7 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SeniorityDetails.aspx.cs" Inherits="DigiLocker3.SeniorityDetails" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UpdateMarksSailors.aspx.cs" Inherits="DigiLocker3.UpdateMarks" %>
 
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
@@ -36,6 +35,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
 </head>
 
 <body>
@@ -68,10 +68,10 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>--%>
-                        <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    <%--</ul>--%>
-                    <!-- /.dropdown-user -->
+                <li><a href="login.aspx"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                </li>
+                <%--</ul>--%>
+                <!-- /.dropdown-user -->
                 <%--</li>--%>
                 <!-- /.dropdown -->
             </ul>
@@ -91,7 +91,6 @@
                             </div>
                             <!-- /input-group -->
                         </li>
-                        
                         <li>
                             <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>
@@ -152,6 +151,7 @@
                                 </li>
                                 <li>
                                     <a href="UploadMarksSailors.aspx"><i class="fa fa-edit fa-fw"></i>Upload Marks</a>
+
                                 </li>
                                 <li>
                                     <a href="UpdateMarks.aspx"><i class="fa fa-edit fa-fw"></i>Update Marks</a>
@@ -159,6 +159,8 @@
                                 <li>
                                     <a href="ViewResult1.aspx"><i class="fa fa-edit fa-fw"></i>View Result</a>
                                 </li>
+
+
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -171,7 +173,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header" id="heading" runat="server">Add Seniority Details</h1>
+                    <h1 class="page-header">Update Marks and Seniority</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -180,7 +182,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Enter Seniority Criteria details here
+                            Enter details here
                         </div>
                         <div class="panel-body">
                             <div class="row" style="width: 100%">
@@ -188,98 +190,85 @@
 
                                 <div class="col-lg-6" style="width: 100%">
                                     <form id="form1" runat="server">
-
-                                        <div class="form-group">
-                                            <label>Select Entry Type</label>
-                                            <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged">
-                                            </asp:DropDownList>
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <label>Select Term</label>
-                                            <asp:ListBox class="form-control" Style="width: auto; height: auto" ID="ddlTerm" runat="server" SelectionMode="Multiple" AutoPostBack="True" OnSelectedIndexChanged="ddlTermIndexChanged"></asp:ListBox>
-                                            <%--<asp:DropDownList class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlTermIndexChanged">
-                                                
-                                            </asp:DropDownList>--%>
-                                        </div>
-                                        <div id="div1" runat="server">
-                                            <div class="form-group">
-                                                <%--<label>Seniority Details Excel File</label>
-                                            <asp:FileUpload style="width:auto" ID="FileUpload1" class="form-control" runat="server" />--%>
-                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="excelgrd" runat="server" AutoGenerateColumns="false" ShowFooter="true" PageSize="50">
-                                                    <Columns>
-
-                                                        <asp:TemplateField HeaderText="Max Marks(in %)">
-                                                            <ItemTemplate>
-                                                                <asp:TextBox ID="txtMaxMarks" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Min Marks(in %)">
-                                                            <ItemTemplate>
-                                                                <asp:TextBox ID="txtMinMarks" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Seniority(in Months)">
-                                                            <ItemTemplate>
-                                                                <asp:TextBox ID="txtSeniority" runat="server" OnTextChanged="OntextChanged"></asp:TextBox>
-                                                            </ItemTemplate>
-                                                            <FooterStyle HorizontalAlign="Right" />
-                                                            <FooterTemplate>
-                                                                <asp:Button class="btn btn-default" ID="ButtonAdd" runat="server" Text="Add New Row" OnClick="ButtonAdd_Click" />
-                                                            </FooterTemplate>
-                                                        </asp:TemplateField>
-                                                    </Columns>
-                                                </asp:GridView>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-2">
+                                                <label>Select Course Type</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseTypeIndexChanged">
+                                                </asp:DropDownList>
                                             </div>
 
-                                            <asp:Button runat="server" ID="SubmitButton" class="btn btn-default" Text="Submit" OnClick="SubmitButton_Click" />
+                                            <div id="div2" runat="server" class="form-group col-md-2">
+                                                <label>Select Course Number</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseNoIndexChanged">
+                                                </asp:DropDownList>
+                                            </div>
 
-                                            <asp:Button runat="server" type="reset" class="btn btn-default" Text="Reset" OnClick="ResetButton_Click" />
-                                        </div>
-                                        <br />
-                                        <br />
-
-                                        <div id="div2" runat="server">
-                                            <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;">
-                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False">
-                                                </asp:GridView>
+                                            <div id="div3" runat="server"  class="form-group">
+                                                <label>Select Entry Type</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlEntryType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEntryTypeIndexChanged">
+                                                </asp:DropDownList>
                                             </div>
                                         </div>
-                                        <asp:Button runat="server" ID="ConfirmButton" class="btn btn-default" Text="Add Subjects" OnClick="ConfirmButton_Click" Visible="False" EnableViewState="false" />
+                                        
+                                        <div class="form-row" >
+                                            <div class="form-group col-md-2" id="div4" runat="server">
+                                                <label>Select Term</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlTerm" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTermIndexChanged">
+                                                </asp:DropDownList>
+                                            </div>
+
+
+                                            <div class="form-group col-md-2" id="div5" runat="server">
+                                                <label>Select Subject</label>
+                                                <asp:DropDownList class="form-control" Style="width: auto" ID="ddlSubject" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlSubjectIndexChanged">
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="form-group col-md-2" id="div1" runat="server" visible="false">
+                                                <label>Maximum Seniorrity </label>
+                                                <asp:TextBox CssClass="form-control" runat="server" ID="senTextBox" Enabled="false"></asp:TextBox>
+                                            </div>
+
+
+
+                                        </div>
+
+                                        
+                                        <div class="form-group" style="height: auto; max-height: 500px; width: 100%; overflow: auto;" id="div6" runat="server">
+                                            <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss" ID="GridView1" runat="server" ScrollBars="Both" AllowPaging="False" OnRowEditing="OnRowEditing" OnRowCancelingEdit="OnRowCancelingEdit" OnRowUpdating="OnRowUpdating" AutoGenerateEditButton="true">
+                                            </asp:GridView>
+                                        </div>
+                                        
                                     </form>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
-
+                                <div class="col-lg-6">
+                                </div>
+                                <!-- /.row (nested) -->
                             </div>
-                            <!-- /.row (nested) -->
+                            <!-- /.panel-body -->
                         </div>
-                        <!-- /.panel-body -->
+                        <!-- /.panel -->
                     </div>
-                    <!-- /.panel -->
+                    <!-- /.col-lg-12 -->
                 </div>
-                <!-- /.col-lg-12 -->
+                <!-- /.row -->
             </div>
-            <!-- /.row -->
+            <!-- /#page-wrapper -->
+
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /#wrapper -->
 
-    </div>
-    <!-- /#wrapper -->
+        <!-- jQuery -->
+        <script src="../vendor/jquery/jquery.min.js"></script>
 
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-
-
+        <!-- Custom Theme JavaScript -->
+        <script src="../dist/js/sb-admin-2.js"></script>
 </body>
 
 </html>
