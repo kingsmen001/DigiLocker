@@ -21,7 +21,7 @@ namespace DigiLocker3
             if (!string.IsNullOrEmpty(Session["User_ID"] as string))
             {
 
-                
+
                 if (Session["Access_Level"].ToString().Equals("1"))
                 {
                     opnAddCourse.Visible = true;
@@ -97,6 +97,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -346,7 +347,7 @@ namespace DigiLocker3
                     }
                     dr.Close();
                     query = "Select ENTRY_NAME from " + ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " where Personal_No = '" + g1.Cells[2].Text + "'";
-                    string entry_name ="";
+                    string entry_name = "";
                     cmd = new SqlCommand(query, con);
                     dr = cmd.ExecuteReader();
                     while (dr.Read())
@@ -365,7 +366,7 @@ namespace DigiLocker3
 
                             if (markspresent == 0)
                             {
-                                table_name = ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_name.Replace(" ","_");
+                                table_name = ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_name.Replace(" ", "_");
                                 query = "update " + table_name + " set " + term + "_Failed = " + term + "_failed + 1" + " where Personal_No = '" + g1.Cells[2].Text + "'";
                                 cmd = new SqlCommand(query, con);
                                 cmd.ExecuteNonQuery();
@@ -707,11 +708,11 @@ namespace DigiLocker3
                     string query = "";
                     string type_name = "";
                     string table_name = "MEAT_POWER_D_TERM_SUBJECTS";
-                    
 
-                    query = query + "Select Subject_Name, Max_Marks from " + table_name ;
 
-                    
+                    query = query + "Select Subject_Name, Max_Marks from " + table_name;
+
+
                     com = new SqlCommand(query, con); // table name 
                     da = new SqlDataAdapter(com);
                     ds = new DataSet();

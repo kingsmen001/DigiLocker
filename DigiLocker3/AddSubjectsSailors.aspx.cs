@@ -25,7 +25,7 @@ namespace DigiLocker3
             if (!string.IsNullOrEmpty(Session["User_ID"] as string))
             {
 
-                
+
                 if (Session["Access_Level"].ToString().Equals("1"))
                 {
                     opnAddCourse.Visible = true;
@@ -35,6 +35,7 @@ namespace DigiLocker3
                     opnViewResult.Visible = true;
                     opnViewTrainees.Visible = true;
                     opnUploadMarks.Visible = true;
+
                     opnAddCourseOfficer.Visible = true;
                     opnAddTraineesOfficer.Visible = true;
                     opnCreateCourseOfficer.Visible = true;
@@ -101,6 +102,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -139,7 +141,7 @@ namespace DigiLocker3
                 divspl.Visible = false;
                 flag = 0;
                 con.Open();
-                ddlCourseType.SelectedIndex = 0;
+                //ddlCourseType.SelectedIndex = 0;
                 ddlTerm.SelectedIndex = 0;
                 lbEntryType.SelectedIndex = 0;
 
@@ -151,10 +153,12 @@ namespace DigiLocker3
                 ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
+                ddlCourseType.Items.Insert(0, new ListItem("Select", "0"));
                 if (coursename == null)
                 {
                     //coursename = ddlCourseType.Items[0].Text;
                     //courseno = ddlCourseNo.Items[0].Text.Replace(".", string.Empty);
+
                     div1.Visible = false;
                     div2.Visible = false;
                     div3.Visible = false;
@@ -249,7 +253,7 @@ namespace DigiLocker3
             else
             {*/
             if (coursename == null)
-                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             if (!string.IsNullOrWhiteSpace(txtMarks.Text) & !string.IsNullOrWhiteSpace(txtSubject.Text))
             {
                 con.Open();
@@ -257,7 +261,7 @@ namespace DigiLocker3
                 {
                     if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
                     {
-                        string table_name = ddlCourseType.SelectedValue.Replace(" ","_") + "_D_TERM_SUBJECTS";
+                        string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_D_TERM_SUBJECTS";
                         string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Theory, IA, Practical, class) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + txtTheory.Text + "','" + txtIA.Text + "','" + txtPractical.Text + "','" + txtSpc.Text + "')";
                         SqlCommand cmd = new SqlCommand(query, con);
                         cmd.ExecuteNonQuery();
@@ -574,15 +578,15 @@ namespace DigiLocker3
             if (coursename == null)
                 coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             con.Open();
-            table_name = ddlCourseType.SelectedValue.Replace(" ","_") + "_D_TERM_SUBJECTS";
-            string query = "Select ID, Subject_name, Theory, IA, Practical, Max_Marks, class from " + table_name ;
+            table_name = "MEAT_POWER_D_TERM_SUBJECTS";
+            string query = "Select ID, Subject_name, Theory, IA, Practical, Max_Marks, class from " + table_name;
             //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataAdapter adpt = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             adpt.Fill(dt);
 
-            
+
             exlfile.Visible = false;
             single.Visible = true;
             GridView2.DataSource = dt;
@@ -590,7 +594,7 @@ namespace DigiLocker3
             flag = 1;
             SubmitButton.Text = "Add";
             txtMarks.Text = "";
-            
+
 
 
             con.Close();

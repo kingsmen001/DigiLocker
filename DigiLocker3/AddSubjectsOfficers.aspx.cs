@@ -100,6 +100,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -138,7 +139,7 @@ namespace DigiLocker3
                 divspl.Visible = false;
                 flag = 0;
                 con.Open();
-                ddlCourseType.SelectedIndex = 0;
+                //ddlCourseType.SelectedIndex = 0;
                 ddlTerm.SelectedIndex = 0;
                 lbEntryType.SelectedIndex = 0;
 
@@ -150,10 +151,12 @@ namespace DigiLocker3
                 ddlCourseType.DataValueField = ds.Tables[0].Columns["TYPE_NAME"].ToString();             // to retrive specific  textfield name 
                 ddlCourseType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseType.DataBind();
+                ddlCourseType.Items.Insert(0, new ListItem("Select", "0"));
                 if (coursename == null)
                 {
                     //coursename = ddlCourseType.Items[0].Text;
                     //courseno = ddlCourseNo.Items[0].Text.Replace(".", string.Empty);
+                    
                     div1.Visible = false;
                     div2.Visible = false;
                     div3.Visible = false;
@@ -248,7 +251,7 @@ namespace DigiLocker3
             else
             {*/
             if (coursename == null)
-                coursename = ddlCourseType.Items[0].Value.Replace(" ", "_");
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             if (!string.IsNullOrWhiteSpace(txtMarks.Text) & !string.IsNullOrWhiteSpace(txtSubject.Text))
             {
                 con.Open();

@@ -176,7 +176,7 @@ namespace DigiLocker3
 
                 }
                 dr.Close();
-                data = data + "<div><label class=\"button button3  btn btn-primary\" style=\"width:100%; background-color:#e0e0e0; color:black\">" + entry + "</label><div><table Class=\"table table-striped table-bordered table-hover columnscss\"><tr><th>Term</th><th>Subjects</th></tr>";
+                data = data + "<div><label class=\"button button3  btn btn-primary\" style=\"width:100%; background-color:#e0e0e0; color:black\">" + entry + "</label><div><table Class=\"table table-striped table-bordered table-hover columnscss\"><tr><th style=\"width:30%\">Term</th><th>Subjects</th></tr>";
                 foreach (string term in term_label.Split('_'))
                 {
                     data = data + "<tr><td>" + term + "</td><td ><table Class=\"table table-striped table-bordered table-hover columnscss\">";
@@ -224,7 +224,7 @@ namespace DigiLocker3
                     {
                         Session.Add("User_ID", sqlRdr.GetString(1));
                         Session.Add("Access_Level", sqlRdr.GetInt32(3));
-                        Response.Redirect("CourseDetails.aspx?coursename=" + Request.QueryString["coursename"], false);
+                        Response.Redirect("CourseDetailsOfficers.aspx?coursename=" + Request.QueryString["coursename"], false);
                         //Response.Write("<script language='javascript'>alert('" + Session["User_ID"].ToString() + "');</script>");
                     }
                 }

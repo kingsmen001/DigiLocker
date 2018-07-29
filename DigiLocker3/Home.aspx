@@ -71,10 +71,10 @@
         }
     </style>
     <script type="text/javascript">
-   function PageRedirect() {
-       window.location.href = "login.aspx";
-   }
- </script>
+        function PageRedirect() {
+            window.location.href = "login.aspx";
+        }
+    </script>
 </head>
 
 <body>
@@ -95,19 +95,19 @@
                 <!-- /.navbar-header -->
 
                 <ul class="nav navbar-top-links navbar-right" style="margin-top: 7px; margin-right: 15px">
-                    <li runat="server" id="list_userid" >
+                    <li runat="server" id="list_userid">
                         <asp:TextBox ID="UserId_TextBox" CssClass="form-control" runat="server" AutoPostBack="false" placeholder="UserID"></asp:TextBox>
                     </li>
-                    <li runat="server" id="list_pass" >
+                    <li runat="server" id="list_pass">
                         <asp:TextBox ID="Password_TextBox" CssClass="form-control" runat="server" AutoPostBack="false" placeholder="Password" type="password"></asp:TextBox>
                     </li>
                     <li runat="server" id="list_login">
-                        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button1" Text="Login" OnClick="LoginButton_Click"/>
+                        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button1" Text="Login" OnClick="LoginButton_Click" />
                     </li>
-                    <li runat="server" id="list_logout" >
-                        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button2" Text="Logout" OnClick="LogoutButton_Click"/>
+                    <li runat="server" id="list_logout">
+                        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button2" Text="Logout" OnClick="LogoutButton_Click" />
                     </li>
-                    
+
 
                 </ul>
                 <!-- /.navbar-top-links -->
@@ -235,52 +235,79 @@
                             <div class="panel-body">
                                 <div class="row" style="width: 100%">
 
-                                   
-                                        <div class="col-lg-6">
-                                            <label>Sailor Courses</label>
-                                            <%--<ul style="list-style-type:none">--%>
-                                            <table style="width: 200px" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                                <thead>
-                                                    <tr>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <%=getCourseDetails()%>
-                                                    <%--</ul>--%>
-                                                </tbody>
 
-                                            </table>
+                                    <div class="col-lg-6">
+                                        <label>Sailor Courses</label>
+                                        <%--<ul style="list-style-type:none">--%>
+                                        <table style="width: 200px" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%=getCourseDetails()%>
+                                                <%--</ul>--%>
+                                            </tbody>
+
+                                        </table>
+                                        <div class="form-group ">
+
+                                            <!-- /.row (nested) -->
+                                            <div style="align-self: center" id="enrol" runat="server">
+
+                                                <a href="NewCourseSailors.aspx">
+                                                    <label class="button button3  btn btn-primary">Enrol Course</label></a>
+                                            </div>
+                                            <a href="CreateCourseSailors.aspx" id="create" runat="server">Create New Course</a>
                                         </div>
-
-
-
-
                                     </div>
 
-                                    <!-- /.col-lg-6 (nested) -->
-                                
-                                <div class="form-group ">
+                                    <div class="col-lg-6">
+                                        <label>Officers Courses</label>
+                                        <%--<ul style="list-style-type:none">--%>
+                                        <table style="width: 200px" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%=getOfficerCourseDetails()%>
+                                                <%--</ul>--%>
+                                            </tbody>
 
-                                    <!-- /.row (nested) -->
-                                    <div style="align-self: center" id ="enrol" runat="server">
+                                        </table>
+                                        <div class="form-group ">
 
-                                        <a href="NewCourseSailors.aspx" >
-                                            <label class="button button3  btn btn-primary">Enrol Course</label></a>
+                                            <!-- /.row (nested) -->
+                                            <div style="align-self: center" id="Div1" runat="server">
+
+                                                <a href="NewCourseOfficers.aspx">
+                                                    <label class="button button3  btn btn-primary">Enrol Course</label></a>
+                                            </div>
+                                            <a href="CreateCourseOfficers.aspx" id="A1" runat="server">Create New Course</a>
+                                        </div>
                                     </div>
-                                    <a href="CreateCourseSailors.aspx" id="create" runat="server">Create New Course</a>
+
+
+
+
                                 </div>
-                                </div>
+
+                                <!-- /.col-lg-6 (nested) -->
+
+
                             </div>
-                            <!-- /.panel-body -->
                         </div>
-                        <!-- /.panel -->
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.col-lg-12 -->
+                    <!-- /.panel -->
                 </div>
-                <!-- /.row -->
+                <!-- /.col-lg-12 -->
             </div>
-            <!-- /#page-wrapper -->
-        </form>
+            <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+    </form>
     </div>
     <!-- /#wrapper -->
 

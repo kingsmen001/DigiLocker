@@ -98,6 +98,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -231,7 +232,7 @@ namespace DigiLocker3
 
                     DataTable dt = new DataTable();
                     string course = ddlCourseType.SelectedValue;
-                    string course_no = ddlCourseNo.SelectedValue;
+                    string course_no = ddlCourseNo.SelectedValue.Replace(".",string.Empty);
                     string entry_type = ddlEntryType.SelectedValue;
                     string col_List = "";
                     string table_name = "";
@@ -302,12 +303,12 @@ namespace DigiLocker3
             string heading;
             if (lbTerm.SelectedItem.Text.Equals("Please Select"))
             {
-                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "Result.xls";
-                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", " ");
+                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "Result.xls";
+                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", " ");
             }
             else {
-                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + lbTerm.SelectedItem.Text + "Result.xls";
-                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue + " " + ddlEntryType.SelectedValue.Replace(" ", " ") + " " + lbTerm.SelectedItem.Text + "_Term";
+                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + lbTerm.SelectedItem.Text + "Result.xls";
+                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " " + ddlEntryType.SelectedValue.Replace(" ", " ") + " " + lbTerm.SelectedItem.Text + "_Term";
             }
             StringWriter strwritter = new StringWriter();
             HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);

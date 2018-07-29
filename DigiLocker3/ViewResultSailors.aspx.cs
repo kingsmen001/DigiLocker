@@ -22,7 +22,7 @@ namespace DigiLocker3
             if (!string.IsNullOrEmpty(Session["User_ID"] as string))
             {
 
-                
+
                 if (Session["Access_Level"].ToString().Equals("1"))
                 {
                     opnAddCourse.Visible = true;
@@ -98,6 +98,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -137,7 +138,7 @@ namespace DigiLocker3
 
                 //string name = ddlCourseType.Items[0].Value;
                 //string entry_type;
-                //com = new SqlCommand("select Course_No from Sailor_Course where Course_Name ='" + name + "'", con); // table name 
+                //com = new SqlCommand("select Course_No from officer_Course where Course_Name ='" + name + "'", con); // table name 
                 //da = new SqlDataAdapter(com);
                 //ds = new DataSet();
                 //da.Fill(ds);  // fill dataset
@@ -231,7 +232,7 @@ namespace DigiLocker3
 
                     DataTable dt = new DataTable();
                     string course = ddlCourseType.SelectedValue;
-                    string course_no = ddlCourseNo.SelectedValue;
+                    string course_no = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
                     string entry_type = ddlEntryType.SelectedValue;
                     string col_List = "";
                     string table_name = "";
@@ -302,12 +303,12 @@ namespace DigiLocker3
             string heading;
             if (lbTerm.SelectedItem.Text.Equals("Please Select"))
             {
-                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "Result.xls";
-                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", " ");
+                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "Result.xls";
+                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", " ");
             }
             else {
-                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + lbTerm.SelectedItem.Text + "Result.xls";
-                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue + " " + ddlEntryType.SelectedValue.Replace(" ", " ") + " " + lbTerm.SelectedItem.Text + "_Term";
+                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + lbTerm.SelectedItem.Text + "Result.xls";
+                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " " + ddlEntryType.SelectedValue.Replace(" ", " ") + " " + lbTerm.SelectedItem.Text + "_Term";
             }
             StringWriter strwritter = new StringWriter();
             HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
@@ -887,7 +888,7 @@ namespace DigiLocker3
             while (dr.Read())
             {
                 sub_list.Add(dr.GetString(0));
-                collist = collist + dr.GetString(0).Replace(" ","_") + " int Default 0, ";
+                collist = collist + dr.GetString(0).Replace(" ", "_") + " int Default 0, ";
                 //seniority = dr.GetValue(1).ToString();
             }
             dr.Close();
@@ -925,7 +926,7 @@ namespace DigiLocker3
                     query = "update temp set " + subject.Replace(" ", "_") + " = " + marks + " where personal_no = '" + pno + "'";
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
-                } 
+                }
             }
 
             query = "Select * from temp";

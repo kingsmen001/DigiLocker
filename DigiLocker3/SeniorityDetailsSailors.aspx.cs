@@ -21,7 +21,7 @@ namespace DigiLocker3
             if (!string.IsNullOrEmpty(Session["User_ID"] as string))
             {
 
-                
+
                 if (Session["Access_Level"].ToString().Equals("1"))
                 {
                     opnAddCourse.Visible = true;
@@ -97,6 +97,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -113,8 +114,8 @@ namespace DigiLocker3
                 opnViewTrainees.Visible = true;
                 opnUploadMarks.Visible = false;
             }
-            coursename = Request.QueryString["coursename"].Replace(" ","_");
-            
+            coursename = Request.QueryString["coursename"].Replace(" ", "_");
+
             string txt = " ";
             if (!this.IsPostBack)
             {
@@ -122,9 +123,9 @@ namespace DigiLocker3
                 {
                     heading.InnerHtml = Request.QueryString["coursename"] + " (Add Seniority Details)";
                 }
-                    ddlEntryType.SelectedIndex = 0;
+                ddlEntryType.SelectedIndex = 0;
                 ddlTerm.SelectedIndex = 0;
-                
+
                 con.Open();
 
                 SqlCommand com = new SqlCommand("select TYPE_NAME from " + coursename + "_ENTRY_TYPE", con); // table name 
@@ -166,7 +167,7 @@ namespace DigiLocker3
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
             con.Open();
-            string table_name = coursename + "_" + ddlEntryType.SelectedValue.Replace(" ","_") + "_" + ddlTerm.SelectedValue + "_SENIORITY";
+            string table_name = coursename + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + ddlTerm.SelectedValue + "_SENIORITY";
             SqlCommand cmd = new SqlCommand("If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(upper_lmt nvarchar(10) unique, lower_lmt nvarchar(10) unique, seniority nvarchar(10) unique)", con);
             cmd.ExecuteNonQuery();
 
@@ -264,7 +265,7 @@ namespace DigiLocker3
         protected void ConfirmButton_Click(object sender, EventArgs e)
         {
             //con.Open();
-            
+
             //SqlCommand cmd;
             //string table_name = "";
             //string query = "";
@@ -279,14 +280,14 @@ namespace DigiLocker3
             //        {
             //            query = "insert into " + table_name + "(lower_lmt, upper_lmt, seniority) values(" + System.Convert.ToDecimal(g1.Cells[1].Text) + ", " + System.Convert.ToDecimal(g1.Cells[0].Text) + ", " + System.Convert.ToDecimal(g1.Cells[2].Text) + ")";
             //            cmd = new SqlCommand(query, con);
-                        
+
             //        }
             //    }
             //}
 
             //con.Close();
-            
-            Response.Redirect("AddSubjectsSailors.aspx?coursename=" + coursename.Replace("_"," "));
+
+            Response.Redirect("AddSubjectsSailors.aspx?coursename=" + coursename.Replace("_", " "));
 
             //string script = "alert(\" " + i + " Trainees Added to " + course_type + course_no + " " + entry_type + " \");";
             //ScriptManager.RegisterStartupScript(this, GetType(),
@@ -363,7 +364,7 @@ namespace DigiLocker3
                 ConfirmButton.Visible = false;
                 ConfirmButton.EnableViewState = false;
             }
-                con.Close();
+            con.Close();
         }
 
         protected void addnewrow()
@@ -437,7 +438,7 @@ namespace DigiLocker3
 
             DataRow dr = null;
 
-            
+
 
             dt.Columns.Add(new DataColumn("Max Marks(in %)", typeof(string)));
 
@@ -447,7 +448,7 @@ namespace DigiLocker3
 
             dr = dt.NewRow();
 
-            
+
 
             dr["Max Marks(in %)"] = string.Empty;
 
@@ -477,7 +478,7 @@ namespace DigiLocker3
         {
             TextBox textBox = (sender as TextBox);
             textBox.Focus();
-            if(string.IsNullOrWhiteSpace(textBox.Text))
+            if (string.IsNullOrWhiteSpace(textBox.Text))
             {
                 Response.Write("<script language='javascript'>alert('This field Cannot be left blank');</script>");
             }

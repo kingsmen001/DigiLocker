@@ -15,7 +15,6 @@ namespace DigiLocker3
 {
     public partial class UploadNominalRoll : System.Web.UI.Page
     {
-
         string coursename;
         string courseno;
         string table_name = "";
@@ -26,7 +25,7 @@ namespace DigiLocker3
             if (!string.IsNullOrEmpty(Session["User_ID"] as string))
             {
 
-                
+
                 if (Session["Access_Level"].ToString().Equals("1"))
                 {
                     opnAddCourse.Visible = true;
@@ -102,6 +101,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -120,7 +120,7 @@ namespace DigiLocker3
             }
             if (Request.QueryString["coursename"] != null)
             {
-                heading.InnerHtml = Request.QueryString["coursename"] +" " + Request.QueryString["courseno"] + "(Add Trainees)";
+                heading.InnerHtml = Request.QueryString["coursename"] + " " + Request.QueryString["courseno"] + "(Add Trainees)";
                 ddlCourseType.Visible = false;
                 ddlCourseType.EnableViewState = false;
                 ddlCourseNo.Visible = false;
@@ -130,7 +130,7 @@ namespace DigiLocker3
                 labelnumber.Visible = false;
                 labelnumber.EnableViewState = false;
                 coursename = Request.QueryString["coursename"];
-                courseno = Request.QueryString["courseno"];
+                courseno = Request.QueryString["courseno"].Replace(".", string.Empty);
             }
 
 
@@ -179,7 +179,7 @@ namespace DigiLocker3
 
                     if (coursename == null)
                         coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
-                    com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE", con); // table name 
+                    com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE", con); // table name 
                     da = new SqlDataAdapter(com);
                     ds = new DataSet();
                     da.Fill(ds);  // fill dataset
@@ -190,7 +190,7 @@ namespace DigiLocker3
 
                     if (coursename == null)
                         coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
-                    com = new SqlCommand("select TERM_LABEL from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
+                    com = new SqlCommand("select EnrolledIn from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
                     List<string> termLabel = new List<string>();
                     using (SqlDataReader dr = com.ExecuteReader())
                     {
@@ -243,9 +243,9 @@ namespace DigiLocker3
                 }
 
 
-                
+
             }
-            
+
         }
 
         protected void SubmitButton_Click(object sender, EventArgs e)
@@ -394,7 +394,7 @@ namespace DigiLocker3
                 //query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
                 cmd = new SqlCommand(query, con);
                 int col = Convert.ToInt32(cmd.ExecuteScalar().ToString());
-                
+
                 if (col == 0)
                 {
                     query = "Alter table " + table_name + " add " + ddlTerm.SelectedValue + " VARCHAR(50)";
@@ -431,7 +431,7 @@ namespace DigiLocker3
                         cmd.ExecuteNonQuery();
                     }
 
-                    
+
                 }
 
 
@@ -534,7 +534,7 @@ namespace DigiLocker3
             //query = "IF NOT EXISTS(SELECT TYPE_NAME FROM " + coursename.Replace(" ","_") + "_" + courseno + "_ENTRY_TYPE WHERE TYPE_NAME='" + entry_type.Replace("_", " ") + "')insert into " + coursename.Replace(" ","_") + "_" + courseno + "_ENTRY_TYPE (TYPE_NAME) values('" + entry_type.Replace("_"," ") + "')";
             //cmd = new SqlCommand(query, con);
             //cmd.ExecuteNonQuery();
-            table_name = "SAILOR_COURSE_TYPE";
+            table_name = "Sailor_COURSE_TYPE";
             SqlCommand com = new SqlCommand("select seniority from " + table_name + " where TYPE_NAME = '" + coursename + "'", con);
             SqlDataReader dr = com.ExecuteReader();
             string seniority = "";
@@ -612,8 +612,8 @@ namespace DigiLocker3
             //col_List = col_List + ", Total_Marks int DEFAULT 0, TOTAL_Percentage decimal(4,2) DEFAULT 0, " + "QUALIFIED varchar(15) default 'NO'";
             //Response.Write(col_List);
             col_listA = col_listA.Remove(col_listA.Length - 2);
-            
-            query = "select count(*) Names from sys.columns where OBJECT_ID = OBJECT_ID('" + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ","_") + "') and Name in (" + col_listA + ")";
+
+            query = "select count(*) Names from sys.columns where OBJECT_ID = OBJECT_ID('" + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "') and Name in (" + col_listA + ")";
             //query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
             cmd = new SqlCommand(query, con);
             int col = Convert.ToInt32(cmd.ExecuteScalar().ToString());
@@ -635,7 +635,7 @@ namespace DigiLocker3
             col_List = col_List.Substring(1);
             if (col == 0)
             {
-                query = "Alter table " + table_name + " add " + ddlTerm.SelectedValue + " VARCHAR(50)"; 
+                query = "Alter table " + table_name + " add " + ddlTerm.SelectedValue + " VARCHAR(50)";
             }
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
@@ -837,7 +837,7 @@ namespace DigiLocker3
                 div4.Visible = true;
                 con.Open();
 
-                
+
                 string name = ddlCourseType.SelectedValue;
                 SqlCommand com = new SqlCommand("select Course_No from Sailor_Course where Course_Name ='" + name + "'", con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
@@ -918,7 +918,7 @@ namespace DigiLocker3
                 div5.Visible = false;
                 con.Open();
 
-                
+
                 if (coursename == null)
                     coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
                 SqlCommand com = new SqlCommand("select TERM_LABEL from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
@@ -972,9 +972,9 @@ namespace DigiLocker3
                 con.Open();
 
 
-                
 
-                string name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
+
+                string name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
                 SqlCommand com = new SqlCommand("select * from " + name, con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();

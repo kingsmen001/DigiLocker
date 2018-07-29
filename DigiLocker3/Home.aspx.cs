@@ -32,6 +32,8 @@ namespace DigiLocker3
                     opnViewTrainees.Visible = true;
                     opnUploadMarks.Visible = true;
                     enrol.Visible = true;
+                    Div1.Visible = true;
+                    A1.Visible = true;
                     create.Visible = true;
                     opnAddCourseOfficer.Visible = true;
                     opnAddTraineesOfficer.Visible = true;
@@ -51,6 +53,8 @@ namespace DigiLocker3
                     opnViewTrainees.Visible = true;
                     opnUploadMarks.Visible = true;
                     enrol.Visible = true;
+                    Div1.Visible = true;
+                    A1.Visible = true;
                     create.Visible = true;
                     opnAddCourseOfficer.Visible = true;
                     opnAddTraineesOfficer.Visible = true;
@@ -70,6 +74,8 @@ namespace DigiLocker3
                     opnViewTrainees.Visible = true;
                     opnUploadMarks.Visible = false;
                     enrol.Visible = true;
+                    Div1.Visible = true;
+                    A1.Visible = true;
                     create.Visible = false;
                     opnAddCourseOfficer.Visible = true;
                     opnAddTraineesOfficer.Visible = true;
@@ -89,6 +95,8 @@ namespace DigiLocker3
                     opnViewTrainees.Visible = true;
                     opnUploadMarks.Visible = true;
                     enrol.Visible = false;
+                    Div1.Visible = false;
+                    A1.Visible = false;
                     create.Visible = false;
                     opnAddCourseOfficer.Visible = false;
                     opnAddTraineesOfficer.Visible = false;
@@ -122,6 +130,8 @@ namespace DigiLocker3
                 opnUploadMarks.Visible = false;
                 enrol.Visible = false;
                 create.Visible = false;
+                Div1.Visible = false;
+                A1.Visible = false;
             }
         }
 
@@ -144,7 +154,35 @@ namespace DigiLocker3
                         //int DocID = sqlRdr.GetInt32(0);
                         string CourseName = sqlRdr.GetString(0);
                         i++;
-                        data += "<tr><td><a href=\"CourseDetails.aspx?coursename=" + CourseName + "\" >" + CourseName + "</a></td></tr>";
+                        data += "<tr><td><a href=\"CourseDetailsSailors.aspx?coursename=" + CourseName + "\" >" + CourseName + "</a></td></tr>";
+                        //data += "<tr><td>" + DocID + "</td><td><a href=\"#\" runat=\"server\" onServerClick=\"MyFuncion_Click\" >" + DocName + "</a></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
+                        //data += "<tr><td>" + DocID + "</td><td><asp:LinkButton id=\"myid\" runat=\"server\" OnClick=\"MyFunction_Click\" >" + DocName + "</asp:LinkButton></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
+                    }
+                }
+            }
+            return data;
+        }
+
+        public string getOfficerCourseDetails()
+        {
+            string data = "";
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString);
+            con.Open();
+            string sql = "SELECT TYPE_NAME from OFFICER_COURSE_TYPE";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            int i = 0;
+            using (SqlDataReader sqlRdr = cmd.ExecuteReader())
+            {
+                // table = new DataTable();  
+                // table.Load(reader);  
+                if (sqlRdr.HasRows)
+                {
+                    while (sqlRdr.Read())
+                    {
+                        //int DocID = sqlRdr.GetInt32(0);
+                        string CourseName = sqlRdr.GetString(0);
+                        i++;
+                        data += "<tr><td><a href=\"CourseDetailsOfficers.aspx?coursename=" + CourseName + "\" >" + CourseName + "</a></td></tr>";
                         //data += "<tr><td>" + DocID + "</td><td><a href=\"#\" runat=\"server\" onServerClick=\"MyFuncion_Click\" >" + DocName + "</a></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
                         //data += "<tr><td>" + DocID + "</td><td><asp:LinkButton id=\"myid\" runat=\"server\" OnClick=\"MyFunction_Click\" >" + DocName + "</asp:LinkButton></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
                     }
@@ -173,7 +211,7 @@ namespace DigiLocker3
                         string CourseName = sqlRdr.GetString(0);
                         string CourseNo = sqlRdr.GetString(1);
                         i++;
-                        data += "<tr><td>" + i + "</td><td><a href=\"EnrolledCourseDetailsSailors.aspx?id=" + CourseName.Replace(" ", "_") + CourseNo + "\">" + CourseName + " " + CourseNo + "</a></td></tr>";
+                        data += "<tr><td>" + i + "</td><td><a href=\"CourseDetailsSailors.aspx?id=" + CourseName.Replace(" ", "_") + CourseNo + "\">" + CourseName + " " + CourseNo + "</a></td></tr>";
                         //data += "<tr><td>" + DocID + "</td><td><a href=\"#\" runat=\"server\" onServerClick=\"MyFuncion_Click\" >" + DocName + "</a></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
                         //data += "<tr><td>" + DocID + "</td><td><asp:LinkButton id=\"myid\" runat=\"server\" OnClick=\"MyFunction_Click\" >" + DocName + "</asp:LinkButton></td><td>" + IssuedBy + "</td><td>" + IssuedOn + "</td></tr>";
                     }

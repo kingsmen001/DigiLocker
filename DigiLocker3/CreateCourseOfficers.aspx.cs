@@ -6,6 +6,7 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -104,6 +105,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -141,18 +143,21 @@ namespace DigiLocker3
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
             int flag = 0;
+            Regex regex2 = new Regex("^\\w+(,\\w+)*$");
+            Regex regex1 = new Regex("^[\\w][\\w ]*$");
+            Regex regex3 = new Regex("^\\d+$");
             foreach (GridViewRow r in excelgrd.Rows)
             {
 
                 string entryname = (r.FindControl("txtMaxMarks") as TextBox).Text;
-                string term = (r.FindControl("txtMinMarks") as TextBox).Text.Replace(",", "_");
+                string term = (r.FindControl("txtMinMarks") as TextBox).Text;
                 string duration = (r.FindControl("txtSeniority") as TextBox).Text;
-                if (!string.IsNullOrWhiteSpace(entryname) & !string.IsNullOrWhiteSpace(term) & !string.IsNullOrWhiteSpace(duration))
+                if (regex1.IsMatch(entryname) & regex2.IsMatch(term) & regex3.IsMatch(duration))
                 {
                     flag = 1;
                 }
             }
-            if (string.IsNullOrWhiteSpace(txtCourseName.Text))
+            if (!regex1.IsMatch(txtCourseName.Text))
             {
 
                 Response.Write("<script language='javascript'>alert('Enter Course Name');</script>");
@@ -186,13 +191,14 @@ namespace DigiLocker3
                     {
 
                         string entryname = (r.FindControl("txtMaxMarks") as TextBox).Text;
-                        string term = (r.FindControl("txtMinMarks") as TextBox).Text.Replace(",", "_");
+                        string term = (r.FindControl("txtMinMarks") as TextBox).Text;
                         string duration = (r.FindControl("txtSeniority") as TextBox).Text;
-                        if (string.IsNullOrWhiteSpace(entryname) || string.IsNullOrWhiteSpace(term) || string.IsNullOrWhiteSpace(duration))
+                        if (!regex1.IsMatch(entryname) || !regex2.IsMatch(term) || !regex3.IsMatch(duration))
                         {
 
                         }
                         else {
+                            term = (r.FindControl("txtMinMarks") as TextBox).Text.Replace(",", "_");
                             table_name = courseTypeName + "_ENTRY_TYPE";
                             query = "insert into " + table_name + " (TYPE_NAME, TERM_LABEL, Duration) values ( '" + entryname + "' , '" + term + "' , '" + duration + "' )";
                             cmd = new SqlCommand(query, con);
@@ -208,7 +214,7 @@ namespace DigiLocker3
 
                     if (CheckBox1.Checked)
                     {
-                        Response.Redirect("SeniorityDetails.aspx?coursename=" + courseTypeName.Replace("_", " "));
+                        Response.Redirect("SeniorityDetailsOfficers.aspx?coursename=" + courseTypeName.Replace("_", " "));
                     }
                     else
                     {
@@ -358,7 +364,8 @@ namespace DigiLocker3
 
         protected void txtCourseName_TextChanged(object sender, EventArgs e)
         {
-            if (!System.Text.RegularExpressions.Regex.IsMatch(txtCourseName.Text, "[^a-zA-Z0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & txtCourseName.Text[0] != ' ' & txtCourseName.Text[0] != '\t')
+            Regex regex = new Regex("^[\\w][\\w ]*$");
+            if (regex.IsMatch(txtCourseName.Text))
             {
 
                 con.Open();
@@ -498,7 +505,7 @@ namespace DigiLocker3
             textBox.Focus();
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                Response.Write("<script language='javascript'>alert('This field Cannot be left blank');</script>");
+                //Response.Write("<script language='javascript'>alert('This field Cannot be left blank');</script>");
             }
         }
 

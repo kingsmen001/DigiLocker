@@ -22,7 +22,7 @@ namespace DigiLocker3
             if (!string.IsNullOrEmpty(Session["User_ID"] as string))
             {
 
-                
+
                 if (Session["Access_Level"].ToString().Equals("1"))
                 {
                     opnAddCourse.Visible = true;
@@ -98,6 +98,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -364,12 +365,12 @@ namespace DigiLocker3
             if (ddlSubject.SelectedItem.Text.Equals("Seniority"))
             {
                 div1.Visible = true;
-                string table_name1 = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" +  ddlTerm.SelectedValue.Replace(" ", "_") + "_SENIORITY";
+                string table_name1 = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + ddlTerm.SelectedValue.Replace(" ", "_") + "_SENIORITY";
                 query = "select MAX(seniority) from " + table_name1;
-                SqlCommand com = new SqlCommand(query,con);
+                SqlCommand com = new SqlCommand(query, con);
                 SqlDataReader dr = com.ExecuteReader();
-                string  maxsen = "";
-                while(dr.Read())
+                string maxsen = "";
+                while (dr.Read())
                 {
                     maxsen = dr.GetString(0);
                 }

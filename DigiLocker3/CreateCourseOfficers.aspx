@@ -68,7 +68,7 @@
                 </div>
                 <!-- /.navbar-header -->
 
-                <ul class="nav navbar-top-links navbar-right">
+                <ul class="nav navbar-top-links navbar-right" style="margin-top: 7px; margin-right: 15px">
 
                     <!-- /.dropdown -->
                     <%--<li class="dropdown">

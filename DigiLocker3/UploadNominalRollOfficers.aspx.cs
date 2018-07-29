@@ -101,6 +101,7 @@ namespace DigiLocker3
             }
             else
             {
+                Response.Redirect("Home.aspx", false);
                 opnAddCourseOfficer.Visible = false;
                 opnAddTraineesOfficer.Visible = false;
                 opnCreateCourseOfficer.Visible = false;
@@ -129,7 +130,7 @@ namespace DigiLocker3
                 labelnumber.Visible = false;
                 labelnumber.EnableViewState = false;
                 coursename = Request.QueryString["coursename"];
-                courseno = Request.QueryString["courseno"];
+                courseno = Request.QueryString["courseno"].Replace(".",string.Empty);
             }
 
 
@@ -178,7 +179,7 @@ namespace DigiLocker3
 
                     if (coursename == null)
                         coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
-                    com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE", con); // table name 
+                    com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".",string.Empty) + "_ENTRY_TYPE", con); // table name 
                     da = new SqlDataAdapter(com);
                     ds = new DataSet();
                     da.Fill(ds);  // fill dataset
@@ -189,7 +190,7 @@ namespace DigiLocker3
 
                     if (coursename == null)
                         coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
-                    com = new SqlCommand("select TERM_LABEL from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
+                    com = new SqlCommand("select EnrolledIn from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
                     List<string> termLabel = new List<string>();
                     using (SqlDataReader dr = com.ExecuteReader())
                     {
@@ -973,7 +974,7 @@ namespace DigiLocker3
 
 
 
-                string name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_ENTRY_TYPE";
+                string name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
                 SqlCommand com = new SqlCommand("select * from " + name, con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();

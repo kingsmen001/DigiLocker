@@ -22,7 +22,7 @@ namespace DigiLocker3
             if (!string.IsNullOrEmpty(Session["User_ID"] as string))
             {
 
-                
+
                 if (Session["Access_Level"].ToString().Equals("1"))
                 {
                     opnAddCourse.Visible = true;
@@ -78,6 +78,7 @@ namespace DigiLocker3
                 }
                 else
                 {
+                    Response.Redirect("Home.aspx", false);
                     opnAddCourse.Visible = false;
                     opnAddTrainees.Visible = false;
                     opnCreateCourse.Visible = false;
@@ -105,7 +106,6 @@ namespace DigiLocker3
                 opnViewResultOfficer.Visible = false;
                 opnViewTraineesOfficer.Visible = true;
                 opnUploadMarksOfficer.Visible = false;
-
                 opnAddCourse.Visible = false;
                 opnAddTrainees.Visible = false;
                 opnCreateCourse.Visible = false;
@@ -282,12 +282,12 @@ namespace DigiLocker3
                             TextBox txtBox = (TextBox)g1.Cells[2].FindControl("TextBox1");
                             if (!string.IsNullOrWhiteSpace(txtBox.Text) & chkBox.Checked)
                             {
-                                query = "insert into " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + "_ENTRY_TYPE(TYPE_NAME, NUMBER)  values( '" + g1.Cells[1].Text + "', '" + txtBox.Text + "')";
+                                query = "insert into " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text.Replace(".", string.Empty) + "_ENTRY_TYPE(TYPE_NAME, NUMBER)  values( '" + g1.Cells[1].Text + "', '" + txtBox.Text + "')";
                                 cmd = new SqlCommand(query, con);
                                 cmd.ExecuteNonQuery();
                             }
                         }
-                        query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text + " (Personal_No VARCHAR(50), ENTRY_NAME VARCHAR(50), TERM VARCHAR(50) DEFAULT ' ')";
+                        query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text.Replace(".", string.Empty) + " (Personal_No VARCHAR(50), ENTRY_NAME VARCHAR(50), TERM VARCHAR(50) DEFAULT ' ')";
                         cmd = new SqlCommand(query, con);
                         cmd.ExecuteNonQuery();
                         //Response.Write("Record Uploaded Successfully!!!thank you");

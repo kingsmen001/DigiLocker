@@ -243,7 +243,7 @@
     <Content Include="Account\ResetPasswordConfirmation.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
-    <Content Include="AddSubjectOfficers.aspx" />
+    <Content Include="AddSubjectsOfficers.aspx" />
     <Content Include="AddSubjectsSailors.aspx" />
     <Content Include="App_Data\DigiLocker.mdf" />
     <Content Include="App_Data\DigiLocker_log.ldf">
@@ -436,12 +436,12 @@
     <Compile Include="Account\VerifyPhoneNumber.aspx.designer.cs">
       <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AddSubjectOfficers.aspx.cs">
-      <DependentUpon>AddSubjectOfficers.aspx</DependentUpon>
+    <Compile Include="AddSubjectsOfficers.aspx.cs">
+      <DependentUpon>AddSubjectsOfficers.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AddSubjectOfficers.aspx.designer.cs">
-      <DependentUpon>AddSubjectOfficers.aspx</DependentUpon>
+    <Compile Include="AddSubjectsOfficers.aspx.designer.cs">
+      <DependentUpon>AddSubjectsOfficers.aspx</DependentUpon>
     </Compile>
     <Compile Include="AddSubjectsSailors.aspx.cs">
       <DependentUpon>AddSubjectsSailors.aspx</DependentUpon>

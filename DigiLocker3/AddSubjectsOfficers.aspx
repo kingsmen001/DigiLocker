@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddSubjectOfficers.aspx.cs" Inherits="DigiLocker3.AddSubjectOfficers" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddSubjectsOfficers.aspx.cs" Inherits="DigiLocker3.AddSubjectOfficers" %>
 
 <!DOCTYPE html>
 
@@ -55,7 +55,7 @@
             </div>
             <!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
+            <ul class="nav navbar-top-links navbar-right" style="margin-top: 7px; margin-right: 15px">
 
                 <!-- /.dropdown -->
                 <%--<li class="dropdown">
