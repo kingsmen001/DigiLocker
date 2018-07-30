@@ -527,6 +527,7 @@ namespace DigiLocker3
             string query = "If not exists(select name from sysobjects where name = '" + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS') Select * into " + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS from " + coursename.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS where TERM = '" + ddlTerm.SelectedValue + "'";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
+           
             query = "insert into " + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS (SUBJECT_NAME, Term, MAX_MARKS, Theory, IA, Practical) select SUBJECT_NAME, Term, MAX_MARKS, Theory, IA, Practical from " + coursename.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS where not exists (select SUBJECT_NAME from " + coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type + "_SUBJECTS where SUBJECT_NAME in (select SUBJECT_NAME from " + coursename.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS where term = '" + ddlTerm.SelectedValue + "')) and term = '" + ddlTerm.SelectedValue + "'";
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
@@ -547,13 +548,15 @@ namespace DigiLocker3
             table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type;
             if (seniority.Equals("1"))
             {
-                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), total_seniority_gained decimal(4,2) DEFAULT 0 not null , total_seniority_lost decimal(4,2) DEFAULT 0 not null , total_seniority decimal(4,2) DEFAULT 0 not null , Total_Marks int DEFAULT 0 not null , TOTAL_Percentage decimal(4,2) DEFAULT 0 not null , " + "QUALIFIED varchar(15) default 'NO' not null , Remarks Varchar(50))";
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), total_seniority_gained decimal(4,2) DEFAULT 0 not null , total_seniority_lost decimal(4,2) DEFAULT 0 not null , total_seniority decimal(4,2) DEFAULT 0 not null , Total_Marks int DEFAULT 0 not null , TOTAL_Percentage decimal(5,2) DEFAULT 0 not null , " + "QUALIFIED varchar(15) default 'NO' not null , Remarks Varchar(50))";
             }
             else
             {
-                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), Total_Marks int DEFAULT 0 not null, TOTAL_Percentage decimal(4,2) DEFAULT 0 not null, " + "QUALIFIED varchar(15) default 'NO' not null, Remarks Varchar(50) DEFAULT ' ')";
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), Total_Marks int DEFAULT 0 not null, TOTAL_Percentage decimal(5,2) DEFAULT 0 not null, " + "QUALIFIED varchar(15) default 'NO' not null, Remarks Varchar(50) DEFAULT ' ')";
             }
             cmd = new SqlCommand(query, con);
+            cmd.ExecuteNonQuery();
+            cmd = new SqlCommand("if not exists(select Name from " + table_name + " where Name = 'MAXIMUM MARKS') insert into " + table_name + "(Personal_No, Name, Rank) values (' ','MAXIMUM MARKS',' ')", con);
             cmd.ExecuteNonQuery();
             com = new SqlCommand("select Subject_Name, Term from " + coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS  where TERM = '" + ddlTerm.SelectedValue + "'", con);
             dr = com.ExecuteReader();
@@ -596,14 +599,14 @@ namespace DigiLocker3
             if (seniority.Equals("1"))
             {
                 string term = ddlTerm.SelectedValue;
-                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null , " + term + "_percentage decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_gained decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_lost decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_total decimal(4,2) DEFAULT 0 not null  ";
+                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null , " + term + "_percentage decimal(5,2) DEFAULT 0 not null , " + term + "_seniority_gained decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_lost decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_total decimal(4,2) DEFAULT 0 not null  ";
 
                 //col_List = col_List + ", total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0 ";
             }
             else
             {
                 string term = ddlTerm.SelectedValue;
-                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null, " + term + "_percentage decimal(4,2) DEFAULT 0.00 not null";
+                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null, " + term + "_percentage decimal(5,2) DEFAULT 0.00 not null";
 
             }
             string term1 = ddlTerm.SelectedValue;
@@ -639,6 +642,12 @@ namespace DigiLocker3
             }
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
+            foreach(string column in column_List)
+            {
+                query = "update " + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " set " + column + " = " + " (select MAX_MARKS FROM " + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS where SUBJECT_NAME = '" + column.Replace("_"," ") + "') where NAME = 'MAXIMUM MARKS'";
+                cmd = new SqlCommand(query, con);
+                cmd.ExecuteNonQuery();
+            }
             column_List.Clear();
             con.Close();
         }

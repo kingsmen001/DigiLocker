@@ -75,7 +75,7 @@ namespace DigiLocker3
                     opnUploadMarks.Visible = false;
                     enrol.Visible = true;
                     Div1.Visible = true;
-                    A1.Visible = true;
+                    A1.Visible = false;
                     create.Visible = false;
                     opnAddCourseOfficer.Visible = true;
                     opnAddTraineesOfficer.Visible = true;

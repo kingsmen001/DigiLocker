@@ -213,7 +213,7 @@
 
                                         <div class="form-group">
                                             <label>Select Term</label>
-                                            <asp:ListBox class="form-control" Style="width: auto; height: auto" ID="ddlTerm" runat="server" SelectionMode="Multiple" AutoPostBack="True" OnSelectedIndexChanged="ddlTermIndexChanged"></asp:ListBox>
+                                            <asp:DropDownList class="form-control" Style="width: auto; height: auto" ID="ddlTerm" runat="server" SelectionMode="Multiple" AutoPostBack="True" OnSelectedIndexChanged="ddlTermIndexChanged"></asp:DropDownList>
                                             <%--<asp:DropDownList class="form-control" style = "width:auto" ID="ddlTerm" runat="server" AutoPostBack = "true" OnSelectedIndexChanged = "ddlTermIndexChanged">
                                                 
                                             </asp:DropDownList>--%>

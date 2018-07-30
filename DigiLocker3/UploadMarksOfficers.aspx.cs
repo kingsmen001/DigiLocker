@@ -383,14 +383,14 @@ namespace DigiLocker3
                     else
                     {
                         query = "";
-                        if (markspresent < (55.0 * max_marks) / 100.0)
+                        if (markspresent < (50.0 * max_marks) / 100.0)
                         {
                             table_name = course_type + "_" + course_no + "_D_TERM";
                             query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + ddlSubject1.SelectedItem.Text + "'";
                             //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                             cmd = new SqlCommand(query, con);
                             cmd.ExecuteNonQuery();
-                            if (Convert.ToInt32(g1.Cells[6].Text) > (55.0 * max_marks) / 100.0)
+                            if (Convert.ToInt32(g1.Cells[6].Text) > (50.0 * max_marks) / 100.0)
                             {
                                 table_name = ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_name.Replace(" ", "_");
                                 query = "update " + table_name + " set " + term + "_Failed = CASE WHEN " + term + "_failed > 0 THEN " + term + "_failed - 1 END where Personal_No = '" + g1.Cells[2].Text + "'";
@@ -452,13 +452,13 @@ namespace DigiLocker3
                     else
                     {
                         query = "";
-                        if (markspresent < (55.0 * max_marks) / 100.0)
+                        if (markspresent < (50.0 * max_marks) / 100.0)
                         {
                             query = "update " + table_name + " set " + subject + "= " + g1.Cells[6].Text + ", " + subject + "_theory = " + g1.Cells[3].Text + ", " + subject + "_IA = " + g1.Cells[4].Text + ", " + subject + "_Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "'";
                             //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                             cmd = new SqlCommand(query, con);
                             cmd.ExecuteNonQuery();
-                            if (Convert.ToInt32(g1.Cells[4].Text) > (55.0 * max_marks) / 100.0)
+                            if (Convert.ToInt32(g1.Cells[4].Text) > (50.0 * max_marks) / 100.0)
                             {
                                 query = "update " + table_name + " set " + term + "_Failed = CASE WHEN " + term + "_failed > 0 THEN " + term + "_failed - 1 END where Personal_No = '" + g1.Cells[2].Text + "'";
                                 cmd = new SqlCommand(query, con);

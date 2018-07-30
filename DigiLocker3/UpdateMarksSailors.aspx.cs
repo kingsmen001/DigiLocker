@@ -297,7 +297,7 @@ namespace DigiLocker3
                 dr.Close();
                 if (markspresent == 0)
                 {
-                    if (marks < (55.0 * max_marks) / 100.0)
+                    if (marks < (50.0 * max_marks) / 100.0)
                     {
 
                         if (markspresent == 0)
@@ -314,14 +314,14 @@ namespace DigiLocker3
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
                 }
-                else if (markspresent < (55.0 * max_marks) / 100.0)
+                else if (markspresent < (50.0 * max_marks) / 100.0)
                 {
                     query = "";
                     query = "update " + table_name + " set " + subject + "= " + g1.Cells[4].Text + " where Personal_No = '" + g1.Cells[1].Text + "'";
                     //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
-                    if (marks >= (55.0 * max_marks) / 100.0)
+                    if (marks >= (50.0 * max_marks) / 100.0)
                     {
                         query = "update " + table_name + " set " + term + "_Failed = ( WHEN " + term + "_failed = 1 THEN " + term + "_failed - 1 END)";
                         cmd = new SqlCommand(query, con);
@@ -465,7 +465,7 @@ namespace DigiLocker3
                     //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
-                    if (marks < (55.0 * max_marks) / 100.0)
+                    if (marks < (50.0 * max_marks) / 100.0)
                     {
 
                         if (markspresent == 0)
@@ -475,10 +475,10 @@ namespace DigiLocker3
                             cmd.ExecuteNonQuery();
                         }
                     }
-                    else if (markspresent < (55.0 * max_marks) / 100.0)
+                    else if (markspresent < (50.0 * max_marks) / 100.0)
                     {
 
-                        if (marks >= (55.0 * max_marks) / 100.0)
+                        if (marks >= (50.0 * max_marks) / 100.0)
                         {
                             query = "update " + table_name + " set " + term + "_Failed = CASE WHEN " + term + "_failed > 0 THEN " + term + "_failed - 1 END where Personal_No = '" + Personal_No + "'";
                             cmd = new SqlCommand(query, con);

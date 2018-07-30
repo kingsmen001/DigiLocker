@@ -547,11 +547,11 @@ namespace DigiLocker3
             table_name = coursename.Replace(" ", "_") + "_" + courseno + "_" + entry_type;
             if (seniority.Equals("1"))
             {
-                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), total_seniority_gained decimal(4,2) DEFAULT 0 not null , total_seniority_lost decimal(4,2) DEFAULT 0 not null , total_seniority decimal(4,2) DEFAULT 0 not null , Total_Marks int DEFAULT 0 not null , TOTAL_Percentage decimal(4,2) DEFAULT 0 not null , " + "QUALIFIED varchar(15) default 'NO' not null , Remarks Varchar(50))";
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), total_seniority_gained decimal(4,2) DEFAULT 0 not null , total_seniority_lost decimal(4,2) DEFAULT 0 not null , total_seniority decimal(4,2) DEFAULT 0 not null , Total_Marks int DEFAULT 0 not null , TOTAL_Percentage decimal(5,2) DEFAULT 0 not null , " + "QUALIFIED varchar(15) default 'NO' not null , Remarks Varchar(50))";
             }
             else
             {
-                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), Total_Marks int DEFAULT 0 not null, TOTAL_Percentage decimal(4,2) DEFAULT 0 not null, " + "QUALIFIED varchar(15) default 'NO' not null, Remarks Varchar(50) DEFAULT ' ')";
+                query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20), Total_Marks int DEFAULT 0 not null, TOTAL_Percentage decimal(5,2) DEFAULT 0 not null, " + "QUALIFIED varchar(15) default 'NO' not null, Remarks Varchar(50) DEFAULT ' ')";
             }
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
@@ -596,14 +596,14 @@ namespace DigiLocker3
             if (seniority.Equals("1"))
             {
                 string term = ddlTerm.SelectedValue;
-                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null , " + term + "_percentage decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_gained decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_lost decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_total decimal(4,2) DEFAULT 0 not null  ";
+                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null , " + term + "_percentage decimal(5,2) DEFAULT 0 not null , " + term + "_seniority_gained decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_lost decimal(4,2) DEFAULT 0 not null , " + term + "_seniority_total decimal(4,2) DEFAULT 0 not null  ";
 
                 //col_List = col_List + ", total_seniority_gained decimal(4,2) DEFAULT 0, total_seniority_lost decimal(4,2) DEFAULT 0, total_seniority decimal(4,2) DEFAULT 0 ";
             }
             else
             {
                 string term = ddlTerm.SelectedValue;
-                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null, " + term + "_percentage decimal(4,2) DEFAULT 0.00 not null";
+                col_List = col_List + ", " + term + "_total int DEFAULT 0 not null, " + term + "_percentage decimal(5,2) DEFAULT 0.00 not null";
 
             }
             string term1 = ddlTerm.SelectedValue;
