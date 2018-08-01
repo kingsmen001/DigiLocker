@@ -263,8 +263,10 @@
 
                                                 </div>
                                                 <div class="form-group col-md-2">
-                                                    <asp:Button runat="server" ID="Button2" CssClass="form-control btn btn-default" Text="Generate Certificates" OnClick="Generate_Clicked" />
+                                                    <asp:Button runat="server" ID="Button2" CssClass="form-control btn btn-default" Text="Generate Certificates" OnClick="Generate_Clicked" Visible ="false" EnableViewState="false" />
                                                 </div>
+                                                <asp:GridView CssClass="table table-striped table-bordered table-hover columnscss persist-area tableWithFloatingHeader" ID="GridView2" runat="server" AllowPaging="False" visible="false" EnableViewState="false">
+                                                        </asp:GridView>
                                             </div>
                                         </div>
                                     

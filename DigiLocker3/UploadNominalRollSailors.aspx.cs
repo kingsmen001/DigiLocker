@@ -1,4 +1,5 @@
 ﻿
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -263,8 +264,9 @@ namespace DigiLocker3
                 }
                 else
                 {
-                    con.Open();
+                    
                     createTable();
+                    con.Open();
                     table_name = coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
                     try
                     {
@@ -287,7 +289,7 @@ namespace DigiLocker3
                         cmd.ExecuteNonQuery();
                         i++;
 
-                        con.Close();
+                        
 
 
                         //string script = "alert(\" "+ i + " Trainees Added to " + course_type + course_no + " " +entry_type +" \");";
@@ -316,15 +318,54 @@ namespace DigiLocker3
             {
                 if (FileUpload1.HasFile)
                 {
+                    con.Open();
+                    string query = "delete from tblPersons";
+                    SqlCommand com = new SqlCommand(query, con);
+                    com.ExecuteNonQuery();
                     string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
                     string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
                     string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
+                    
 
                     string FilePath = Server.MapPath(FolderPath + FileName);
                     FileUpload1.SaveAs(FilePath);
-                    Import_To_Grid(FilePath, Extension);
+                    //Import_To_Grid(FilePath, Extension);
+                    FileInfo newFile = new FileInfo(FilePath);
+                    ExcelPackage pck = new ExcelPackage(newFile);
+                    var theWorkbook = pck.Workbook;
+                    var theSheet = theWorkbook.Worksheets[1];
+                    int num = Convert.ToInt32(theSheet.Cells[3, 2].Value.ToString());
+                    num = num + 5;
+                    for (int row = 5; row < num; row++)
+                    {
+                        //string entry_type = "app_power";
+                        string name = theSheet.Cells[row, 2].Value.ToString();
+                        string rank = theSheet.Cells[row, 3].Value.ToString();
+                        string number = theSheet.Cells[row, 1].Value.ToString();
+                        string theory = theSheet.Cells[row, 4].Value.ToString();
+                        //string ia = theSheet.Cells[row, 7].Value.ToString();
+                        //string practical = theSheet.Cells[row, 8].Value.ToString();
+                        //string marks = theSheet.Cells[row, 9].Value.ToString();
+                        query = "insert into tblPersons(Personal_No, Name, Rank, Theory) values( '" + number + "', '" + name + "', '" + rank + "', '" + theory + "')";
+                        com = new SqlCommand(query, con);
+                        com.ExecuteNonQuery();
+                    }
+                    //GridView1.DataSource = WorksheetToDataTable(theSheet);
+                    //GridView1.DataBind();
+                    //var data = theSheet.Cells["A1:P34"].Value;
+                    //var Summary = workbook1.Worksheets[1];
+                    query = "Select Name, Rank, Personal_No, Theory as Class from tblPersons";
+
+                    com = new SqlCommand(query, con);
+                    SqlDataAdapter adpt = new SqlDataAdapter(com);
+                    DataTable dt = new DataTable();
+                    adpt.Fill(dt);
+
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
                     ConfirmButton.Visible = true;
                     ConfirmButton.EnableViewState = true;
+                    con.Close();
                 }
                 else
                 {
@@ -555,6 +596,8 @@ namespace DigiLocker3
             }
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
+            cmd = new SqlCommand("if not exists(select Name from " + table_name + " where Name = 'MAXIMUM MARKS') insert into " + table_name + "(Personal_No, Name, Rank) values (' ','MAXIMUM MARKS',' ')", con);
+            cmd.ExecuteNonQuery();
             com = new SqlCommand("select Subject_Name, Term from " + coursename.Replace(" ", "_") + "_" + courseno.Replace(" ", "_") + "_" + entry_type + "_SUBJECTS  where TERM = '" + ddlTerm.SelectedValue + "'", con);
             dr = com.ExecuteReader();
             List<string> column_List = new List<string>();
@@ -636,9 +679,31 @@ namespace DigiLocker3
             if (col == 0)
             {
                 query = "Alter table " + table_name + " add " + ddlTerm.SelectedValue + " VARCHAR(50)";
+
             }
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
+            if ((ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
+            {
+                query = "select count(column_name) from INFORMATION_SCHEMA.columns where table_name = '" + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "' and column_name = 'A_Total'";
+                //query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
+                cmd = new SqlCommand(query, con);
+                col = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                
+                if (col == 0)
+                {
+                    query = "Alter table " + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " add A_Total int DEFAULT 0 not null, A_Percentage decimal(5,2) DEFAULT 0 not null, A_QUALIFIED varchar(15) default 'NO' not null, A_seniority_gained decimal(4,2) DEFAULT 0 not null , A_seniority_lost decimal(4,2) DEFAULT 0 not null , A_seniority_total decimal(4,2) DEFAULT 0 not null, B_Total int DEFAULT 0 not null, B_Percentage decimal(5,2) DEFAULT 0 not null, B_QUALIFIED varchar(15) default 'NO' not null, B_seniority_gained decimal(4,2) DEFAULT 0 not null , B_seniority_lost decimal(4,2) DEFAULT 0 not null , B_seniority_total decimal(4,2) DEFAULT 0 not null";
+
+                }
+                cmd = new SqlCommand(query, con);
+                cmd.ExecuteNonQuery();
+            }
+            foreach (string column in column_List)
+            {
+                query = "update " + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " set " + column + " = " + " (select MAX_MARKS FROM " + coursename.Replace(" ", "_") + "_" + courseno + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_SUBJECTS where SUBJECT_NAME = '" + column.Replace("_", " ") + "') where NAME = 'MAXIMUM MARKS'";
+                cmd = new SqlCommand(query, con);
+                cmd.ExecuteNonQuery();
+            }
             column_List.Clear();
             con.Close();
         }

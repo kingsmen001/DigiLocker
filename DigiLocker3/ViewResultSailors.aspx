@@ -263,7 +263,7 @@
 
                                                 </div>
                                                 <div class="form-group col-md-2">
-                                                    <asp:Button runat="server" ID="Button2" CssClass="form-control btn btn-default" Text="Generate Certificates" OnClick="Generate_Clicked" />
+                                                    <asp:Button runat="server" ID="Button2" CssClass="form-control btn btn-default" Text="Generate Certificates" OnClick="Generate_Clicked"  />
                                                 </div>
                                             </div>
                                         </div>

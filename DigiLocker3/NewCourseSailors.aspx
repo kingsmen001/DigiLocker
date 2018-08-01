@@ -236,6 +236,21 @@
                                                 </div>
                                             </div>
                                         </div>
+                                            <br />
+                                            <div class="form-group ">
+
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <label>Start Date</label>
+                                                    <asp:TextBox ID="TextBoxStart" CssClass="form-control" runat="server" AutoPostBack="false" placeholder="DD/MMM/YYYY" ></asp:TextBox>
+                                                </div>
+                                                 <div class="col-md-6">
+                                                    <label>End Date</label>
+                                                    <asp:TextBox ID="TextBoxEnd" CssClass="form-control" runat="server" AutoPostBack="false" placeholder="DD/MMM/YYYY" ></asp:TextBox>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
                                         <div class="form-group ">
                                             <div class="form-row">
                                                 <div class="form-group col-md-6" style="height: auto; max-height: 500px; width: auto; overflow: auto;">

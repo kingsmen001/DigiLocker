@@ -1,4 +1,5 @@
 ﻿
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -316,15 +317,54 @@ namespace DigiLocker3
             {
                 if (FileUpload1.HasFile)
                 {
+                    con.Open();
+                    string query = "delete from tblPersons";
+                    SqlCommand com = new SqlCommand(query, con);
+                    com.ExecuteNonQuery();
                     string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
                     string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
                     string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
 
+
                     string FilePath = Server.MapPath(FolderPath + FileName);
                     FileUpload1.SaveAs(FilePath);
-                    Import_To_Grid(FilePath, Extension);
+                    //Import_To_Grid(FilePath, Extension);
+                    FileInfo newFile = new FileInfo(FilePath);
+                    ExcelPackage pck = new ExcelPackage(newFile);
+                    var theWorkbook = pck.Workbook;
+                    var theSheet = theWorkbook.Worksheets[1];
+                    int num = Convert.ToInt32(theSheet.Cells[3, 2].Value.ToString());
+                    num = num + 5;
+                    for (int row = 5; row < num; row++)
+                    {
+                        //string entry_type = "app_power";
+                        string name = theSheet.Cells[row, 2].Value.ToString();
+                        string rank = theSheet.Cells[row, 3].Value.ToString();
+                        string number = theSheet.Cells[row, 1].Value.ToString();
+                        string theory = theSheet.Cells[row, 4].Value.ToString();
+                        //string ia = theSheet.Cells[row, 7].Value.ToString();
+                        //string practical = theSheet.Cells[row, 8].Value.ToString();
+                        //string marks = theSheet.Cells[row, 9].Value.ToString();
+                        query = "insert into tblPersons(Personal_No, Name, Rank, Theory) values( '" + number + "', '" + name + "', '" + rank + "', '" + theory + "')";
+                        com = new SqlCommand(query, con);
+                        com.ExecuteNonQuery();
+                    }
+                    //GridView1.DataSource = WorksheetToDataTable(theSheet);
+                    //GridView1.DataBind();
+                    //var data = theSheet.Cells["A1:P34"].Value;
+                    //var Summary = workbook1.Worksheets[1];
+                    query = "Select Name, Rank, Personal_No, Theory as Class from tblPersons";
+
+                    com = new SqlCommand(query, con);
+                    SqlDataAdapter adpt = new SqlDataAdapter(com);
+                    DataTable dt = new DataTable();
+                    adpt.Fill(dt);
+
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
                     ConfirmButton.Visible = true;
                     ConfirmButton.EnableViewState = true;
+                    con.Close();
                 }
                 else
                 {

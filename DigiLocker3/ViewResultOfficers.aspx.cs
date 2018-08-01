@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using iTextSharp.text.pdf;
+using Ionic.Zip;
+using Ionic.Zlib;
 
 namespace DigiLocker3
 {
@@ -232,7 +234,7 @@ namespace DigiLocker3
 
                     DataTable dt = new DataTable();
                     string course = ddlCourseType.SelectedValue;
-                    string course_no = ddlCourseNo.SelectedValue.Replace(".",string.Empty);
+                    string course_no = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
                     string entry_type = ddlEntryType.SelectedValue;
                     string col_List = "";
                     string table_name = "";
@@ -355,9 +357,25 @@ namespace DigiLocker3
             dr.Close();
             //term_label = term_label.Remove(term_label.Length - 1);
             string col_list1 = "";
+            string col_list2 = "";
 
             foreach (string term in term_label.Split('_'))
             {
+                if (lbTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
+                { }
+                else {
+                    query = "select Subject_name from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue + "_SUBJECTS where Term = '" + term + "'";
+                    com = new SqlCommand(query, con);
+                    dr = com.ExecuteReader();
+                    string subject = "";
+                    while (dr.Read())
+                    {
+                        //term_label = term_label + dr.GetString(0) + "_";
+                        subject = dr.GetString(0).Replace(" ", "_");
+                        col_list1 = col_list1 + subject + ", ";
+                    }
+                    dr.Close();
+                }
                 col_list1 = col_list1 + term + "_total, " + term + "_percentage, " + term + "_failed, ";
                 if (seniority.Equals("1"))
                 {
@@ -464,7 +482,7 @@ namespace DigiLocker3
 
                     col_list3 = col_list3 + term + "_Qualified, ";
                     col_list_remarks = col_list_remarks + term + "_Failed > 0 or ";
-                    col_list_remarks1 = col_list_remarks1 + term + "_Failed > 1 or ";
+                    col_list_remarks1 = col_list_remarks1 + term + "_Failed > 2 or ";
                     table_name = course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
                     //string query = "Select Subject_Name from " + table_name;
                     //table_name = course.Replace(" ", "_") + "_" + lbTerm.Items[i].Value + "_SENIORITY_CRITERIA";
@@ -718,18 +736,50 @@ namespace DigiLocker3
         {
             calculateResult();
             con.Open();
-            string fileNameExisting = @"C:\\Users\\Kingsmen\\Desktop\\Certificates\\Sample\\Certi1.pdf";
-            string query = "Select Personal_No, Name, Rank from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " where Qualified = 'No'";
+            //string fileNameExisting = @"C:\\Users\\Kingsmen\\Desktop\\Certificates\\Sample\\Certi1.pdf";
+            string query = "Select Startdate, enddate from Officer_Course where Course_Name = '" + ddlCourseType.SelectedValue + "' and Course_No = '" + ddlCourseNo.SelectedValue + "'";
             SqlCommand com = new SqlCommand(query, con);
             SqlDataReader dr = com.ExecuteReader();
             //Directory.CreateDirectory("Certificates\\" + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_"));
-            string fileNameNew = "";
-
+            string startdate = "";
+            string enddate = "";
 
             while (dr.Read())
             {
+                startdate = dr.GetString(0);
+                enddate = dr.GetString(1);
+            }
+            dr.Close();
+            query = "Select Duration from " + ddlCourseType.SelectedValue.Replace(" ","_") + "_ENTRY_TYPE  where TYPE_Name = '" + ddlEntryType.SelectedValue + "'";
+            com = new SqlCommand(query, con);
+            dr = com.ExecuteReader();
+            //Directory.CreateDirectory("Certificates\\" + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_"));
+            string duration = "";
+            
+
+            while (dr.Read())
+            {
+                duration = dr.GetString(0);
+                
+            }
+            dr.Close();
+            string fileNameExisting = Server.MapPath("~/Template_Certi.pdf");
+            query = "Select Personal_No, Name, Rank from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " where Qualified = 'No'";
+            com = new SqlCommand(query, con);
+            dr = com.ExecuteReader();
+            //Directory.CreateDirectory("Certificates\\" + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_"));
+            string fileNameNew = "";
+            string path = "";
+
+            while (dr.Read())
+            {
+                path = "~/Certificates/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "/" + ddlEntryType.SelectedValue.Replace(" ", "_").ToUpper();
+
+                Directory.CreateDirectory(Server.MapPath(path));
+                string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
+                fileNameNew = Server.MapPath(path + "/" + dr.GetString(0) + "_" + dr.GetString(1) + ".pdf");
                 //fileNameNew = @"Certificates\\" + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") +"\\" + dr.GetString(0) + "_" + dr.GetString(1) +  ".pdf";
-                fileNameNew = @"C:\\Users\\Kingsmen\\Desktop\\Certificates\\" + dr.GetString(0) + "_" + dr.GetString(1) + ".pdf";
+                //fileNameNew = @"C:\\Users\\Kingsmen\\Desktop\\Certificates\\" + dr.GetString(0) + "_" + dr.GetString(1) + ".pdf";
                 FileStream existingFileStream = new FileStream(fileNameExisting, FileMode.Open);
                 FileStream newFileStream = new FileStream(fileNameNew, FileMode.Create);
                 var pdfReader = new PdfReader(existingFileStream);
@@ -743,9 +793,10 @@ namespace DigiLocker3
                 //    form.SetField(fieldKey, "REPLACED!");
                 //}
                 form.SetField("TextName", dr.GetString(1) + ", " + dr.GetString(2) + ", " + dr.GetString(0));
-                form.SetField("TextDuration", "26");
+                form.SetField("TextDuration", duration);
                 form.SetField("TextCourse", ddlCourseType.SelectedValue + " Course");
-
+                form.SetField("TextFrom", startdate);
+                form.SetField("TextTo", enddate);
                 stamper.FormFlattening = true;
                 stamper.Close();
                 pdfReader.Close();
@@ -754,6 +805,19 @@ namespace DigiLocker3
 
 
             con.Close();
+            Response.Clear();
+            Response.BufferOutput = false;
+            Response.ContentType = "application/zip";
+            Response.AddHeader("content-disposition", "attachment; filename=" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_").ToUpper() + "_Certificates.zip");
+
+            using (ZipFile zip = new ZipFile())
+            {
+                zip.CompressionLevel = CompressionLevel.None;
+                zip.AddSelectedFiles("*.pdf", Server.MapPath(path + "/"), "", false);
+                zip.Save(Response.OutputStream);
+            }
+
+            Response.Close();
         }
 
         protected void ddlCourseTypeIndexChanged(object sender, EventArgs e)

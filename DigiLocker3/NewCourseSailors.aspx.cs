@@ -253,10 +253,12 @@ namespace DigiLocker3
                         }
                         string insertQuery;
                         SqlCommand cmd;
-                        insertQuery = "insert into Sailor_Course(Course_No, Course_Name)values (@Course_No, @Course_Name)";
+                        insertQuery = "insert into Sailor_Course(Course_No, Course_Name, StartDate, EndDate)values (@Course_No, @Course_Name, @StartDate, @EndDate)";
                         cmd = new SqlCommand(insertQuery, con);
                         cmd.Parameters.AddWithValue("@Course_No", Course_Number_TextBox.Text);
                         cmd.Parameters.AddWithValue("@Course_Name", name);
+                        cmd.Parameters.AddWithValue("@StartDate", TextBoxStart.Text);
+                        cmd.Parameters.AddWithValue("@EndDate", TextBoxEnd.Text);
                         cmd.ExecuteNonQuery();
                         string query = "Select Type_Name from SAILOR_COURSE_TYPE";
                         //cmd = new SqlCommand(query, con);

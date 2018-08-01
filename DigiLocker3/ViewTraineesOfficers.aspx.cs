@@ -416,7 +416,7 @@ namespace DigiLocker3
                 query = "";
                 while (dr.Read())
                 {
-                    query = query + "Select Personal_No as \"Personal No\", Name, Rank from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + dr.GetString(0).Replace(" ", "_") + " UNION ";
+                    query = query + "Select Personal_No as \"Personal No\", Name, Rank from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + dr.GetString(0).Replace(" ", "_") + " where name <> 'MAXIMUM MARKS' UNION ";
                 }
                 dr.Close();
                 query = query.Substring(0, query.LastIndexOf("UNION"));
@@ -433,12 +433,7 @@ namespace DigiLocker3
             }
             else {
                 table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
-                query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"ID\", Personal_No as \"Personal No\", Name, Rank from " + table_name;
-                //Response.Write(query);
-                cmd = new SqlCommand(query, con);
-                adpt = new SqlDataAdapter(cmd);
-                dt = new DataTable();
-                adpt.Fill(dt);
+                
 
                 //if (dt.Rows.Count > 0)
                 //{
@@ -446,6 +441,12 @@ namespace DigiLocker3
                 //single.Visible = true;
                 if (string.IsNullOrEmpty(Session["User_ID"] as string))
                 {
+                    query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"Personal No\", Name, Rank from " + table_name + "where name <> 'MAXIMUM MARKS' ";
+                    //Response.Write(query);
+                    cmd = new SqlCommand(query, con);
+                    adpt = new SqlDataAdapter(cmd);
+                    dt = new DataTable();
+                    adpt.Fill(dt);
                     GridView1.DataSource = dt;
                     GridView1.DataBind();
                     GridView3.Visible = false;
@@ -455,6 +456,12 @@ namespace DigiLocker3
                 }
                 else if (Session["Access_Level"].ToString().Equals("4"))
                 {
+                    query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"Personal No\", Name, Rank from " + table_name + "where name <> 'MAXIMUM MARKS' ";
+                    //Response.Write(query);
+                    cmd = new SqlCommand(query, con);
+                    adpt = new SqlDataAdapter(cmd);
+                    dt = new DataTable();
+                    adpt.Fill(dt);
                     GridView1.DataSource = dt;
                     GridView1.DataBind();
                     GridView3.Visible = false;
@@ -463,6 +470,12 @@ namespace DigiLocker3
                     GridView1.EnableViewState = true;
                 }
                 else {
+                    query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"ID\", Personal_No as \"Personal No\", Name, Rank from " + table_name + "where name <> 'MAXIMUM MARKS' ";
+                    //Response.Write(query);
+                    cmd = new SqlCommand(query, con);
+                    adpt = new SqlDataAdapter(cmd);
+                    dt = new DataTable();
+                    adpt.Fill(dt);
                     GridView3.DataSource = dt;
                     GridView3.DataBind();
                     GridView3.Visible = true;

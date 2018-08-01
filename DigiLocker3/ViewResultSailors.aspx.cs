@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using iTextSharp.text.pdf;
+using Ionic.Zip;
+using Ionic.Zlib;
 
 namespace DigiLocker3
 {
@@ -294,6 +296,7 @@ namespace DigiLocker3
 
         protected void Export_Clicked(object sender, EventArgs e)
         {
+            con.Open();
             Response.Clear();
             Response.Buffer = true;
             Response.ClearContent();
@@ -324,11 +327,32 @@ namespace DigiLocker3
             GridView1.GridLines = GridLines.Both;
             GridView1.HeaderStyle.Font.Bold = true;
             GridView1.RenderControl(htmltextwrtter);
+            string query = "Select StartDate from Sailor_Course where course_name = '" + ddlCourseType.SelectedValue + "' and course_no = '" + ddlCourseNo.SelectedValue + "'";
+            SqlCommand com = new SqlCommand(query, con);
+            SqlDataReader dr = com.ExecuteReader();
+            string start_date = "";
+            while (dr.Read())
+            {
+                //term_label = term_label + dr.GetString(0) + "_";
+                start_date = dr.GetString(0);
+            }
+            dr.Close();
+            query = "Select endDate from Sailor_Course where course_name = '" + ddlCourseType.SelectedValue + "' and course_no = '" + ddlCourseNo.SelectedValue + "'";
+            com = new SqlCommand(query, con);
+            dr = com.ExecuteReader();
+            string end_date = "";
+            while (dr.Read())
+            {
+                //term_label = term_label + dr.GetString(0) + "_";
+                end_date = dr.GetString(0);
+            }
+            dr.Close();
             Response.Write("<B>");
-            Response.Write(ddlCourseType.SelectedValue + " " + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " " + ddlEntryType.SelectedValue);
+            Response.Write(ddlCourseType.SelectedValue + " " + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " " + ddlEntryType.SelectedValue + " From " + start_date + " To " + end_date + "<br /><br />");
             Response.Write("</B>");
             Response.Write(strwritter.ToString());
             Response.End();
+            con.Close();
         }
 
         protected void showResult()
@@ -352,16 +376,104 @@ namespace DigiLocker3
                 //term_label = term_label + dr.GetString(0) + "_";
                 term_label = dr.GetString(0);
             }
+            string str = term_label;
             dr.Close();
             //term_label = term_label.Remove(term_label.Length - 1);
             string col_list1 = "";
+            string col_list2 = "";
 
             foreach (string term in term_label.Split('_'))
             {
-                col_list1 = col_list1 + term + "_total, " + term + "_percentage, " + term + "_failed, ";
-                if (seniority.Equals("1"))
+                if ((ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
                 {
-                    col_list1 = col_list1 + term + "_seniority_gained, " + term + "_seniority_lost, " + term + "_seniority_total, " + term + "_Qualified, ";
+                    if(term.Equals("D"))
+                    {
+
+                    }
+                    else
+                    {
+                        query = "select Subject_name from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue + "_SUBJECTS where Term = '" + term + "'";
+                        com = new SqlCommand(query, con);
+                        dr = com.ExecuteReader();
+                        string subject = "";
+                        while (dr.Read())
+                        {
+                            //term_label = term_label + dr.GetString(0) + "_";
+                            subject = dr.GetString(0).Replace(" ", "_");
+                            col_list1 = col_list1 + subject + ", ";
+                        }
+                        dr.Close();
+                        col_list1 = col_list1 + term + "_total, " + term + "_percentage, " + term + "_failed, ";
+                        if (term.Equals("A1") & str.Contains("A2"))
+                        {
+
+                        }
+                        else if (term.Equals("A2"))
+                        {
+                            col_list1 = col_list1 + "A_total, A_percentage, ";
+                        }
+                        else if (term.Equals("B1") & str.Contains("B2"))
+                        {
+
+                        }
+                        else if (term.Equals("B2"))
+                        {
+                            col_list1 = col_list1 + "B_total, B_percentage, ";
+                        }
+                        else
+                        {
+                            //col_list1 = col_list1 + term + "_seniority_gained, " + term + "_seniority_lost, " + term + "_seniority_total, " + term + "_Qualified, ";
+                        }
+                        if (seniority.Equals("1"))
+                        {
+                            if (term.Equals("A1") & str.Contains("A2"))
+                            {
+
+                            }
+                            else if (term.Equals("A2"))
+                            {
+                                col_list1 = col_list1 + "A_seniority_gained, A_seniority_lost, A_seniority_total, A_Qualified, ";
+                            }
+                            else if (term.Equals("B1") & str.Contains("B2"))
+                            {
+
+                            }
+                            else if (term.Equals("B2"))
+                            {
+                                col_list1 = col_list1 + "A_seniority_gained, A_seniority_lost, A_seniority_total, A_Qualified, ";
+                            }
+                            else
+                            {
+                                col_list1 = col_list1 + term + "_seniority_gained, " + term + "_seniority_lost, " + term + "_seniority_total, " + term + "_Qualified, ";
+                            }
+                        }
+                    }
+                }
+                else {
+                    query = "select Subject_name from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue + "_SUBJECTS where Term = '" + term + "'";
+                    com = new SqlCommand(query, con);
+                    dr = com.ExecuteReader();
+                    string subject = "";
+                    while (dr.Read())
+                    {
+                        //term_label = term_label + dr.GetString(0) + "_";
+                        subject = dr.GetString(0).Replace(" ", "_");
+                        col_list1 = col_list1 + subject + ", ";
+                    }
+                    dr.Close();
+                    col_list1 = col_list1 + term + "_total, " + term + "_percentage, " + term + "_failed, ";
+                    if (seniority.Equals("1"))
+                    {
+                        col_list1 = col_list1 + term + "_seniority_gained, " + term + "_seniority_lost, " + term + "_seniority_total, " + term + "_Qualified, ";
+                    }
+                }
+                if ((ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")) & term.Equals("D"))
+                    {
+                    col_list1 = col_list1 + term + "_total, " + term + "_percentage, " + term + "_failed, ";
+                    if (seniority.Equals("1"))
+                    {
+                        col_list1 = col_list1 + term + "_seniority_gained, " + term + "_seniority_lost, " + term + "_seniority_total, " + term + "_Qualified, ";
+                    }
                 }
             }
             col_list1 = col_list1 + "Total_Marks, TOTAL_Percentage, total_seniority_gained, total_seniority_lost, total_seniority, Qualified";
@@ -464,7 +576,7 @@ namespace DigiLocker3
 
                     col_list3 = col_list3 + term + "_Qualified, ";
                     col_list_remarks = col_list_remarks + term + "_Failed > 0 or ";
-                    col_list_remarks1 = col_list_remarks1 + term + "_Failed > 1 or ";
+                    col_list_remarks1 = col_list_remarks1 + term + "_Failed > 2 or ";
                     table_name = course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
                     //string query = "Select Subject_Name from " + table_name;
                     //table_name = course.Replace(" ", "_") + "_" + lbTerm.Items[i].Value + "_SENIORITY_CRITERIA";
@@ -570,6 +682,103 @@ namespace DigiLocker3
                     query = "update " + table_name + " set " + term + "_QUALIFIED = 'YES' where Personal_No IN ( Select Personal_No from " + table_name + " where 0 not in ( " + col_List + " ) and Personal_No in ( Select Personal_No from " + table_name + " where " + term + "_failed = 0 ))";
                     com = new SqlCommand(query, con);
                     com.ExecuteNonQuery();
+                }
+
+            }
+            if ((ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
+            {
+                table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type;
+                query = "select count(column_name) from INFORMATION_SCHEMA.columns where table_name = '" + table_name + "' and column_name in ('A1_total','a2_total')";
+                //query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
+                SqlCommand cmd = new SqlCommand(query, con);
+                int col = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                //col_List = col_List.Substring(1);
+                if (col == 2)
+                {
+                    query = "Update " + table_name + " set A_Total = A1_Total + A2_Total";
+                    cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
+                    query = "Update " + table_name + " set A_Qualified = 'Yes' where A1_Qualified = 'Yes' and A2_Qualified = 'Yes'";
+                    cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
+                    //query = "Update " + table_name + " set A_Percentage = A_Total*100.0/(Select A1_total + A2_Total from " + table_name + " where name ='MAximum_Marks')";
+                    //cmd = new SqlCommand(query, con);
+                    //cmd.ExecuteNonQuery();
+                    if (seniority == "1")
+                    {
+                        table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_A1_SENIORITY";
+
+                        query = "Select lower_lmt, seniority from " + table_name + " order by upper_lmt desc";
+                        cmd = new SqlCommand(query, con);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type;
+                        query = "update " + table_name + " set A_Seniority_gained = CASE";
+                        string subquery = "";
+                        string lower_lmt = "";
+                        string period = "";
+                        while (dr.Read())
+                        {
+                            lower_lmt = dr[0].ToString();
+                            period = dr[1].ToString();
+                            subquery = subquery + " WHEN (A_percentage" + " > " + lower_lmt + ") THEN " + period;
+                        }
+                        dr.Close();
+                        query = query + subquery + " else A_Seniority_gained End";
+                        //Response.Write(query);
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                        query = "update " + table_name + " set A_Seniority_total = A_Seniority_gained - A_Seniority_lost";
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                    }
+
+
+                }
+                query = "select count(column_name) from INFORMATION_SCHEMA.columns where table_name = '" + table_name + "' and column_name in ('B1_total','B2_total')";
+                //query = "If not exists(select name from sysobjects where name = '" + table_name + "') CREATE TABLE " + table_name + "(Personal_No varchar(10) PRIMARY KEY, Name varchar(50), Rank varchar(20)" + col_List + ")";
+                cmd = new SqlCommand(query, con);
+                col = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                //col_List = col_List.Substring(1);
+                if (col == 2)
+                {
+                    query = "Update " + table_name + " set B_Total = B1_Total + B2_Total";
+                    cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
+                    query = "Update " + table_name + " set B_Qualified = 'Yes' where B1_Qualified = 'Yes' and B2_Qualified = 'Yes'";
+                    cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
+                    //query = "Update " + table_name + " set B_Percentage = B_Total*100.0/(Select B1_total + B2_Total from " + table_name + "where name ='MAximum_Marks')";
+                    //cmd = new SqlCommand(query, con);
+                    //cmd.ExecuteNonQuery();
+                    //if (seniority == "1")
+                    {
+                        table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_B1_SENIORITY";
+
+                        query = "Select lower_lmt, seniority from " + table_name + " order by upper_lmt desc";
+                        cmd = new SqlCommand(query, con);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type;
+                        query = "update " + table_name + " set B_Seniority_gained = CASE";
+                        string subquery = "";
+                        string lower_lmt = "";
+                        string period = "";
+                        while (dr.Read())
+                        {
+                            lower_lmt = dr[0].ToString();
+                            period = dr[1].ToString();
+                            subquery = subquery + " WHEN (B_percentage" + " > " + lower_lmt + ") THEN " + period;
+                        }
+                        dr.Close();
+                        query = query + subquery + " else B_Seniority_gained End";
+                        //Response.Write(query);
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                        query = "update " + table_name + " set B_Seniority_total = B_Seniority_gained - B_Seniority_lost";
+                        cmd = new SqlCommand(query, con);
+                        cmd.ExecuteNonQuery();
+                    }
+
+
                 }
 
             }
@@ -718,18 +927,50 @@ namespace DigiLocker3
         {
             calculateResult();
             con.Open();
-            string fileNameExisting = @"C:\\Users\\Kingsmen\\Desktop\\Certificates\\Sample\\Certi1.pdf";
-            string query = "Select Personal_No, Name, Rank from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " where Qualified = 'No'";
+            //string fileNameExisting = @"C:\\Users\\Kingsmen\\Desktop\\Certificates\\Sample\\Certi1.pdf";
+            string query = "Select Startdate, enddate from Sailor_Course where Course_Name = '" + ddlCourseType.SelectedValue + "' and Course_No = '" + ddlCourseNo.SelectedValue + "'";
             SqlCommand com = new SqlCommand(query, con);
             SqlDataReader dr = com.ExecuteReader();
             //Directory.CreateDirectory("Certificates\\" + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_"));
-            string fileNameNew = "";
+            string startdate = "";
+            string enddate = "";
+
+            while (dr.Read())
+            {
+                startdate = dr.GetString(0);
+                enddate = dr.GetString(1);
+            }
+            dr.Close();
+            query = "Select Duration from " + ddlCourseType.SelectedValue.Replace(" ","_") + "_ENTRY_TYPE  where TYPE_Name = '" + ddlEntryType.SelectedValue + "'";
+            com = new SqlCommand(query, con);
+            dr = com.ExecuteReader();
+            //Directory.CreateDirectory("Certificates\\" + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_"));
+            string duration = "";
 
 
             while (dr.Read())
             {
+                duration = dr.GetString(0);
+
+            }
+            dr.Close();
+            string fileNameExisting = Server.MapPath("~/Template_Certi.pdf");
+            query = "Select Personal_No, Name, Rank from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " where Qualified = 'No'";
+            com = new SqlCommand(query, con);
+            dr = com.ExecuteReader();
+            //Directory.CreateDirectory("Certificates\\" + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_"));
+            string fileNameNew = "";
+            string path = "";
+
+            while (dr.Read())
+            {
+                path = "~/Certificates/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "/" + ddlEntryType.SelectedValue.Replace(" ", "_").ToUpper();
+
+                Directory.CreateDirectory(Server.MapPath(path));
+                string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
+                fileNameNew = Server.MapPath(path +"/" + dr.GetString(0) + "_" + dr.GetString(1) + ".pdf");
                 //fileNameNew = @"Certificates\\" + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") +"\\" + dr.GetString(0) + "_" + dr.GetString(1) +  ".pdf";
-                fileNameNew = @"C:\\Users\\Kingsmen\\Desktop\\Certificates\\" + dr.GetString(0) + "_" + dr.GetString(1) + ".pdf";
+                //fileNameNew = @"C:\\Users\\Kingsmen\\Desktop\\Certificates\\" + dr.GetString(0) + "_" + dr.GetString(1) + ".pdf";
                 FileStream existingFileStream = new FileStream(fileNameExisting, FileMode.Open);
                 FileStream newFileStream = new FileStream(fileNameNew, FileMode.Create);
                 var pdfReader = new PdfReader(existingFileStream);
@@ -743,8 +984,10 @@ namespace DigiLocker3
                 //    form.SetField(fieldKey, "REPLACED!");
                 //}
                 form.SetField("TextName", dr.GetString(1) + ", " + dr.GetString(2) + ", " + dr.GetString(0));
-                form.SetField("TextDuration", "26");
+                form.SetField("TextDuration", duration);
                 form.SetField("TextCourse", ddlCourseType.SelectedValue + " Course");
+                form.SetField("TextFrom", startdate);
+                form.SetField("TextTo", enddate);
 
                 stamper.FormFlattening = true;
                 stamper.Close();
@@ -754,6 +997,19 @@ namespace DigiLocker3
 
 
             con.Close();
+            Response.Clear();
+            Response.BufferOutput = false;
+            Response.ContentType = "application/zip";
+            Response.AddHeader("content-disposition", "attachment; filename=" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_").ToUpper() + "_Certificates.zip");
+
+            using (ZipFile zip = new ZipFile())
+            {
+                zip.CompressionLevel = CompressionLevel.None;
+                zip.AddSelectedFiles("*.pdf", Server.MapPath(path+"/"), "", false);
+                zip.Save(Response.OutputStream);
+            }
+
+            Response.Close();
         }
 
         protected void ddlCourseTypeIndexChanged(object sender, EventArgs e)

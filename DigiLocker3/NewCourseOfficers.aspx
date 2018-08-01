@@ -226,6 +226,7 @@
                                         </div>
                                         <div id="div1" runat="server">
                                         <div class="form-group ">
+
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <label>Course Number</label>
@@ -234,6 +235,20 @@
                                                 <div class=" help-tip" style="position: relative; margin-left: 7px; margin-top: 10px; z-index: 500">
                                                     <p>Enter Course Number for the complete course such as 21 for MEAT21 20 for MEAT20.</p>
                                                 </div>
+                                            </div>
+                                            <br />
+                                            <div class="form-group ">
+
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <label>Start Date</label>
+                                                    <asp:TextBox ID="TextBoxStart" CssClass="form-control" runat="server" AutoPostBack="false" placeholder="DD/MMM/YYYY" ></asp:TextBox>
+                                                </div>
+                                                 <div class="col-md-6">
+                                                    <label>End Date</label>
+                                                    <asp:TextBox ID="TextBoxEnd" CssClass="form-control" runat="server" AutoPostBack="false" placeholder="DD/MMM/YYYY" ></asp:TextBox>
+                                                </div>
+                                               
                                             </div>
                                         </div>
                                         <div class="form-group ">
