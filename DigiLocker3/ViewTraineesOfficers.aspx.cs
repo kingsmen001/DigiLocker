@@ -48,21 +48,21 @@ namespace DigiLocker3
                 }
                 else if (Session["Access_Level"].ToString().Equals("2"))
                 {
-                    opnAddCourse.Visible = true;
-                    opnAddTrainees.Visible = true;
-                    opnCreateCourse.Visible = true;
+                    opnAddCourse.Visible = false;
+                    opnAddTrainees.Visible = false;
+                    opnCreateCourse.Visible = false;
                     opnUpdateMarks.Visible = false;
                     opnViewResult.Visible = true;
                     opnViewTrainees.Visible = true;
-                    opnUploadMarks.Visible = true;
+                    opnUploadMarks.Visible = false;
 
-                    opnAddCourseOfficer.Visible = true;
-                    opnAddTraineesOfficer.Visible = true;
-                    opnCreateCourseOfficer.Visible = true;
+                    opnAddCourseOfficer.Visible = false;
+                    opnAddTraineesOfficer.Visible = false;
+                    opnCreateCourseOfficer.Visible = false;
                     opnUpdateMarksOfficer.Visible = false;
                     opnViewResultOfficer.Visible = true;
                     opnViewTraineesOfficer.Visible = true;
-                    opnUploadMarksOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = false;
                 }
                 else if (Session["Access_Level"].ToString().Equals("3"))
                 {
@@ -218,7 +218,7 @@ namespace DigiLocker3
             Response.ClearContent();
             Response.ClearHeaders();
             Response.Charset = "";
-            string FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + ".xls";
+            string FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + lbEntryType.SelectedValue.Replace(" ", "_") + ".xls";
             StringWriter strwritter = new StringWriter();
             HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
@@ -342,7 +342,7 @@ namespace DigiLocker3
 
 
 
-                string name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".",string.Empty) + "_" + "ENTRY_TYPE";
+                string name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + "ENTRY_TYPE";
                 SqlCommand com = new SqlCommand("select * from " + name, con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();
@@ -410,13 +410,13 @@ namespace DigiLocker3
 
             if (lbEntryType.SelectedItem.Text.Equals("All"))
             {
-                query = "select Type_name from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".",string.Empty) + "_Entry_Type where Enrolledin IS Not NULL";
+                query = "select Type_name from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_Entry_Type where Enrolledin IS Not NULL";
                 cmd = new SqlCommand(query, con);
                 SqlDataReader dr = cmd.ExecuteReader();
                 query = "";
                 while (dr.Read())
                 {
-                    query = query + "Select Personal_No as \"Personal No\", Name, Rank from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + dr.GetString(0).Replace(" ", "_") + " where name <> 'MAXIMUM MARKS' UNION ";
+                    query = query + "Select Personal_No as \"Personal No\", Name, Rank from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + dr.GetString(0).Replace(" ", "_") + " where name <> 'MAXIMUM MARKS' UNION ";
                 }
                 dr.Close();
                 query = query.Substring(0, query.LastIndexOf("UNION"));
@@ -432,7 +432,7 @@ namespace DigiLocker3
                 GridView1.EnableViewState = true;
             }
             else {
-                table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
+                table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
                 
 
                 //if (dt.Rows.Count > 0)
@@ -441,7 +441,7 @@ namespace DigiLocker3
                 //single.Visible = true;
                 if (string.IsNullOrEmpty(Session["User_ID"] as string))
                 {
-                    query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"Personal No\", Name, Rank from " + table_name + "where name <> 'MAXIMUM MARKS' ";
+                    query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"Personal No\", Name, Rank from " + table_name + " where name <> 'MAXIMUM MARKS' ";
                     //Response.Write(query);
                     cmd = new SqlCommand(query, con);
                     adpt = new SqlDataAdapter(cmd);
@@ -456,7 +456,7 @@ namespace DigiLocker3
                 }
                 else if (Session["Access_Level"].ToString().Equals("4"))
                 {
-                    query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"Personal No\", Name, Rank from " + table_name + "where name <> 'MAXIMUM MARKS' ";
+                    query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"Personal No\", Name, Rank from " + table_name + " where name <> 'MAXIMUM MARKS' ";
                     //Response.Write(query);
                     cmd = new SqlCommand(query, con);
                     adpt = new SqlDataAdapter(cmd);
@@ -470,7 +470,7 @@ namespace DigiLocker3
                     GridView1.EnableViewState = true;
                 }
                 else {
-                    query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"ID\", Personal_No as \"Personal No\", Name, Rank from " + table_name + "where name <> 'MAXIMUM MARKS' ";
+                    query = "If exists(select name from sysobjects where name = '" + table_name + "') Select Personal_No as \"ID\", Personal_No as \"Personal No\", Name, Rank from " + table_name + " where name <> 'MAXIMUM MARKS' ";
                     //Response.Write(query);
                     cmd = new SqlCommand(query, con);
                     adpt = new SqlDataAdapter(cmd);
@@ -515,7 +515,7 @@ namespace DigiLocker3
             TextBox marks = GridView3.Rows[e.RowIndex].FindControl("txt_Rank") as TextBox;
             con.Open();
             //updating the record  
-            table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
+            table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
             SqlCommand cmd = new SqlCommand("Update " + table_name + " set Personal_No ='" + id.Text + "', Name='" + name.Text + "', Rank ='" + marks.Text + "' where Personal_no = '" + id1.Text + "'", con);
             cmd.ExecuteNonQuery();
             con.Close();
@@ -536,7 +536,7 @@ namespace DigiLocker3
             if (coursename == null)
                 coursename = ddlCourseType.SelectedValue;
             Label id = GridView3.Rows[e.RowIndex].FindControl("lbl_No") as Label;
-            table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
+            table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
             con.Open();
 
             SqlCommand cmd = new SqlCommand("delete FROM " + table_name + " where Personal_No = '" + id.Text + "'", con);

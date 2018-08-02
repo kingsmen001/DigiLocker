@@ -46,21 +46,21 @@ namespace DigiLocker3
                 }
                 else if (Session["Access_Level"].ToString().Equals("2"))
                 {
-                    opnAddCourse.Visible = true;
-                    opnAddTrainees.Visible = true;
-                    opnCreateCourse.Visible = true;
+                    opnAddCourse.Visible = false;
+                    opnAddTrainees.Visible = false;
+                    opnCreateCourse.Visible = false;
                     opnUpdateMarks.Visible = false;
                     opnViewResult.Visible = true;
                     opnViewTrainees.Visible = true;
-                    opnUploadMarks.Visible = true;
+                    opnUploadMarks.Visible = false;
 
-                    opnAddCourseOfficer.Visible = true;
-                    opnAddTraineesOfficer.Visible = true;
-                    opnCreateCourseOfficer.Visible = true;
+                    opnAddCourseOfficer.Visible = false;
+                    opnAddTraineesOfficer.Visible = false;
+                    opnCreateCourseOfficer.Visible = false;
                     opnUpdateMarksOfficer.Visible = false;
                     opnViewResultOfficer.Visible = true;
                     opnViewTraineesOfficer.Visible = true;
-                    opnUploadMarksOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = false;
                 }
                 else if (Session["Access_Level"].ToString().Equals("3"))
                 {
@@ -131,7 +131,7 @@ namespace DigiLocker3
                 labelnumber.Visible = false;
                 labelnumber.EnableViewState = false;
                 coursename = Request.QueryString["coursename"];
-                courseno = Request.QueryString["courseno"].Replace(".",string.Empty);
+                courseno = Request.QueryString["courseno"].Replace("-",string.Empty);
             }
 
 
@@ -158,7 +158,7 @@ namespace DigiLocker3
                 if (coursename == null & courseno == null)
                 {
                     //coursename = ddlCourseType.Items[0].Text;
-                    //courseno = ddlCourseNo.Items[0].Text.Replace(".", string.Empty);
+                    //courseno = ddlCourseNo.Items[0].Text.Replace("-", string.Empty);
                     div1.Visible = false;
                     div2.Visible = false;
                     div3.Visible = false;
@@ -168,7 +168,7 @@ namespace DigiLocker3
                     con.Open();
                     string name = ddlCourseType.SelectedValue.Replace(" ", "_");
                     coursename = coursename.Replace(" ", "_");
-                    courseno = courseno.Replace(".", string.Empty);
+                    courseno = courseno.Replace("-", string.Empty);
                     com = new SqlCommand("select Course_No from Officer_Course where Course_Name ='" + coursename + "'", con); // table name 
                     da = new SqlDataAdapter(com);
                     ds = new DataSet();
@@ -179,8 +179,11 @@ namespace DigiLocker3
                     ddlCourseNo.DataBind();
 
                     if (coursename == null)
+                    {
                         coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
-                    com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".",string.Empty) + "_ENTRY_TYPE", con); // table name 
+                        courseno = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
+                    }
+                    com = new SqlCommand("select * from " + coursename.Replace(" ", "_") + "_" + courseno + "_ENTRY_TYPE", con); // table name 
                     da = new SqlDataAdapter(com);
                     ds = new DataSet();
                     da.Fill(ds);  // fill dataset
@@ -190,8 +193,11 @@ namespace DigiLocker3
                     ddlEntryType.DataBind();
 
                     if (coursename == null)
+                    {
                         coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
-                    com = new SqlCommand("select EnrolledIn from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
+                        courseno = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
+                    }
+                    com = new SqlCommand("select TERM_LABEL from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
                     List<string> termLabel = new List<string>();
                     using (SqlDataReader dr = com.ExecuteReader())
                     {
@@ -254,7 +260,7 @@ namespace DigiLocker3
             if (coursename == null & courseno == null)
             {
                 coursename = ddlCourseType.SelectedValue;
-                courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+                courseno = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
             }
             if (rbtnind.Checked)
             {
@@ -353,7 +359,7 @@ namespace DigiLocker3
                     //GridView1.DataBind();
                     //var data = theSheet.Cells["A1:P34"].Value;
                     //var Summary = workbook1.Worksheets[1];
-                    query = "Select Name, Rank, Personal_No, Theory as Class from tblPersons";
+                    query = "Select Personal_No, Name, Rank, Theory as Class from tblPersons";
 
                     com = new SqlCommand(query, con);
                     SqlDataAdapter adpt = new SqlDataAdapter(com);
@@ -418,7 +424,7 @@ namespace DigiLocker3
             if (coursename == null & courseno == null)
             {
                 coursename = ddlCourseType.SelectedValue;
-                courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+                courseno = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
             }
             string table_name = "";
             if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
@@ -554,7 +560,7 @@ namespace DigiLocker3
             if (coursename == null & courseno == null)
             {
                 coursename = ddlCourseType.SelectedValue;
-                courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+                courseno = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
             }
             string table_name = "";
             //string course_type = ddlCourseType.SelectedValue.Replace(" ", "_");
@@ -708,7 +714,7 @@ namespace DigiLocker3
             if (coursename == null & courseno == null)
             {
                 coursename = ddlCourseType.SelectedValue;
-                courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+                courseno = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
             }
             con.Open();
 
@@ -912,7 +918,7 @@ namespace DigiLocker3
                 //if (coursename == null & courseno == null)
                 //{
                 //    coursename = ddlCourseType.SelectedValue;
-                //    courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+                //    courseno = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
                 //}
                 //com = new SqlCommand("select TERM_LABEL from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
                 //List<string> termLabel = new List<string>();
@@ -1023,7 +1029,7 @@ namespace DigiLocker3
 
 
 
-                string name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
+                string name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_ENTRY_TYPE";
                 SqlCommand com = new SqlCommand("select * from " + name, con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();
@@ -1038,7 +1044,7 @@ namespace DigiLocker3
                 if (coursename == null & courseno == null)
                 {
                     coursename = ddlCourseType.SelectedValue;
-                    courseno = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+                    courseno = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
                 }
                 com = new SqlCommand("select TERM_LABEL from " + coursename.Replace(" ", "_") + "_ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
                 List<string> termLabel = new List<string>();

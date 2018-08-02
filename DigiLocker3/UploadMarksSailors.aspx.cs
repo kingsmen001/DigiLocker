@@ -41,21 +41,21 @@ namespace DigiLocker3
                 }
                 else if (Session["Access_Level"].ToString().Equals("2"))
                 {
-                    opnAddCourse.Visible = true;
-                    opnAddTrainees.Visible = true;
-                    opnCreateCourse.Visible = true;
+                    opnAddCourse.Visible = false;
+                    opnAddTrainees.Visible = false;
+                    opnCreateCourse.Visible = false;
                     opnUpdateMarks.Visible = false;
                     opnViewResult.Visible = true;
                     opnViewTrainees.Visible = true;
-                    opnUploadMarks.Visible = true;
+                    opnUploadMarks.Visible = false;
 
-                    opnAddCourseOfficer.Visible = true;
-                    opnAddTraineesOfficer.Visible = true;
-                    opnCreateCourseOfficer.Visible = true;
+                    opnAddCourseOfficer.Visible = false;
+                    opnAddTraineesOfficer.Visible = false;
+                    opnCreateCourseOfficer.Visible = false;
                     opnUpdateMarksOfficer.Visible = false;
                     opnViewResultOfficer.Visible = true;
                     opnViewTraineesOfficer.Visible = true;
-                    opnUploadMarksOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = false;
                 }
                 else if (Session["Access_Level"].ToString().Equals("3"))
                 {
@@ -114,6 +114,19 @@ namespace DigiLocker3
                 opnViewTrainees.Visible = true;
                 opnUploadMarks.Visible = false;
             }
+            //if (Session["index"] != null)
+            //{
+            //    int index = Convert.ToInt32(Session["Index"]);
+            //    DropDownList1.SelectedIndex = index;
+            //}
+            //if (this.IsPostBack & Session["Subject"]!=null)
+            //{
+            //    int ind = DropDownList1.Items.IndexOf(DropDownList1.Items.FindByText(DropDownList1.SelectedItem.Text));
+            //    int ind1 = DropDownList1.Items.IndexOf(DropDownList1.Items.FindByText("SUB5"));
+            //    int index = DropDownList1.SelectedIndex;
+            //    DropDownList1.SelectedIndex = index;
+
+            //}
             if (!this.IsPostBack)
             {
                 con.Open();
@@ -129,6 +142,7 @@ namespace DigiLocker3
                 ddlCourseType.Items.Insert(0, new ListItem("Select", "0"));
                 div1.Visible = false;
                 div2.Visible = false;
+                
 
                 /*
                 string course_name = ddlCourseType.Items[0].Value;
@@ -188,10 +202,10 @@ namespace DigiLocker3
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset
-                ddlSubject1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
-                ddlSubject1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
-                ddlSubject1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-                ddlSubject1.DataBind();
+                DropDownList1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+                DropDownList1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
+                DropDownList1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                DropDownList1.DataBind();
 
     */
                 con.Close();
@@ -200,61 +214,66 @@ namespace DigiLocker3
 
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            con.Open();
-            string query = "delete from tblPersons";
-            SqlCommand com = new SqlCommand(query, con);
-            com.ExecuteNonQuery();
-            if (FileUpload1.HasFile)
-            {
-                Session["FileUpload1"] = FileUpload1;
-                string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
-                string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-                string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
 
-                string FilePath = Server.MapPath(FolderPath + FileName);
-                FileUpload1.SaveAs(FilePath);
-                //Import_To_Grid(FilePath, Extension);
-                FileInfo newFile = new FileInfo(FilePath);
-                ExcelPackage pck = new ExcelPackage(newFile);
-                var theWorkbook = pck.Workbook;
-                var theSheet = theWorkbook.Worksheets[1];
-                int num = Convert.ToInt32(theSheet.Cells[9, 2].Value.ToString());
-                num = num + 12;
-                for (int row = 12; row < num; row++)
+            //if (!IsPostBack)
+            //{
+                con.Open();
+                string query = "delete from tblPersons";
+                SqlCommand com = new SqlCommand(query, con);
+                com.ExecuteNonQuery();
+                //Session["index"] = DropDownList1.SelectedIndex;
+                if (FileUpload1.HasFile)
                 {
-                    string entry_type = "app_power";
-                    string name = theSheet.Cells[row, 3].Value.ToString();
-                    string rank = theSheet.Cells[row, 4].Value.ToString();
-                    string number = theSheet.Cells[row, 5].Value.ToString();
-                    string theory = theSheet.Cells[row, 6].Value.ToString();
-                    string ia = theSheet.Cells[row, 7].Value.ToString();
-                    string practical = theSheet.Cells[row, 8].Value.ToString();
-                    string marks = theSheet.Cells[row, 9].Value.ToString();
-                    query = "insert into tblPersons(Personal_No, Name, Rank, Theory, IA, Practical, Marks) values( '" + number + "', '" + name + "', '" + rank + "', '" + theory + "', '" + ia + "', '" + practical + "', '" + marks + "')";
+                    Session["FileUpload1"] = FileUpload1;
+                    string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
+                    string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
+                    string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
+
+                    string FilePath = Server.MapPath(FolderPath + FileName);
+                    FileUpload1.SaveAs(FilePath);
+                    //Import_To_Grid(FilePath, Extension);
+                    FileInfo newFile = new FileInfo(FilePath);
+                    ExcelPackage pck = new ExcelPackage(newFile);
+                    var theWorkbook = pck.Workbook;
+                    var theSheet = theWorkbook.Worksheets[1];
+                    int num = Convert.ToInt32(theSheet.Cells[9, 2].Value.ToString());
+                    num = num + 12;
+                    for (int row = 12; row < num; row++)
+                    {
+                        string entry_type = "app_power";
+                        string name = theSheet.Cells[row, 3].Value.ToString();
+                        string rank = theSheet.Cells[row, 4].Value.ToString();
+                        string number = theSheet.Cells[row, 5].Value.ToString();
+                        string theory = theSheet.Cells[row, 6].Value.ToString();
+                        string ia = theSheet.Cells[row, 7].Value.ToString();
+                        string practical = theSheet.Cells[row, 8].Value.ToString();
+                        string marks = theSheet.Cells[row, 9].Value.ToString();
+                        query = "insert into tblPersons(Personal_No, Name, Rank, Theory, IA, Practical, Marks) values( '" + number + "', '" + name + "', '" + rank + "', '" + theory + "', '" + ia + "', '" + practical + "', '" + marks + "')";
+                        com = new SqlCommand(query, con);
+                        com.ExecuteNonQuery();
+                    }
+                    //GridView1.DataSource = WorksheetToDataTable(theSheet);
+                    //GridView1.DataBind();
+                    //var data = theSheet.Cells["A1:P34"].Value;
+                    //var Summary = workbook1.Worksheets[1];
+                    query = "Select Name, Rank, Personal_No, Theory, IA, Practical, Marks from tblPersons";
+
                     com = new SqlCommand(query, con);
-                    com.ExecuteNonQuery();
+                    SqlDataAdapter adpt = new SqlDataAdapter(com);
+                    DataTable dt = new DataTable();
+                    adpt.Fill(dt);
+
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
+                    ConfirmButton.Visible = true;
+                    ConfirmButton.EnableViewState = true;
                 }
-                //GridView1.DataSource = WorksheetToDataTable(theSheet);
-                //GridView1.DataBind();
-                //var data = theSheet.Cells["A1:P34"].Value;
-                //var Summary = workbook1.Worksheets[1];
-                query = "Select Name, Rank, Personal_No, Theory, IA, Practical, Marks from tblPersons";
-
-                com = new SqlCommand(query, con);
-                SqlDataAdapter adpt = new SqlDataAdapter(com);
-                DataTable dt = new DataTable();
-                adpt.Fill(dt);
-
-                GridView1.DataSource = dt;
-                GridView1.DataBind();
-                ConfirmButton.Visible = true;
-                ConfirmButton.EnableViewState = true;
-            }
-            else
-            {
-                Response.Write("<script language='javascript'>alert('Please Select a File');</script>");
-            }
-            con.Close();
+                else
+                {
+                    Response.Write("<script language='javascript'>alert('Please Select a File');</script>");
+                }
+                con.Close();
+            //}
         }
 
         private DataTable WorksheetToDataTable(ExcelWorksheet oSheet)
@@ -323,9 +342,9 @@ namespace DigiLocker3
             string course_type = ddlCourseType.SelectedValue.Replace(" ", "_");
             string course_no = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
             string entry_type = ddlEntryType.SelectedValue.Replace(" ", "_");
-            string subject = ddlSubject1.SelectedItem.Text.Replace(" ", "_");
+            string subject = DropDownList1.SelectedItem.Text.Replace(" ", "_");
             string term = ddlTerm.SelectedValue;
-            int max_marks = Convert.ToInt32(ddlSubject1.SelectedValue);
+            int max_marks = Convert.ToInt32(DropDownList1.SelectedValue);
             SqlCommand cmd;
             string query;
             string marks_entered = "\n";
@@ -338,7 +357,7 @@ namespace DigiLocker3
                 if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
                 {
                     table_name = course_type + "_" + course_no + "_D_TERM";
-                    query = "select Total from " + table_name + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + ddlSubject1.SelectedItem.Text + "'";
+                    query = "select Total from " + table_name + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + DropDownList1.SelectedItem.Text + "'";
                     cmd = new SqlCommand(query, con);
                     SqlDataReader dr = cmd.ExecuteReader();
                     while (dr.Read())
@@ -346,7 +365,7 @@ namespace DigiLocker3
                         markspresent = dr.GetInt32(0);
                     }
                     dr.Close();
-                    query = "Select ENTRY_NAME from " + ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " where Personal_No = '" + g1.Cells[2].Text + "'";
+                    query = "Select ENTRY_NAME from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " where Personal_No = '" + g1.Cells[2].Text + "'";
                     string entry_name = "";
                     cmd = new SqlCommand(query, con);
                     dr = cmd.ExecuteReader();
@@ -355,7 +374,7 @@ namespace DigiLocker3
                         entry_name = dr.GetString(0);
                     }
                     dr.Close();
-                    query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + ddlSubject1.SelectedItem.Text + "'";
+                    query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + DropDownList1.SelectedItem.Text + "'";
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
                     int marks = Convert.ToInt32(g1.Cells[6].Text);
@@ -366,7 +385,7 @@ namespace DigiLocker3
 
                             if (markspresent == 0)
                             {
-                                table_name = ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_name.Replace(" ", "_");
+                                table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_name.Replace(" ", "_");
                                 query = "update " + table_name + " set " + term + "_Failed = " + term + "_failed + 1" + " where Personal_No = '" + g1.Cells[2].Text + "'";
                                 cmd = new SqlCommand(query, con);
                                 cmd.ExecuteNonQuery();
@@ -375,7 +394,7 @@ namespace DigiLocker3
 
                         query = "";
                         table_name = course_type + "_" + course_no + "_D_TERM";
-                        query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + ddlSubject1.SelectedItem.Text + "'";
+                        query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + DropDownList1.SelectedItem.Text + "'";
                         //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                         cmd = new SqlCommand(query, con);
                         cmd.ExecuteNonQuery();
@@ -387,13 +406,13 @@ namespace DigiLocker3
                         if (markspresent < (50.0 * max_marks) / 100.0)
                         {
                             table_name = course_type + "_" + course_no + "_D_TERM";
-                            query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + ddlSubject1.SelectedItem.Text + "'";
+                            query = "update " + table_name + " set total " + "= " + g1.Cells[6].Text + ", theory = " + g1.Cells[3].Text + ", IA = " + g1.Cells[4].Text + ", Practical = " + g1.Cells[5].Text + " where Personal_No = '" + g1.Cells[2].Text + "' and Subject_Name = '" + DropDownList1.SelectedItem.Text + "'";
                             //cmd = new SqlCommand("insert into " + table_name + "(Personal_No, Name, Rank) values ('" + g1.Cells[0].Text + "','" + g1.Cells[1].Text + "','" + g1.Cells[2].Text + "')", con);
                             cmd = new SqlCommand(query, con);
                             cmd.ExecuteNonQuery();
                             if (Convert.ToInt32(g1.Cells[6].Text) > (50.0 * max_marks) / 100.0)
                             {
-                                table_name = ddlCourseType.SelectedValue.Replace(" ", ".") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_name.Replace(" ", "_");
+                                table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_name.Replace(" ", "_");
                                 query = "update " + table_name + " set " + term + "_Failed = CASE WHEN " + term + "_failed > 0 THEN " + term + "_failed - 1 END where Personal_No = '" + g1.Cells[2].Text + "'";
                                 cmd = new SqlCommand(query, con);
                                 //cmd.ExecuteNonQuery();
@@ -605,10 +624,10 @@ namespace DigiLocker3
                 //da = new SqlDataAdapter(com);
                 //ds = new DataSet();
                 //da.Fill(ds);  // fill dataset
-                //ddlSubject1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
-                //ddlSubject1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
-                //ddlSubject1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-                //ddlSubject1.DataBind();
+                //DropDownList1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+                //DropDownList1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
+                //DropDownList1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                //DropDownList1.DataBind();
                 con.Close();
             }
 
@@ -707,7 +726,7 @@ namespace DigiLocker3
 
                     string query = "";
                     string type_name = "";
-                    string table_name = "MEAT_POWER_D_TERM_SUBJECTS";
+                    string table_name = ddlCourseType.SelectedValue.Replace(" ","_")+"_D_TERM_SUBJECTS";
 
 
                     query = query + "Select Subject_Name, Max_Marks from " + table_name;
@@ -717,11 +736,12 @@ namespace DigiLocker3
                     da = new SqlDataAdapter(com);
                     ds = new DataSet();
                     da.Fill(ds);  // fill dataset
-                    ddlSubject1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
-                    ddlSubject1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
-                    ddlSubject1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-                    ddlSubject1.DataBind();
-                    //ddlSubject1.Items.Insert(0, new ListItem("Select", "0"));
+                    DropDownList1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+                    DropDownList1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
+                    DropDownList1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                    DropDownList1.DataBind();
+                    Session["Subject"] = "Yes";
+                    //DropDownList1.Items.Insert(0, new ListItem("Select", "0"));
                     con.Close();
                 }
                 else {
@@ -755,11 +775,12 @@ namespace DigiLocker3
                     da = new SqlDataAdapter(com);
                     ds = new DataSet();
                     da.Fill(ds);  // fill dataset
-                    ddlSubject1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
-                    ddlSubject1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
-                    ddlSubject1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-                    ddlSubject1.DataBind();
-                    ddlSubject1.Items.Insert(0, new ListItem("Select", "0"));
+                    DropDownList1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+                    DropDownList1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
+                    DropDownList1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+                    DropDownList1.DataBind();
+                    Session["Subject"] = "Yes";
+                    DropDownList1.Items.Insert(0, new ListItem("Select", "0"));
                     con.Close();
                 }
             }
@@ -767,13 +788,17 @@ namespace DigiLocker3
 
         protected void ddlSubjectIndexChanged(object sender, EventArgs e)
         {
-            ddlSubject1.Items.Remove(ddlSubject1.Items.FindByValue("0"));
-            if (ddlSubject1.SelectedValue.Equals("0"))
+           
+            //DropDownList1.Items.Remove(DropDownList1.Items.FindByValue("0"));
+           
+
+            if (DropDownList1.SelectedValue.Equals("0"))
             {
                 div1.Visible = false;
                 div2.Visible = false;
             }
             else {
+                
                 div1.Visible = true;
                 div2.Visible = true;
                 div6.Visible = true;
@@ -796,10 +821,10 @@ namespace DigiLocker3
             //SqlDataAdapter da = new SqlDataAdapter(com);
             //DataSet ds = new DataSet();
             //da.Fill(ds);  // fill dataset
-            //ddlSubject1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
-            //ddlSubject1.DataValueField = ds.Tables[0].Columns["Subject_Name"].ToString();             // to retrive specific  textfield name 
-            //ddlSubject1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            //ddlSubject1.DataBind();
+            //DropDownList1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+            //DropDownList1.DataValueField = ds.Tables[0].Columns["Subject_Name"].ToString();             // to retrive specific  textfield name 
+            //DropDownList1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+            //DropDownList1.DataBind();
             //string term = ddlTerm.SelectedValue;
             string query = "";
             string type_name = "";
@@ -819,10 +844,10 @@ namespace DigiLocker3
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
             da.Fill(ds);  // fill dataset
-            ddlSubject1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
-            ddlSubject1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
-            ddlSubject1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
-            ddlSubject1.DataBind();
+            DropDownList1.DataTextField = ds.Tables[0].Columns["Subject_Name"].ToString(); // text field name of table dispalyed in dropdown
+            DropDownList1.DataValueField = ds.Tables[0].Columns["Max_Marks"].ToString();             // to retrive specific  textfield name 
+            DropDownList1.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
+            DropDownList1.DataBind();
             con.Close();
         }
 

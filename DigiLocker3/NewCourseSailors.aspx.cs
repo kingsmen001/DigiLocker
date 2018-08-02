@@ -42,21 +42,21 @@ namespace DigiLocker3
                 }
                 else if (Session["Access_Level"].ToString().Equals("2"))
                 {
-                    opnAddCourse.Visible = true;
-                    opnAddTrainees.Visible = true;
-                    opnCreateCourse.Visible = true;
+                    opnAddCourse.Visible = false;
+                    opnAddTrainees.Visible = false;
+                    opnCreateCourse.Visible = false;
                     opnUpdateMarks.Visible = false;
                     opnViewResult.Visible = true;
                     opnViewTrainees.Visible = true;
-                    opnUploadMarks.Visible = true;
+                    opnUploadMarks.Visible = false;
 
-                    opnAddCourseOfficer.Visible = true;
-                    opnAddTraineesOfficer.Visible = true;
-                    opnCreateCourseOfficer.Visible = true;
+                    opnAddCourseOfficer.Visible = false;
+                    opnAddTraineesOfficer.Visible = false;
+                    opnCreateCourseOfficer.Visible = false;
                     opnUpdateMarksOfficer.Visible = false;
                     opnViewResultOfficer.Visible = true;
                     opnViewTraineesOfficer.Visible = true;
-                    opnUploadMarksOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = false;
                 }
                 else if (Session["Access_Level"].ToString().Equals("3"))
                 {
@@ -257,8 +257,8 @@ namespace DigiLocker3
                         cmd = new SqlCommand(insertQuery, con);
                         cmd.Parameters.AddWithValue("@Course_No", Course_Number_TextBox.Text);
                         cmd.Parameters.AddWithValue("@Course_Name", name);
-                        cmd.Parameters.AddWithValue("@StartDate", TextBoxStart.Text);
-                        cmd.Parameters.AddWithValue("@EndDate", TextBoxEnd.Text);
+                        cmd.Parameters.AddWithValue("@StartDate", "1/JAN/2017");
+                        cmd.Parameters.AddWithValue("@EndDate", "31/DEC/2018");
                         cmd.ExecuteNonQuery();
                         string query = "Select Type_Name from SAILOR_COURSE_TYPE";
                         //cmd = new SqlCommand(query, con);

@@ -44,21 +44,21 @@ namespace DigiLocker3
                 }
                 else if (Session["Access_Level"].ToString().Equals("2"))
                 {
-                    opnAddCourse.Visible = true;
-                    opnAddTrainees.Visible = true;
-                    opnCreateCourse.Visible = true;
+                    opnAddCourse.Visible = false;
+                    opnAddTrainees.Visible = false;
+                    opnCreateCourse.Visible = false;
                     opnUpdateMarks.Visible = false;
                     opnViewResult.Visible = true;
                     opnViewTrainees.Visible = true;
-                    opnUploadMarks.Visible = true;
+                    opnUploadMarks.Visible = false;
 
-                    opnAddCourseOfficer.Visible = true;
-                    opnAddTraineesOfficer.Visible = true;
-                    opnCreateCourseOfficer.Visible = true;
+                    opnAddCourseOfficer.Visible = false;
+                    opnAddTraineesOfficer.Visible = false;
+                    opnCreateCourseOfficer.Visible = false;
                     opnUpdateMarksOfficer.Visible = false;
                     opnViewResultOfficer.Visible = true;
                     opnViewTraineesOfficer.Visible = true;
-                    opnUploadMarksOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = false;
                 }
                 else if (Session["Access_Level"].ToString().Equals("3"))
                 {
@@ -151,8 +151,8 @@ namespace DigiLocker3
 
 
 
-                //name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
-                //com = new SqlCommand("select Distinct(Entry_NAME) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty), con); // table name 
+                //name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_ENTRY_TYPE";
+                //com = new SqlCommand("select Distinct(Entry_NAME) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty), con); // table name 
                 //da = new SqlDataAdapter(com);
                 //ds = new DataSet();
                 //da.Fill(ds);  // fill dataset
@@ -161,7 +161,7 @@ namespace DigiLocker3
                 //ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 //ddlEntryType.DataBind();
 
-                //string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
+                //string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_ENTRY_TYPE";
                 //List<string> termLabel = new List<string>();
                 ////string term_Label = "";
                 //com = new SqlCommand("select ENROLLEDIN from " + table_name + " where TYPE_NAME = '" + ddlEntryType.SelectedValue +"'" , con); // table name 
@@ -196,7 +196,7 @@ namespace DigiLocker3
             //lbTerm.Items.Remove(lbTerm.Items.FindByValue("Please Select"));
             if (lbTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
             {
-                SqlCommand com = new SqlCommand("select Distinct(D) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty), con); // table name 
+                SqlCommand com = new SqlCommand("select Distinct(D) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty), con); // table name 
                 SqlDataAdapter da = new SqlDataAdapter(com);
                 DataSet ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -208,7 +208,7 @@ namespace DigiLocker3
                 divclass.Visible = true;
 
                 string col_List = "D_total, D_percentage, D_failed, D_Seniority_gained, D_Seniority_lost, D_Seniority_total, D_Qualified ";
-                string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
+                string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_");
                 string query = "select Personal_No, Name, Rank, " + col_List + ", Remarks from " + table_name;
                 //Response.Write(query);
                 SqlCommand cmd = new SqlCommand(query, con);
@@ -234,7 +234,7 @@ namespace DigiLocker3
 
                     DataTable dt = new DataTable();
                     string course = ddlCourseType.SelectedValue;
-                    string course_no = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+                    string course_no = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
                     string entry_type = ddlEntryType.SelectedValue;
                     string col_List = "";
                     string table_name = "";
@@ -245,7 +245,7 @@ namespace DigiLocker3
                         if (lbTerm.Items[i].Selected)
                         {
                             string term = lbTerm.Items[i].Value;
-                            table_name = course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
+                            table_name = course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
 
                             cmd = new SqlCommand("select Subject_Name from " + table_name + " where Term = '" + term + "'", con);
                             SqlDataReader dr = cmd.ExecuteReader();
@@ -305,12 +305,12 @@ namespace DigiLocker3
             string heading;
             if (lbTerm.SelectedItem.Text.Equals("Please Select"))
             {
-                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "Result.xls";
-                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", " ");
+                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "Result.xls";
+                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", " ");
             }
             else {
-                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + lbTerm.SelectedItem.Text + "Result.xls";
-                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " " + ddlEntryType.SelectedValue.Replace(" ", " ") + " " + lbTerm.SelectedItem.Text + "_Term";
+                FileName = ddlCourseType.SelectedValue.Replace(" ", "_") + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_" + lbTerm.SelectedItem.Text + "Result.xls";
+                heading = ddlCourseType.SelectedValue.Replace(" ", " ") + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + " " + ddlEntryType.SelectedValue.Replace(" ", " ") + " " + lbTerm.SelectedItem.Text + "_Term";
             }
             StringWriter strwritter = new StringWriter();
             HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
@@ -327,7 +327,7 @@ namespace DigiLocker3
             GridView1.HeaderStyle.Font.Bold = true;
             GridView1.RenderControl(htmltextwrtter);
             Response.Write("<B>");
-            Response.Write(ddlCourseType.SelectedValue + " " + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " " + ddlEntryType.SelectedValue);
+            Response.Write(ddlCourseType.SelectedValue + " " + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + " " + ddlEntryType.SelectedValue);
             Response.Write("</B>");
             Response.Write(strwritter.ToString());
             Response.End();
@@ -338,14 +338,14 @@ namespace DigiLocker3
             calculateResult();
             DataTable dt = new DataTable();
             string course = ddlCourseType.SelectedValue;
-            string course_no = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+            string course_no = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
             string entry_type = ddlEntryType.SelectedValue;
 
             string table_name = course.Replace(" ", "_") + "_" + course_no + "_" + entry_type.Replace(" ", "_");
             SqlCommand cmd;
             con.Open();
 
-            string query = "Select ENROLLEDIN from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + "ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue.Replace(" ", "_") + "'";
+            string query = "Select ENROLLEDIN from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + "ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue.Replace(" ", "_") + "'";
             SqlCommand com = new SqlCommand(query, con);
             SqlDataReader dr = com.ExecuteReader();
             string term_label = "";
@@ -364,7 +364,7 @@ namespace DigiLocker3
                 if (lbTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
                 { }
                 else {
-                    query = "select Subject_name from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue + "_SUBJECTS where Term = '" + term + "'";
+                    query = "select Subject_name from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + ddlEntryType.SelectedValue + "_SUBJECTS where Term = '" + term + "'";
                     com = new SqlCommand(query, con);
                     dr = com.ExecuteReader();
                     string subject = "";
@@ -400,11 +400,11 @@ namespace DigiLocker3
         protected void calculateResult()
         {
             string course = ddlCourseType.SelectedValue;
-            string course_no = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+            string course_no = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
             string entry_type = ddlEntryType.SelectedValue.Replace(" ", "_");
             con.Open();
-            string query = "Select DISTINCT(TERM) from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
-            query = "Select ENROLLEDIN from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + "ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue.Replace(" ", "_") + "'";
+            string query = "Select DISTINCT(TERM) from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
+            query = "Select ENROLLEDIN from " + course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + "ENTRY_TYPE where TYPE_NAME = '" + ddlEntryType.SelectedValue.Replace(" ", "_") + "'";
             SqlCommand com = new SqlCommand(query, con);
             SqlDataReader dt = com.ExecuteReader();
             string term_label = "";
@@ -483,7 +483,7 @@ namespace DigiLocker3
                     col_list3 = col_list3 + term + "_Qualified, ";
                     col_list_remarks = col_list_remarks + term + "_Failed > 0 or ";
                     col_list_remarks1 = col_list_remarks1 + term + "_Failed > 2 or ";
-                    table_name = course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
+                    table_name = course.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + entry_type.Replace(" ", "_") + "_SUBJECTS";
                     //string query = "Select Subject_Name from " + table_name;
                     //table_name = course.Replace(" ", "_") + "_" + lbTerm.Items[i].Value + "_SENIORITY_CRITERIA";
 
@@ -682,7 +682,7 @@ namespace DigiLocker3
             con.Open();
             int i = 0;
             string course_type = ddlCourseType.SelectedValue;
-            string course_no = ddlCourseNo.SelectedValue.Replace(".", string.Empty);
+            string course_no = ddlCourseNo.SelectedValue.Replace("-", string.Empty);
             string entry_type = ddlEntryType.SelectedValue;
             //string subject = ddlSubject.SelectedValue;
             entry_type = entry_type.Replace(" ", "_");
@@ -764,7 +764,7 @@ namespace DigiLocker3
             }
             dr.Close();
             string fileNameExisting = Server.MapPath("~/Template_Certi.pdf");
-            query = "Select Personal_No, Name, Rank from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " where Qualified = 'No'";
+            query = "Select Personal_No, Name, Rank from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " where Qualified = 'No'";
             com = new SqlCommand(query, con);
             dr = com.ExecuteReader();
             //Directory.CreateDirectory("Certificates\\" + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_"));
@@ -773,7 +773,7 @@ namespace DigiLocker3
 
             while (dr.Read())
             {
-                path = "~/Certificates/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "/" + ddlEntryType.SelectedValue.Replace(" ", "_").ToUpper();
+                path = "~/Certificates/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "/" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "/" + ddlEntryType.SelectedValue.Replace(" ", "_").ToUpper();
 
                 Directory.CreateDirectory(Server.MapPath(path));
                 string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
@@ -808,7 +808,7 @@ namespace DigiLocker3
             Response.Clear();
             Response.BufferOutput = false;
             Response.ContentType = "application/zip";
-            Response.AddHeader("content-disposition", "attachment; filename=" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_").ToUpper() + "_Certificates.zip");
+            Response.AddHeader("content-disposition", "attachment; filename=" + ddlCourseType.SelectedValue.Replace(" ", "_").ToUpper() + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_").ToUpper() + "_Certificates.zip");
 
             using (ZipFile zip = new ZipFile())
             {
@@ -846,8 +846,8 @@ namespace DigiLocker3
                 ddlCourseNo.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlCourseNo.DataBind();
 
-                name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
-                com = new SqlCommand("select Distinct(Entry_NAME) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty), con); // table name 
+                name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_ENTRY_TYPE";
+                com = new SqlCommand("select Distinct(Entry_NAME) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty), con); // table name 
                 da = new SqlDataAdapter(com);
                 ds = new DataSet();
                 da.Fill(ds);  // fill dataset
@@ -856,7 +856,7 @@ namespace DigiLocker3
                 ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
                 ddlEntryType.DataBind();
 
-                string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
+                string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_ENTRY_TYPE";
                 List<string> termLabel = new List<string>();
                 //string term_Label = "";
                 com = new SqlCommand("select ENROLLEDIN from " + table_name + " where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
@@ -887,8 +887,8 @@ namespace DigiLocker3
         protected void ddlCourseNoIndexChanged(object sender, EventArgs e)
         {
             con.Open();
-            string name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
-            SqlCommand com = new SqlCommand("select Distinct(Entry_NAME) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty), con); // table name 
+            string name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_ENTRY_TYPE";
+            SqlCommand com = new SqlCommand("select Distinct(Entry_NAME) from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty), con); // table name 
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataSet ds = new DataSet();
             da.Fill(ds);  // fill dataset
@@ -897,7 +897,7 @@ namespace DigiLocker3
             ddlEntryType.DataSource = ds.Tables[0];      //assigning datasource to the dropdownlist
             ddlEntryType.DataBind();
 
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_ENTRY_TYPE";
             List<string> termLabel = new List<string>();
             //string term_Label = "";
             com = new SqlCommand("select ENROLLEDIN from " + table_name + " where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 
@@ -935,7 +935,7 @@ namespace DigiLocker3
             SqlCommand com = new SqlCommand(query, con);
             com.ExecuteNonQuery();
             IDictionary<string, string> dict = new Dictionary<string, string>();
-            query = "Select Personal_No, Entry_Name from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " where D = '" + ddlClass.SelectedValue + "'";
+            query = "Select Personal_No, Entry_Name from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + " where D = '" + ddlClass.SelectedValue + "'";
             SqlCommand cmd = new SqlCommand(query, con);
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -959,10 +959,10 @@ namespace DigiLocker3
             query = "Create table temp (Personal_No Varchar(50), Name Varchar(50), Rank Varchar(50), " + collist + "D_total int, D_percentage decimal(4,2), D_failed int, D_Seniority_gained decimal(4,2), D_Seniority_lost decimal(4,2), D_Seniority_total decimal(4,2), D_Qualified varchar(50))";
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
-            query = "Insert into temp(Personal_No, Name, Rank, D_total, D_percentage, D_failed, D_Seniority_gained, D_Seniority_lost, D_Seniority_total, D_Qualified) Select Personal_No, Name, Rank, D_total, D_percentage, D_failed, D_Seniority_gained, D_Seniority_lost, D_Seniority_total, D_Qualified from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " where Personal_No in (Select Personal_No from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " where D = '" + ddlClass.SelectedValue + "' and Entry_name = '" + ddlEntryType.SelectedValue.Replace(" ", "_") + "')";
+            query = "Insert into temp(Personal_No, Name, Rank, D_total, D_percentage, D_failed, D_Seniority_gained, D_Seniority_lost, D_Seniority_total, D_Qualified) Select Personal_No, Name, Rank, D_total, D_percentage, D_failed, D_Seniority_gained, D_Seniority_lost, D_Seniority_total, D_Qualified from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + " where Personal_No in (Select Personal_No from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + " where D = '" + ddlClass.SelectedValue + "' and Entry_name = '" + ddlEntryType.SelectedValue.Replace(" ", "_") + "')";
             cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
-            query = "Select Personal_No from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + " where D = '" + ddlClass.SelectedValue + "' and Entry_name = '" + ddlEntryType.SelectedValue.Replace(" ", "_") + "'";
+            query = "Select Personal_No from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + " where D = '" + ddlClass.SelectedValue + "' and Entry_name = '" + ddlEntryType.SelectedValue.Replace(" ", "_") + "'";
             cmd = new SqlCommand(query, con);
             dr = cmd.ExecuteReader();
             List<string> pno_list = new List<string>();
@@ -979,7 +979,7 @@ namespace DigiLocker3
                 foreach (string subject in sub_list)
                 {
                     int marks = 0;
-                    query = "Select Total from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_D_TERM where Personal_No ='" + pno + "' and subject_name = '" + subject + "'";
+                    query = "Select Total from " + ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_D_TERM where Personal_No ='" + pno + "' and subject_name = '" + subject + "'";
                     cmd = new SqlCommand(query, con);
                     dr = cmd.ExecuteReader();
                     while (dr.Read())
@@ -1008,7 +1008,7 @@ namespace DigiLocker3
         protected void ddlEntryTypeIndexChanged(object sender, EventArgs e)
         {
             con.Open();
-            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace(".", string.Empty) + "_ENTRY_TYPE";
+            string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_ENTRY_TYPE";
             List<string> termLabel = new List<string>();
             //string term_Label = "";
             SqlCommand com = new SqlCommand("select ENROLLEDIN from " + table_name + " where TYPE_NAME = '" + ddlEntryType.SelectedValue + "'", con); // table name 

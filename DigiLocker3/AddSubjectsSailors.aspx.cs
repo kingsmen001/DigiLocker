@@ -46,21 +46,21 @@ namespace DigiLocker3
                 }
                 else if (Session["Access_Level"].ToString().Equals("2"))
                 {
-                    opnAddCourse.Visible = true;
-                    opnAddTrainees.Visible = true;
-                    opnCreateCourse.Visible = true;
+                    opnAddCourse.Visible = false;
+                    opnAddTrainees.Visible = false;
+                    opnCreateCourse.Visible = false;
                     opnUpdateMarks.Visible = false;
                     opnViewResult.Visible = true;
                     opnViewTrainees.Visible = true;
-                    opnUploadMarks.Visible = true;
+                    opnUploadMarks.Visible = false;
 
-                    opnAddCourseOfficer.Visible = true;
-                    opnAddTraineesOfficer.Visible = true;
-                    opnCreateCourseOfficer.Visible = true;
+                    opnAddCourseOfficer.Visible = false;
+                    opnAddTraineesOfficer.Visible = false;
+                    opnCreateCourseOfficer.Visible = false;
                     opnUpdateMarksOfficer.Visible = false;
                     opnViewResultOfficer.Visible = true;
                     opnViewTraineesOfficer.Visible = true;
-                    opnUploadMarksOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = false;
                 }
                 else if (Session["Access_Level"].ToString().Equals("3"))
                 {
@@ -259,9 +259,9 @@ namespace DigiLocker3
                 con.Open();
                 try
                 {
-                    if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
+                    if (ddlTerm.SelectedValue.Equals("D") & (coursename.Equals("MEAT _POWER") || coursename.Equals("MEAT_RADIO")))
                     {
-                        string table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_D_TERM_SUBJECTS";
+                        string table_name = coursename + "_D_TERM_SUBJECTS";
                         string query = "insert into " + table_name + "(Subject_Name, Max_Marks, Theory, IA, Practical, class) values ('" + txtSubject.Text + "','" + txtMarks.Text + "','" + txtTheory.Text + "','" + txtIA.Text + "','" + txtPractical.Text + "','" + txtSpc.Text + "')";
                         SqlCommand cmd = new SqlCommand(query, con);
                         cmd.ExecuteNonQuery();
@@ -290,7 +290,7 @@ namespace DigiLocker3
                     Response.Write(ex.Message);
                 }
                 con.Close();
-                if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
+                if (ddlTerm.SelectedValue.Equals("D") & (coursename.Equals("MEAT_POWER") || coursename.Equals("MEAT_RADIO")))
                 {
                     ShowData1();
                 }
@@ -536,14 +536,16 @@ namespace DigiLocker3
 
         protected void ddlTermIndexChanged(object sender, EventArgs e)
         {
-            if (ddlTerm.SelectedValue.Equals("D") & (ddlCourseType.SelectedValue.Equals("MEAT POWER") || ddlCourseType.SelectedValue.Equals("MEAT RADIO")))
+            if (coursename == null)
+                coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
+            if (ddlTerm.SelectedValue.Equals("D") & (coursename.Equals("MEAT_POWER") || coursename.Equals("MEAT_RADIO")))
             {
                 ShowData1();
                 //meatDTerm();
                 divgrid.Visible = false;
                 divgridspl.Visible = true;
                 divspl.Visible = true;
-                div3.Visible = false;
+                //div3.Visible = false;
             }
             else
             {
@@ -578,7 +580,7 @@ namespace DigiLocker3
             if (coursename == null)
                 coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             con.Open();
-            table_name = "MEAT_POWER_D_TERM_SUBJECTS";
+            table_name = coursename + "_D_TERM_SUBJECTS";
             string query = "Select ID, Subject_name, Theory, IA, Practical, Max_Marks, class from " + table_name;
             //Response.Write(query);
             SqlCommand cmd = new SqlCommand(query, con);

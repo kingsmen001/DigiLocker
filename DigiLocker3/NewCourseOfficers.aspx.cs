@@ -42,21 +42,21 @@ namespace DigiLocker3
                 }
                 else if (Session["Access_Level"].ToString().Equals("2"))
                 {
-                    opnAddCourse.Visible = true;
-                    opnAddTrainees.Visible = true;
-                    opnCreateCourse.Visible = true;
+                    opnAddCourse.Visible = false;
+                    opnAddTrainees.Visible = false;
+                    opnCreateCourse.Visible = false;
                     opnUpdateMarks.Visible = false;
                     opnViewResult.Visible = true;
                     opnViewTrainees.Visible = true;
-                    opnUploadMarks.Visible = true;
+                    opnUploadMarks.Visible = false;
 
-                    opnAddCourseOfficer.Visible = true;
-                    opnAddTraineesOfficer.Visible = true;
-                    opnCreateCourseOfficer.Visible = true;
+                    opnAddCourseOfficer.Visible = false;
+                    opnAddTraineesOfficer.Visible = false;
+                    opnCreateCourseOfficer.Visible = false;
                     opnUpdateMarksOfficer.Visible = false;
                     opnViewResultOfficer.Visible = true;
                     opnViewTraineesOfficer.Visible = true;
-                    opnUploadMarksOfficer.Visible = true;
+                    opnUploadMarksOfficer.Visible = false;
                 }
                 else if (Session["Access_Level"].ToString().Equals("3"))
                 {
@@ -204,6 +204,7 @@ namespace DigiLocker3
         }
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
+            Regex regex1 = new Regex("^[O][-]\\d\\d\\d\\d*$");
             if (flag1 == 0)
             {
                 string script = "alert(\" No entry is Selected to enroll. \");";
@@ -237,7 +238,7 @@ namespace DigiLocker3
                                           "ServerControlScript", script, true);
 
                 }
-                else if (!System.Text.RegularExpressions.Regex.IsMatch(Course_Number_TextBox.Text, "[^a-zA-Z.0-9\x20]", System.Text.RegularExpressions.RegexOptions.IgnoreCase) & Course_Number_TextBox.Text[0] != ' ' & Course_Number_TextBox.Text[0] != '\t')
+                else if (regex1.IsMatch(Course_Number_TextBox.Text))
                 {
 
                     try
@@ -257,8 +258,8 @@ namespace DigiLocker3
                         cmd = new SqlCommand(insertQuery, con);
                         cmd.Parameters.AddWithValue("@Course_No", Course_Number_TextBox.Text);
                         cmd.Parameters.AddWithValue("@Course_Name", name);
-                        cmd.Parameters.AddWithValue("@StartDate", TextBoxStart.Text);
-                        cmd.Parameters.AddWithValue("@EndDate", TextBoxEnd.Text);
+                        cmd.Parameters.AddWithValue("@StartDate", "1/JAN/2017");
+                        cmd.Parameters.AddWithValue("@EndDate", "31/DEC/2018");
                         cmd.ExecuteNonQuery();
                         string query = "Select Type_Name from OFFICER_COURSE_TYPE";
                         //cmd = new SqlCommand(query, con);
@@ -275,7 +276,7 @@ namespace DigiLocker3
                         //    cmd = new SqlCommand(query, con);
                         //    cmd.ExecuteNonQuery();
                         //}
-                        query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text.Replace(".", string.Empty) + "_ENTRY_TYPE ( TYPE_NAME VARCHAR(50), NUMBER VARCHAR(50), ENROLLEDIN VARCHAR(50) DEFAULT NULL)";
+                        query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text.Replace("-", string.Empty) + "_ENTRY_TYPE ( TYPE_NAME VARCHAR(50), NUMBER VARCHAR(50), ENROLLEDIN VARCHAR(50) DEFAULT NULL)";
                         cmd = new SqlCommand(query, con);
                         cmd.ExecuteNonQuery();
                         foreach (GridViewRow g1 in GridView1.Rows)
@@ -284,16 +285,16 @@ namespace DigiLocker3
                             TextBox txtBox = (TextBox)g1.Cells[2].FindControl("TextBox1");
                             if (!string.IsNullOrWhiteSpace(txtBox.Text) & chkBox.Checked)
                             {
-                                query = "insert into " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text.Replace(".", string.Empty) + "_ENTRY_TYPE(TYPE_NAME, NUMBER)  values( '" + g1.Cells[1].Text + "', '" + txtBox.Text + "')";
+                                query = "insert into " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text.Replace("-", string.Empty) + "_ENTRY_TYPE(TYPE_NAME, NUMBER)  values( '" + g1.Cells[1].Text + "', '" + txtBox.Text + "')";
                                 cmd = new SqlCommand(query, con);
                                 cmd.ExecuteNonQuery();
                             }
                         }
-                        query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text.Replace(".", string.Empty) + " (Personal_No VARCHAR(50), ENTRY_NAME VARCHAR(50), TERM VARCHAR(50) DEFAULT ' ')";
+                        query = "Create table " + name.Replace(" ", "_") + "_" + Course_Number_TextBox.Text.Replace("-", string.Empty) + " (Personal_No VARCHAR(50), ENTRY_NAME VARCHAR(50), TERM VARCHAR(50) DEFAULT ' ')";
                         cmd = new SqlCommand(query, con);
                         cmd.ExecuteNonQuery();
                         //Response.Write("Record Uploaded Successfully!!!thank you");
-                        Response.Redirect("UploadNominalRollOfficers.aspx?coursename=" + name + "&courseno=" + Course_Number_TextBox.Text);
+                        Response.Redirect("UploadNominalRollOfficers.aspx?coursename=" + name + "&courseno=" + Course_Number_TextBox.Text, false);
                         string script = "alert(\" Course Enrolled Succefullly \");";
                         ScriptManager.RegisterStartupScript(this, GetType(),
                                               "ServerControlScript", script, true);
@@ -362,7 +363,7 @@ namespace DigiLocker3
         protected void Text1Changed(object sender, EventArgs e)
         {
 
-            Regex regex1 = new Regex("^\\d\\d[.]\\d\\d\\d\\d*$");
+            Regex regex1 = new Regex("^[O][-]\\d\\d\\d\\d*$");
             Regex regex2 = new Regex("^\\d\\d*$");
             if (!regex1.IsMatch(Course_Number_TextBox.Text) & !regex2.IsMatch(Course_Number_TextBox.Text))
             {

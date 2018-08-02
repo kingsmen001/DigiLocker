@@ -51,7 +51,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="Home.aspx">Result Section</a>
+                 <a class="navbar-brand" href="Home.aspx" style="color: white">Result Section</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -81,16 +81,17 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
+                                <div style="display: table-cell; vertical-align: middle; text-align: center">
+                                    <img class="" src="Valsura.png" alt="alternate text" style="width: 170px; height: 170px; align-items: center; margin-left: 25px" />
+                                    <%--<input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button">
                                         <i class="fa fa-search"></i>
                                     </button>
-                                </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
+                                </span>--%>
+                                </div>
+                                <!-- /input-group -->
+                            </li>
                         <li>
                             <a href="Home.aspx"><i class="fa fa-edit fa-fw"></i>DashBoard</a>
                         </li>

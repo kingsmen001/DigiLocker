@@ -234,7 +234,7 @@
 
                                                 <div class="form-group col-md-2" id ="div4" runat="server">
                                                     <label>Select Subject</label>
-                                                    <asp:DropDownList class="form-control" Style="width: auto" ID="ddlSubject1" runat="server" OnSelectedIndexChanged="ddlSubjectIndexChanged">
+                                                    <asp:DropDownList class="form-control" Style="width: auto" ID="DropDownList1" runat="server" >
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>

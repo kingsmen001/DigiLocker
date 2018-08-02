@@ -233,11 +233,11 @@
                                                     <asp:TextBox ID="Course_Number_TextBox" CssClass="form-control" runat="server" AutoPostBack="true" OnTextChanged="Text1Changed" ></asp:TextBox>
                                                 </div>
                                                 <div class=" help-tip" style="position: relative; margin-left: 7px; margin-top: 10px; z-index: 500">
-                                                    <p>Enter Course Number for the complete course such as 21 for MEAT21 20 for MEAT20.</p>
+                                                    <p>Enter Course Number for the complete course such as O-171</p>
                                                 </div>
                                             </div>
                                             <br />
-                                            <div class="form-group ">
+                                            <div class="form-group " runat="server" visible="false">
 
                                             <div class="form-row">
                                                 <div class="col-md-6">
