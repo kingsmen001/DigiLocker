@@ -701,9 +701,9 @@ namespace DigiLocker3
                     query = "Update " + table_name + " set A_Qualified = 'Yes' where A1_Qualified = 'Yes' and A2_Qualified = 'Yes'";
                     cmd = new SqlCommand(query, con);
                     cmd.ExecuteNonQuery();
-                    //query = "Update " + table_name + " set A_Percentage = A_Total*100.0/(Select A1_total + A2_Total from " + table_name + " where name ='MAximum_Marks')";
-                    //cmd = new SqlCommand(query, con);
-                    //cmd.ExecuteNonQuery();
+                    query = "Update " + table_name + " set A_Percentage = A_Total*100.0/(Select A1_total + A2_Total from " + table_name + " where name ='MAximum Marks')";
+                    cmd = new SqlCommand(query, con);
+                    cmd.ExecuteNonQuery();
                     if (seniority == "1")
                     {
                         table_name = ddlCourseType.SelectedValue.Replace(" ", "_") + "_" + ddlEntryType.SelectedValue.Replace(" ", "_") + "_A1_SENIORITY";

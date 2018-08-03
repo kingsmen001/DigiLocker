@@ -332,6 +332,10 @@ namespace DigiLocker3
                 div2.Visible = false;
             }
             else {
+                if(Session["Access_Level"].ToString().Equals("4")|| Session["Access_Level"].ToString().Equals("1"))
+                {
+                    div4.Visible = true;
+                }
                 div1.Visible = true;
                 div3.Visible = true;
                 div2.Visible = true;
@@ -590,6 +594,11 @@ namespace DigiLocker3
             Session.Clear();
             Response.Redirect("ViewTraineessailors.aspx", false);
             //Response.Redirect("Home.aspx", true);
+        }
+
+        protected void UploadButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("UploadMarksSailors.aspx?coursename=" + ddlCourseType.SelectedValue + "&courseno=" +ddlCourseNo.SelectedValue);
         }
 
     }

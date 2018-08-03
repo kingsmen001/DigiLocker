@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Result Generation System</title>
+    <title>Result Management System</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -186,7 +186,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header" id="heading" runat="server">Add Seniority Details</h1>
+                    <h1 class="page-header" id="heading" runat="server">Add Seniority Details-Sailors</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

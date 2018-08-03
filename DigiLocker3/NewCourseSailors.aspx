@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Result Generation System</title>
+    <title>Result Management System</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -189,7 +189,7 @@
             <div class="form-group">
                 <div class="form-row">
                     <div class="col-lg-12">
-                        <h1 class="page-header" id="heading" runat="server">Add Course</h1>
+                        <h1 class="page-header" id="heading" runat="server">Add Course-Sailors</h1>
                         </div>
                     <div class="col-lg-12">
                         

@@ -30,21 +30,28 @@ namespace DigiLocker3
                 SqlDataReader sqlRdr = cmd.ExecuteReader();
                 if (sqlRdr.HasRows)
                 {
-                    Response.Redirect("Home.aspx");
+                    while (sqlRdr.Read())
+                    {
+                        Session.Add("User_ID", sqlRdr.GetString(1));
+                        Session.Add("Access_Level", sqlRdr.GetInt32(3));
+                        Response.Redirect("Home.aspx", false);
+                        //Response.Write("<script language='javascript'>alert('" + Session["User_ID"].ToString() + "');</script>");
+                    }
                 }
                 else
                 {
                     {
-                        Response.Redirect("Login.aspx");
+
+                        //Response.Redirect("#");
                         Response.Write("<script language='javascript'>alert('Wrong Username or Password');</script>");
                     }
                 }
-
+                sqlRdr.Close();
 
             }
             catch (Exception ex)
             {
-
+                Response.Write(ex.ToString());
             }
 
         }

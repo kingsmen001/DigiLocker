@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Result Generation System</title>
+    <title>Result Management System</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -184,7 +184,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header" id="heading" runat="server">Trainees Details</h1>
+                        <h1 class="page-header" id="heading" runat="server">Trainees Details-Officers</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -215,7 +215,9 @@
                                                 <label>Select Entry Type</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="lbEntryType" runat="server" AutoPostBack="True" OnSelectedIndexChanged="lblEntryTypeIndexChanged"></asp:DropDownList>
                                             </div>
-
+                                            <div id="div4" runat="server" class="form-group col-lg-4" visible="false">
+                                                <asp:Button ID="buttonupload" runat="server" type="reset" class="btn btn-default" Text="Upload Marks" OnClick="UploadButton_Click"  />
+                                            </div>
                                         </div>
                                         <div id="div3" runat="server">
                                             <div class="form-group" runat="server" id="exlfile" visible="false" enableviewstate="false">

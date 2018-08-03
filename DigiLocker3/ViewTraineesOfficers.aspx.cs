@@ -332,6 +332,13 @@ namespace DigiLocker3
                 div2.Visible = false;
             }
             else {
+                if (!string.IsNullOrEmpty(Session["User_ID"] as string))
+                {
+                    if (Session["Access_Level"].ToString().Equals("4") || Session["Access_Level"].ToString().Equals("1"))
+                    {
+                        div4.Visible = true;
+                    }
+                }
                 div1.Visible = true;
                 div3.Visible = true;
                 div2.Visible = true;
@@ -403,7 +410,7 @@ namespace DigiLocker3
             string query;
             SqlCommand cmd;
             SqlDataAdapter adpt;
-            DataTable dt;
+            DataTable dt = new DataTable();
             if (coursename == null)
                 coursename = ddlCourseType.SelectedValue.Replace(" ", "_");
             con.Open();
@@ -419,11 +426,17 @@ namespace DigiLocker3
                     query = query + "Select Personal_No as \"Personal No\", Name, Rank from " + coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + dr.GetString(0).Replace(" ", "_") + " where name <> 'MAXIMUM MARKS' UNION ";
                 }
                 dr.Close();
-                query = query.Substring(0, query.LastIndexOf("UNION"));
-                cmd = new SqlCommand(query, con);
-                adpt = new SqlDataAdapter(cmd);
-                dt = new DataTable();
-                adpt.Fill(dt);
+                if(query.Contains("UNION"))
+                {
+                    query = query.Substring(0, query.LastIndexOf("UNION"));
+                }
+                if (!query.Equals(""))
+                {
+                    cmd = new SqlCommand(query, con);
+                    adpt = new SqlDataAdapter(cmd);
+                    
+                    adpt.Fill(dt);
+                }
                 GridView1.DataSource = dt;
                 GridView1.DataBind();
                 GridView3.Visible = false;
@@ -433,7 +446,7 @@ namespace DigiLocker3
             }
             else {
                 table_name = coursename.Replace(" ", "_") + "_" + ddlCourseNo.SelectedValue.Replace("-", string.Empty) + "_" + lbEntryType.SelectedItem.Text.Replace(" ", "_");
-                
+
 
                 //if (dt.Rows.Count > 0)
                 //{
@@ -592,5 +605,9 @@ namespace DigiLocker3
             //Response.Redirect("Home.aspx", true);
         }
 
+        protected void UploadButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("UploadMarksOfficers.aspx?coursename=" + ddlCourseType.SelectedValue + "&courseno=" + ddlCourseNo.SelectedValue);
+        }
     }
 }

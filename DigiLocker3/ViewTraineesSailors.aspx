@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Result Generation System</title>
+    <title>Result Management System</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -58,19 +58,19 @@
                 <!-- /.navbar-header -->
 
                 <ul class="nav navbar-top-links navbar-right" style="margin-top: 7px; margin-right: 15px">
-                    <li runat="server" id="list_userid" >
+                    <li runat="server" id="list_userid">
                         <asp:TextBox ID="UserId_TextBox" CssClass="form-control" runat="server" AutoPostBack="false" placeholder="UserID"></asp:TextBox>
                     </li>
-                    <li runat="server" id="list_pass" >
+                    <li runat="server" id="list_pass">
                         <asp:TextBox ID="Password_TextBox" CssClass="form-control" runat="server" AutoPostBack="false" placeholder="Password" type="password"></asp:TextBox>
                     </li>
                     <li runat="server" id="list_login">
-                        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button2" Text="Login" OnClick="LoginButton_Click"/>
+                        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button2" Text="Login" OnClick="LoginButton_Click" />
                     </li>
-                    <li runat="server" id="list_logout" >
-                        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button3" Text="Logout" OnClick="LogoutButton_Click"/>
+                    <li runat="server" id="list_logout">
+                        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button3" Text="Logout" OnClick="LogoutButton_Click" />
                     </li>
-                    
+
 
                 </ul>
                 <!-- /.navbar-top-links -->
@@ -134,7 +134,7 @@
                                 </ul>
                                 <!-- /.nav-second-level -->
                             </li>
-                           <li>
+                            <li>
                                 <a href="#"><i class="fa fa-wrench fa-fw"></i>Sailors<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
 
@@ -184,7 +184,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header" id="heading" runat="server">Trainees Details</h1>
+                        <h1 class="page-header" id="heading" runat="server">Trainees Details-Sailors</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -215,7 +215,9 @@
                                                 <label>Select Entry Type</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="lbEntryType" runat="server" AutoPostBack="True" OnSelectedIndexChanged="lblEntryTypeIndexChanged"></asp:DropDownList>
                                             </div>
-
+                                            <div id="div4" runat="server" class="form-group col-lg-4" visible="false">
+                                                <asp:Button ID="buttonupload" runat="server" type="reset" class="btn btn-default" Text="Upload Marks" OnClick="UploadButton_Click"  />
+                                            </div>
                                         </div>
                                         <div id="div3" runat="server">
                                             <div class="form-group" runat="server" id="exlfile" visible="false" enableviewstate="false">

@@ -274,6 +274,24 @@ namespace DigiLocker3 {
         protected global::System.Web.UI.WebControls.DropDownList lbEntryType;
         
         /// <summary>
+        /// div4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div4;
+        
+        /// <summary>
+        /// buttonupload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonupload;
+        
+        /// <summary>
         /// div3 control.
         /// </summary>
         /// <remarks>

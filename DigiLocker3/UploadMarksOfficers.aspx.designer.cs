@@ -157,6 +157,24 @@ namespace DigiLocker3 {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl opnViewResult;
         
         /// <summary>
+        /// heading control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl heading;
+        
+        /// <summary>
+        /// divCourse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCourse;
+        
+        /// <summary>
         /// ddlCourseType control.
         /// </summary>
         /// <remarks>

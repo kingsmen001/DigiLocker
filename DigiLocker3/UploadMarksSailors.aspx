@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Result Generation System</title>
+    <title>Result Management System</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -187,7 +187,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Upload Marks</h1>
+                    <h1 class="page-header" runat="server" id="heading">Upload Marks-Sailors</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -204,14 +204,14 @@
 
                                 <div class="col-lg-6" style="width: 100%">
                                     
-                                        <div class="form-row">
+                                        <div class="form-row" runat="server" id="divCourse">
                                             <div class="form-group col-md-2">
                                                 <label>Select Course Type</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseTypeIndexChanged">
                                                 </asp:DropDownList>
                                             </div>
 
-                                            <div id="div1" runat="server" class="form-group col-md-2">
+                                            <div id="div1" runat="server" class="form-group col-md-2" >
                                                 <label>Select Course Number</label>
                                                 <asp:DropDownList class="form-control" Style="width: auto" ID="ddlCourseNo" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCourseNoIndexChanged">
                                                 </asp:DropDownList>

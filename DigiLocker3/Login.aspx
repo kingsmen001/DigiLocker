@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Result Management System</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -35,34 +35,52 @@
 
 </head>
 
-<body style="background-color:white">
-    <div class="col-lg-12" style="display:table-cell; vertical-align:middle; text-align:center; margin-top:50px;"><img src="logo39.jpg" alt="alternate text" style="width:auto; height:auto" /></div>
+<body style="background: url(login-bg3.jpg) no-repeat center center fixed; background-size: cover;">
+    <%--<div class="col-lg-12" style="display:table-cell; vertical-align:middle; text-align:center; margin-top:50px;"><img src="valsura.png" alt="alternate text" style="width:auto; height:auto" /></div>--%>
     <div class="col-lg-12" style="text-align:center">
-        <h1 class="page-header" id="heading" runat="server" style="text-align:center;">Course Management System</h1>
+        <%--<h1 class="page-header" id="heading" runat="server" style="text-align:center;">Course Management System</h1>--%>
     </div>
     
-    <div class="container">
+    <div class="container" style="margin:0 auto; width:40%; opacity:0.85; margin-top:5%">
         <div class="row">
-            <div class="col-md-4 col-md-offset-4">
+            <div >
                 <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
-                    </div>
+                    <%--<div class="panel-heading">
+                        <h3 class="panel-title"></h3>
+                    </div>--%>
 
                     <%--<div class="panel-body">--%>
-                    <div class="row" style="width: 100%; margin: 0 auto">
-                        <div class="signin-form profile">
-                            <div class="login-form">
+                    <div class="row" style="width: auto; margin: 0 auto">
+                        <h1 class="page-header" id="h1" runat="server" style="text-align:center;">Result Management System</h1>
+                        <div class="signin-form profile" >
+                            <div class="login-form" style="width:50%;  margin: 0 auto">
                                 <form id="form2" runat="server">
                                     <%--<input type="email" name="email" placeholder="E-mail" required="">--%>
-                                    <asp:TextBox ID="PNo_TextBox" runat="server" placeholder="Personal No."></asp:TextBox>
+                                    <asp:TextBox ID="PNo_TextBox" runat="server" placeholder="Userid"></asp:TextBox>
                                     <%--<input type="password" name="password" placeholder="Password" required="">--%>
                                     <asp:TextBox ID="Password_TextBox" type="password" runat="server" placeholder="Password"></asp:TextBox>
                                     <asp:Button runat="server" ID="LoginButton" Text="Login" OnClick="LoginButton_Click" />
+                                    <div style="margin-top:10px">
+                                    <a href="Home.aspx" >Visit as Guest</a>
+                                        </div>
                                 </form>
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <ol>
+                            <li>
+                                To see the details of Courses and Trainees, Just login as guest.
+                            </li>
+                            <li>
+                                To make any changes in course structure, Admin Priviliges are required.
+                            </li>
+                            <li>
+                                Login using your credentials to access the system.
+                            </li>
+                        </ol>
+                    </div>
+
                     <%--</div>--%>
                 </div>
             </div>
